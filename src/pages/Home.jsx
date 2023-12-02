@@ -8,7 +8,7 @@ const Home = () => {
     <div className='m-5'>
       <div className='flex flex-col gap-52 w-full rounded-md'>
         <div>
-          <Hero smalltext="👋 I'M" head="Rohit M" smallestext='Self taught full stack developer having proficiency in JavaScript and Java (their frameworks and ecosystems). 🚀🌐'/>
+          <Hero smalltext="👋 I'M" head="Rohit" smallestext='Self taught full stack developer having proficiency in JavaScript and Java (their frameworks and ecosystems). 🚀🌐'/>
         </div>
         <div className='grid grid-cols-2'>
           <div>
