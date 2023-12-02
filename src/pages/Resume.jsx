@@ -1,11 +1,11 @@
 import React from 'react'
 import RohitImg from '../assets/RohitImg.jpeg'
-
+import ResumePath from '../assets/Resume/RohitM.pdf';
 
 const Resume = () => {
   const handleDownload = () => {
     const downloadLink = document.createElement('a');
-    downloadLink.href = '/Resume/RohitM.pdf';
+    downloadLink.href = ResumePath;
     downloadLink.download = 'RohitM(Resume).pdf';
     document.body.appendChild(downloadLink);
     downloadLink.click();
