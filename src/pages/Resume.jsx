@@ -5,7 +5,7 @@ import RohitImg from '../assets/RohitImg.jpeg'
 const Resume = () => {
   const handleDownload = () => {
     const downloadLink = document.createElement('a');
-    downloadLink.href = './src/assets/Resume/RohitM.pdf';
+    downloadLink.href = '/Resume/RohitM.pdf';
     downloadLink.download = 'RohitM(Resume).pdf';
     document.body.appendChild(downloadLink);
     downloadLink.click();
