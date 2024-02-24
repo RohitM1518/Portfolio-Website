@@ -13,6 +13,8 @@ import HTMLColored from './htmlcolored.svg';
 import PythonColored from './pythoncolored.svg';
 import TailwindColored from './tailwindcolored.svg';
 import ReactColored from './reactcolored.svg';
+import javascriptcolored from './javascriptcolored.svg'
+import mongodb from './mongodb.jpg'
 
 export{
     CSS,
@@ -29,5 +31,7 @@ export{
     HTMLColored,
     PythonColored,
     TailwindColored,
-    ReactColored
+    ReactColored,
+    javascriptcolored,
+    mongodb
 }

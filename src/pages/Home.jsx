@@ -5,14 +5,14 @@ import { CSS, Reactico, HTML, Java, Javascript, NodeJS } from '../assets/icons/i
 
 const Home = () => {
   return (
-    <div className='m-5'>
+    <div className='m-5 '>
       <div className='flex flex-col gap-52 w-full rounded-md'>
         <div>
-          <Hero smalltext="👋 I'M" head="Rohit" smallestext='Self taught full stack developer having proficiency in JavaScript and Java (their frameworks and ecosystems). 🚀🌐'/>
+          <Hero smalltext="👋 I'M" head="Rohit" smallestext='I am ambitious to explore a variety of opportunities beyond full-stack development, so I am flexible and open-minded.🚀🌐'/>
         </div>
         <div className='grid grid-cols-2'>
           <div>
-            <Section shortText='MY' Head='Tech Stack' content='My primary focus on javascript and Java ecosystem.' />
+            <Section shortText='MY' Head='Tech Stack' content='My primary focus on Javascript, MongoDB, Express and React ecosystem.' />
           </div>
           <div className='flex flex-col gap-5 items-center justify-center'>
             <div className='flex gap-10'>

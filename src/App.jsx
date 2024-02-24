@@ -6,7 +6,7 @@ import { Header,Footer } from './components'
 function App() {
 
   return (
-    <div className=' mr-32 ml-32 max-lg:mr-0 max-lg:ml-0'>
+    <div className=' mr-32 ml-32 max-lg:mr-0 max-lg:ml-0 '>
     
     <Header />
     
