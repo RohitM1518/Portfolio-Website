@@ -5,12 +5,12 @@ import { CSS, Reactico, HTML, Java, Javascript, NodeJS } from '../assets/icons/i
 
 const Home = () => {
   return (
-    <div className='m-5 '>
-      <div className='flex flex-col gap-52 w-full rounded-md'>
+    <div className='m-5'>
+      <div className='flex flex-col gap-52 w-full rounded-md '>
         <div>
           <Hero smalltext="👋 I'M" head="Rohit" smallestext='I am ambitious to explore a variety of opportunities beyond full-stack development, so I am flexible and open-minded.🚀🌐'/>
         </div>
-        <div className='grid grid-cols-2'>
+        <div className='grid grid-cols-2 transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-105 duration-300 '>
           <div>
             <Section shortText='MY' Head='Tech Stack' content='My primary focus on Javascript, MongoDB, Express and React ecosystem.' />
           </div>
@@ -27,7 +27,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div>
+        <div className='transition ease-in-out delay-100 hover:-translate-y-1 hover:scale-105 duration-300 '>
           <Section shortText='MY' Head='Projects' content='Here are some of my projects.' />
           <Button url='/projects'>View my all Projects</Button>
         </div>

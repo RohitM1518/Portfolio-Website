@@ -39,15 +39,15 @@ const Header = () => {
             <div className='container mx-auto flex justify-between items-center p-4'>
                 <div className='flex items-center'>
                     <div className=' mr-80'>
-                        <h1 className='text-4xl font-bold font-mono text-black '>R</h1>
+                        <h1 className='text-4xl font-bold font-mono text-black transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 cursor-pointer'>R</h1>
                     </div>
                     {/* Hide the navigation menu on larger screens */}
                     <ul className={`hidden lg:flex space-x-6 ${isMobileMenuOpen ? 'hidden' : ''}`}>
                         {linkItems.map((item) => (
-                            <li key={item.name}>
+                            <li key={item.name} className='transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-300 '>
                                 <NavLink
                                     to={item.link}
-                                    className={({ isActive }) => `text-black opacity-50 hover:text-emerald-600 transition duration-300 ${isActive ? 'text-emerald-600' : ''}`}
+                                    className={({ isActive }) => `text-black opacity-70 hover:text-emerald-600 ${isActive ? 'text-emerald-600' : ''}`}
                                    // activeClassName='text-emerald-600 opacity-95'
                                 >
                                     {item.name}

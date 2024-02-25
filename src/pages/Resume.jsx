@@ -61,7 +61,7 @@ const Resume = () => {
       </div>
       <div className=' xl:hidden h-[3px] max-w-full mt-3 bg-black'></div>
 
-      <div className='border max-w-full lg:w-full'>
+      <div className='border max-w-full lg:w-full p-4'>
         <div>
           <p className='tracking-widest text-justify'>I'm Rohit Mugalkhod, a passionate and results-driven computer science student based in Bangalore. My journey in technology began with an insatiable curiosity for problem-solving, leading me to explore the realms of full-stack web development, algorithm design, and innovative project initiatives. Proficient in HTML, CSS, JavaScript, React, and more, I bring a unique blend of technical acumen and creative thinking to every challenge. My commitment to excellence is reflected in a stellar CGPA of 9.4 and a series of successful projects, from home automation using Arduino to crafting cloud storage solutions. Join me on this exciting journey where technology meets innovation!</p>
           <div className='mt-16 ml-2'>
@@ -119,7 +119,7 @@ const Resume = () => {
               </div>
             </div>
             <div className='flex mt-16 max-lg:justify-center'>
-              <button className=' w-60  bg-black text-white h-16 rounded-lg' onClick={handleDownload}>Download Resume</button>
+              <button className=' w-60  bg-black text-white h-16 rounded-lg transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ' onClick={handleDownload}>Download Resume</button>
             </div>
           </div>
         </div>

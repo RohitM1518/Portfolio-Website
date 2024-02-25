@@ -18,15 +18,15 @@ const Skills = () => {
         <Card skill='HTML' skillimg={HTMLColored} />
         <Card skill='Java' skillimg={JavaColored} />
         <Card skill='Python' skillimg={PythonColored} />
+        <Card skill='JavaScript' skillimg={javascriptcolored} />
       </div>
       <div className='flex flex-row gap-10 max-sm:flex-col max-sm:grid-cols-2 max-lg:grid max-lg:grid-cols-3  justify-around'>
         <Card skill='Tailwind CSS' skillimg={TailwindColored} />
         <Card skill='React' skillimg={ReactColored} />
-        <Card skill='JavaScript' skillimg={javascriptcolored} />
+        <Card skill='MongoDB' skillimg={mongodb} />
       </div>
-      <div className='flex flex-row gap-10 max-sm:flex-col max-sm:grid-cols-2 max-lg:grid max-lg:grid-cols-3 justify-around'>
-      <Card skill='MongoDB' skillimg={mongodb} />
-      </div>
+
+
       <div className='flex justify-center mt-8 border shadow-lg p-4'>
         <div>
         <div>
