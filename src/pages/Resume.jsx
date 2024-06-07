@@ -1,6 +1,8 @@
 import React from 'react'
 import RohitImg from '../assets/RohitImg.jpeg'
+import RohitMImg from '../assets/RohitMImg.jpg'
 import ResumePath from '../assets/Resume/RohitM.pdf';
+
 
 const Resume = () => {
   const handleDownload = () => {
@@ -15,8 +17,8 @@ const Resume = () => {
   return (
     <div className='flex gap-3 w-auto max-lg:grid max-lg:grid-rows-1 max-lg:ml-4 max-lg:mr-4 max-lg:max-w-full overflow-hidden'>
       <div className='flex border flex-col w-1/3 max-lg:w-auto max-lg:items-center'>
-        <div className='flex flex-col max-lg:items-center'>
-          <img src={RohitImg} alt="" className='flex rounded-full w-52 border border-black max-lg:w-72' />
+        <div className='flex flex-col max-lg:items-center items-center'>
+          <img src={RohitMImg} alt="" className='flex w-52 border border-black max-lg:w-72 rounded-full h-52 object-cover max-lg:h-72' />
           <h1 className='text-3xl font-roboto tracking-tight font-semibold mt-3 max-lg:text-5xl'>Rohit Mugalkhod</h1>
           <p className='text-sm md:text-md mt-1 opacity-70 tracking-widest max-lg:text-xl max-lg:text-center'>Computer Science Engineer</p>
         </div>

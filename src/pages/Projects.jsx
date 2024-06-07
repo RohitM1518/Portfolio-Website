@@ -4,6 +4,7 @@ import BlogImg from "../assets/icons/blog.png"
 import YoutubeImg from "../assets/icons/youtube.png"
 import PortfolioImg from "../assets/icons/portfolio.jpg"
 import { Link } from 'react-router-dom'
+import ChatImg from '../assets/icons/chatImage.jpg'
 
 
 const Projects = () => {
@@ -17,6 +18,9 @@ const Projects = () => {
       </Link>
       <Link  to="https://github.com/RohitM1518/Portfolio-Website">
       <Card skill="Portfolio Website" skillimg={PortfolioImg}/>
+      </Link>
+      <Link  to="https://github.com/RohitM1518/Chat-Application.git">
+      <Card skill="Chat Application" skillimg={ChatImg}/>
       </Link>
     </div>
   )
