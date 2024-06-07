@@ -35,6 +35,7 @@ const Resume = () => {
             <div>
               <p className=' font-semibold text-lg mt-2'>Programming Languages</p>
               <ul>
+                <li className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>JavaScript</li>
                 <li className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>Java</li>
                 <li className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>Python</li>
                 <li className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>C++</li>
@@ -44,11 +45,13 @@ const Resume = () => {
             <div>
               <p className=' font-semibold text-lg mt-2'>Web Development</p>
               <ul>
-                <li className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>HTML</li>
-                <li className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>CSS (Tailwind)</li>
+                
+                <li className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>React</li>      
                 <li className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>Express</li>
                 <li className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>MongoDB</li>
-                <li className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>Javascript(React)</li>        </ul>
+                <li className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>CSS (TailwindCSS)</li>
+                <li className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>Javascript(Node.js)</li>      
+                  </ul>
             </div>
             <div>
               <p className=' font-semibold text-lg mt-2'>Tools</p>
@@ -70,17 +73,12 @@ const Resume = () => {
             <h1 className='text-2xl font-serif tracking-tight font-semibold mt-3'>Projects</h1>
             <ul className=' list-disc ml-2'>
               <li className='mt-10'>
-                <p className=' font-semibold text-lg mt-2'>Home Automation using Aurdino</p>
-                <p className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>This project, developed with C programming, introduced me
-                  to various sensors and their versatile applications, showcasing
-                  the potential of merging hardware and software for seamless
-                  smart solutions</p>
+                <p className=' font-semibold text-lg mt-2'> Chat Application</p>
+                <p className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>Technologies Used: React, Redux, React Router, Material UI, Socket.IO-client, Axios, Express.js, MongoDB, Mongoose, Socket.IO, JWT, bcrypt, cookie-parser, cors, dotenv.</p>
               </li>
               <li className='mt-5'>
-                <p className='font-semibold text-lg mt-2'>Cloud Storage using Rasberry Pie</p>
-                <p className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>I gained valuable insights into building remote-accessible
-                  storage systems, understanding server operations, leveraging
-                  Raspberry Pi, and employing SSH for secure communication</p>
+                <p className='font-semibold text-lg mt-2'>Feedback Collection Application</p>
+                <p className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>Technologies Used: React, Redux, React Router, Material UI, Socket.IO-client, Axios, Express.js, MongoDB, Mongoose, Socket.IO, JWT, bcrypt, cookie-parser, cors, dotenv.</p>
               </li>
               <li className='mt-5'>
                 <p className='font-semibold text-lg mt-2'>Backend Project</p>
