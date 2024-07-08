@@ -57,6 +57,7 @@ const Resume = () => {
               <p className=' font-semibold text-lg mt-2'>Tools</p>
               <ul>
                 <li className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>Git</li>
+                <li className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>Docker</li>
                 <li className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>Figma</li>
               </ul>
             </div>
@@ -68,26 +69,27 @@ const Resume = () => {
 
       <div className='border max-w-full lg:w-full p-4'>
         <div>
-          <p className='tracking-widest text-justify'>I'm Rohit Mugalkhod, a passionate and results-driven computer science student based in Bangalore. My journey in technology began with an insatiable curiosity for problem-solving, leading me to explore the realms of full-stack web development, algorithm design, and innovative project initiatives. Proficient in HTML, CSS, JavaScript, React, and more, I bring a unique blend of technical acumen and creative thinking to every challenge. My commitment to excellence is reflected in a stellar CGPA of 9.4 and a series of successful projects, from home automation using Arduino to crafting cloud storage solutions. Join me on this exciting journey where technology meets innovation!</p>
+          <p className='tracking-widest text-justify'>I'm Rohit Mugalkhod, a passionate and results-driven computer science student based in Bangalore. My journey in technology began with an insatiable curiosity for problem-solving, leading me to explore the realms of full-stack web development, algorithm design, and innovative project initiatives. Proficient in HTML, CSS, JavaScript, React, and more, I bring a unique blend of technical acumen and creative thinking to every challenge. My commitment to excellence is reflected in a stellar <span className=' font-semibold'>CGPA of 9.55 </span>and a series of successful projects, from home automation using Arduino to crafting cloud storage solutions. Join me on this exciting journey where technology meets innovation!</p>
           <div className='mt-16 ml-2'>
             <h1 className='text-2xl font-serif tracking-tight font-semibold mt-3'>Projects</h1>
             <ul className=' list-disc ml-2'>
               <li className='mt-10'>
+                <p className=' font-semibold text-lg mt-2'> Social Media Application</p>
+                <p className='text-sm md:text-md mt-2 opacity-70 tracking-widest'><span className=' font-semibold'>Technologies Used:</span> React, Redux, Mongoose, Express.js, JWT (jsonwebtoken),  bcrypt, MongoDB, Docker.</p>
+              </li>
+              <li className='mt-5'>
                 <p className=' font-semibold text-lg mt-2'> Chat Application</p>
-                <p className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>Technologies Used: React, Redux, React Router, Material UI, Socket.IO-client, Axios, Express.js, MongoDB, Mongoose, Socket.IO, JWT, bcrypt, cookie-parser, cors, dotenv.</p>
+                <p className='text-sm md:text-md mt-2 opacity-70 tracking-widest'><span className=' font-semibold'>Technologies Used:</span>  React, Material UI, TailwindCSS, Express.js, MongoDB, Mongoose, Socket.IO, JWT, bcrypt. </p>
               </li>
               <li className='mt-5'>
                 <p className='font-semibold text-lg mt-2'>Feedback Collection Application</p>
-                <p className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>Technologies Used: React, Redux, React Router, Material UI, Socket.IO-client, Axios, Express.js, MongoDB, Mongoose, Socket.IO, JWT, bcrypt, cookie-parser, cors, dotenv.</p>
+                <p className='text-sm md:text-md mt-2 opacity-70 tracking-widest'><span className=' font-semibold'>Technologies Used:</span> React, Material UI, Express.js, MongoDB, TailwindCSS, Mongoose, JWT, bcrypt.</p>
               </li>
               <li className='mt-5'>
-                <p className='font-semibold text-lg mt-2'>Backend Project</p>
-                <p className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>Developed a robust video management system using Node.js and
-                  MongoDB. Implemented features for video upload, user
-                  authentication, and integrated third-party services for cloud
-                  storage. Learned to optimize database queries for improved
-                  performance.</p>
+                <p className='font-semibold text-lg mt-2'>Backend Application</p>
+                <p className='text-sm md:text-md mt-2 opacity-70 tracking-widest'><span className=' font-semibold'>Technologies Used:</span> Express.js, MongoDB, Mongoose, bcryptjs, jsonwebtoken.</p>
               </li>
+      
               <li className='mt-5'>
                 <p className='font-semibold text-lg mt-2'>Blog Website</p>
                 <p className='text-sm md:text-md mt-2 opacity-70 tracking-widest'>I developed a blog website using React, Tailwind CSS, and AppWrite.

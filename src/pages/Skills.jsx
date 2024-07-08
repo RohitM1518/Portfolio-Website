@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card } from '../components'
-import { HTML } from '../assets/icons/index'
+import { GitImage, HTML } from '../assets/icons/index'
 import {
   JavaColored,
   HTMLColored,
@@ -8,22 +8,25 @@ import {
   TailwindColored,
   ReactColored,
   javascriptcolored,
-  mongodb
+  mongodb,
+  DockerImage
 } from '../assets/icons/index'
 
 const Skills = () => {
   return (
     <div>
-      <div className='flex flex-row gap-10 max-sm:flex-col max-sm:grid-cols-2 max-lg:grid max-lg:grid-cols-3 justify-around'>
-        <Card skill='HTML' skillimg={HTMLColored} />
-        <Card skill='Java' skillimg={JavaColored} />
-        <Card skill='Python' skillimg={PythonColored} />
-        <Card skill='JavaScript' skillimg={javascriptcolored} />
-      </div>
       <div className='flex flex-row gap-10 max-sm:flex-col max-sm:grid-cols-2 max-lg:grid max-lg:grid-cols-3  justify-around'>
         <Card skill='Tailwind CSS' skillimg={TailwindColored} />
         <Card skill='React' skillimg={ReactColored} />
         <Card skill='MongoDB' skillimg={mongodb} />
+        <Card skill='Docker' skillimg={DockerImage} />
+
+      </div>
+      <div className='flex flex-row gap-10 max-sm:flex-col max-sm:grid-cols-2 max-lg:grid max-lg:grid-cols-3 justify-around'>
+        <Card skill='Java' skillimg={JavaColored} />
+        <Card skill='Python' skillimg={PythonColored} />
+        <Card skill='JavaScript' skillimg={javascriptcolored} />
+        <Card skill='Git' skillimg={GitImage} />
       </div>
 
 

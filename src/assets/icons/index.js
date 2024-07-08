@@ -14,7 +14,13 @@ import PythonColored from './pythoncolored.svg';
 import TailwindColored from './tailwindcolored.svg';
 import ReactColored from './reactcolored.svg';
 import javascriptcolored from './javascriptcolored.svg'
-import mongodb from './mongodb.jpg'
+import DockerImage from './docker.svg'
+import GitImage from './git.png'
+import mongodb from './mongodb2.png'
+import SocialMedia from './socialmedia.png'
+import Feedback from './feedback.png'
+import GithubLogo from './githublogo.png'
+import WebsiteLogo from './websitelogo.png'
 
 export{
     CSS,
@@ -33,5 +39,11 @@ export{
     TailwindColored,
     ReactColored,
     javascriptcolored,
-    mongodb
+    mongodb,
+    DockerImage,
+    GitImage,
+    SocialMedia,
+    Feedback,
+    GithubLogo,
+    WebsiteLogo
 }
