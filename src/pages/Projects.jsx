@@ -10,8 +10,7 @@ import { Feedback, SocialMedia } from '../assets/icons'
 
 const Projects = () => {
   return (
-    <div className='grid grid-cols-4 max-lg:grid-cols-3 max-sm:grid-cols-2 text-sm gap-10'>
-      
+    <div className='grid grid-cols-4 max-lg:grid-cols-3 justify-center max-sm:grid-cols-1 text-sm gap-10'>
       <Card skill="Social Media" skillimg={SocialMedia} isGithub={true} githubURL='https://github.com/RohitM1518/Social-Media-Application.git' isWebsite={true} websiteURL='https://fomofeed.netlify.app/'/>
       <Card skill="Chat Application" skillimg={ChatImg} isGithub={true} githubURL='https://github.com/RohitM1518/Chat-Application.git' isWebsite={true} websiteURL='https://rohitchatapp1518.netlify.app/'/>
       <Card skill="Feedback App" skillimg={Feedback} isGithub={true} githubURL='https://github.com/RohitM1518/Feedback-Project.git' isWebsite={true} websiteURL='https://echocollect.netlify.app/'/>
