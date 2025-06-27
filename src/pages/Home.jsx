@@ -66,7 +66,7 @@ const Home = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="mb-12"
             >
-              <h2 className="text-2xl md:text-4xl text-gray-400 font-mono typewriter">
+              <h2 className="text-lg sm:text-xl md:text-3xl lg:text-4xl text-gray-400 font-mono typewriter text-center px-4">
                 Full-Stack Developer & AI Enthusiast
               </h2>
             </motion.div>
@@ -75,13 +75,13 @@ const Home = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-6 justify-center"
+              className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center px-4"
             >
               <motion.button
                 whileHover={{ scale: 1.05, backgroundColor: '#ffffff', color: '#000000' }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/projects')}
-                className="px-8 py-4 border-2 border-white text-white font-mono font-medium transition-all duration-300 hover:shadow-lg"
+                className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white font-mono font-medium transition-all duration-300 hover:shadow-lg text-sm sm:text-base"
               >
                 VIEW PROJECTS
               </motion.button>
@@ -90,7 +90,7 @@ const Home = () => {
                 whileHover={{ scale: 1.05, backgroundColor: '#000000', color: '#ffffff' }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/contact')}
-                className="px-8 py-4 bg-white text-black font-mono font-medium transition-all duration-300 hover:shadow-lg"
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-black font-mono font-medium transition-all duration-300 hover:shadow-lg text-sm sm:text-base"
               >
                 GET IN TOUCH
               </motion.button>
@@ -136,11 +136,11 @@ const Home = () => {
         
         {/* First Row - Left to Right */}
         <div className="relative overflow-hidden py-4">
-          <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-black to-transparent z-10"></div>
-          <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-black to-transparent z-10"></div>
+          <div className="absolute left-0 top-0 w-16 sm:w-24 lg:w-32 h-full bg-gradient-to-r from-black to-transparent z-10"></div>
+          <div className="absolute right-0 top-0 w-16 sm:w-24 lg:w-32 h-full bg-gradient-to-l from-black to-transparent z-10"></div>
           
           <motion.div
-            className="flex gap-8 whitespace-nowrap"
+            className="flex gap-4 sm:gap-6 lg:gap-8 whitespace-nowrap"
             animate={{ x: ['0%', '-50%'] }}
             transition={{
               duration: 25,
@@ -151,9 +151,9 @@ const Home = () => {
             {[...techStack, ...techStack].map((tech, index) => (
               <div
                 key={index}
-                className="flex-shrink-0 px-6 py-4 glass-card glass-card-hover"
+                className="flex-shrink-0 px-3 sm:px-4 lg:px-6 py-2 sm:py-3 lg:py-4 glass-card glass-card-hover"
               >
-                <span className="text-lg font-mono text-white/80 hover:text-white transition-colors">
+                <span className="text-sm sm:text-base lg:text-lg font-mono text-white/80 hover:text-white transition-colors">
                   {tech}
                 </span>
               </div>
@@ -163,11 +163,11 @@ const Home = () => {
 
         {/* Second Row - Right to Left */}
         <div className="relative overflow-hidden py-4">
-          <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-black to-transparent z-10"></div>
-          <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-black to-transparent z-10"></div>
+          <div className="absolute left-0 top-0 w-16 sm:w-24 lg:w-32 h-full bg-gradient-to-r from-black to-transparent z-10"></div>
+          <div className="absolute right-0 top-0 w-16 sm:w-24 lg:w-32 h-full bg-gradient-to-l from-black to-transparent z-10"></div>
           
           <motion.div
-            className="flex gap-8 whitespace-nowrap"
+            className="flex gap-4 sm:gap-6 lg:gap-8 whitespace-nowrap"
             animate={{ x: ['-50%', '0%'] }}
             transition={{
               duration: 30,
@@ -178,9 +178,9 @@ const Home = () => {
             {[...skills, ...skills].map((skill, index) => (
               <div
                 key={index}
-                className="flex-shrink-0 px-6 py-4 glass-card glass-card-hover"
+                className="flex-shrink-0 px-3 sm:px-4 lg:px-6 py-2 sm:py-3 lg:py-4 glass-card glass-card-hover"
               >
-                <span className="text-lg font-mono text-white/80 hover:text-white transition-colors">
+                <span className="text-sm sm:text-base lg:text-lg font-mono text-white/80 hover:text-white transition-colors">
                   {skill}
                 </span>
               </div>
@@ -228,8 +228,8 @@ const Home = () => {
                 <div className="text-center">
                   <div className="text-6xl font-mono mb-4">{'</>'}</div>
                   <div className="text-2xl font-mono text-gray-400">Code is Poetry</div>
-                </div>
-              </div>
+            </div>
+            </div>
             </motion.div>
           </div>
         </div>
@@ -251,12 +251,12 @@ const Home = () => {
             Ready to bring your ideas to life? Let's collaborate and create something extraordinary.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center px-4">
             <motion.button
               whileHover={{ scale: 1.05, backgroundColor: '#ffffff', color: '#000000' }}
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate('/contact')}
-              className="px-8 py-4 border-2 border-white text-white font-mono font-medium transition-all duration-300"
+              className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white font-mono font-medium transition-all duration-300 text-sm sm:text-base"
             >
               START A PROJECT
             </motion.button>

@@ -31,7 +31,7 @@ const About = () => {
       title: "Software Development Intern",
       company: "DataZymes, India",
       period: "Jan 2025 - Present",
-      location: "Remote",
+      location: "On-site",
       description: "Successfully delivered key projects including a complete website revamp, an AI-powered chatbot with RAG capabilities, and a marketing analytics tool. Focused on modernizing company infrastructure and building data insight tools.",
       technologies: ["React", "PostgreSQL", "Tailwind CSS", "Express.js", "GCP", "RAG Pipeline", "Python", "FastAPI", "Gemini"]
     },
@@ -96,7 +96,7 @@ const About = () => {
                 <div className="p-3 bg-white/10 rounded-lg group-hover:bg-white/20 transition-all duration-300">
                   <Code className="text-white" size={24} />
                 </div>
-                <h2 className="text-3xl font-mono font-bold">&gt; CAREER_OBJECTIVE</h2>
+                <h2 className="text-lg sm:text-2xl lg:text-3xl font-mono font-bold break-words">&gt; CAREER_OBJECTIVE</h2>
               </div>
               <p className="text-gray-300 text-lg leading-relaxed font-mono">
                 A passionate computer science engineering student with expertise in full-stack web development, 
@@ -112,7 +112,7 @@ const About = () => {
               <div className="p-3 bg-white/10 rounded-lg">
                 <GraduationCap className="text-white" size={24} />
               </div>
-              <h2 className="text-3xl font-mono font-bold">&gt; EDUCATION</h2>
+              <h2 className="text-lg sm:text-2xl lg:text-3xl font-mono font-bold break-words">&gt; EDUCATION</h2>
             </div>
             
             <div className="grid md:grid-cols-2 gap-6">
@@ -152,7 +152,7 @@ const About = () => {
               <div className="p-3 bg-white/10 rounded-lg">
                 <Briefcase className="text-white" size={24} />
               </div>
-              <h2 className="text-3xl font-mono font-bold">&gt; PROFESSIONAL_EXPERIENCE</h2>
+              <h2 className="text-lg sm:text-2xl lg:text-3xl font-mono font-bold break-words">&gt; PROFESSIONAL_EXPERIENCE</h2>
             </div>
             
             <div className="space-y-6">
@@ -193,10 +193,10 @@ const About = () => {
             <div className="flex items-center gap-3 mb-8">
               <div className="p-3 bg-white/10 rounded-lg">
                 <Code className="text-white" size={24} />
-              </div>
-              <h2 className="text-3xl font-mono font-bold">&gt; TECHNICAL_SKILLS</h2>
-            </div>
-            
+      </div>
+              <h2 className="text-lg sm:text-2xl lg:text-3xl font-mono font-bold break-words">&gt; TECHNICAL_SKILLS</h2>
+      </div>
+
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               <motion.div 
                 className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-6 hover:border-white/40 transition-all duration-300 hover:scale-105"
@@ -262,9 +262,9 @@ const About = () => {
               <div className="p-3 bg-white/10 rounded-lg">
                 <Award className="text-white" size={24} />
               </div>
-              <h2 className="text-3xl font-mono font-bold">&gt; ACHIEVEMENTS</h2>
-            </div>
-            
+              <h2 className="text-lg sm:text-2xl lg:text-3xl font-mono font-bold break-words">&gt; ACHIEVEMENTS</h2>
+      </div>
+
             <div className="grid md:grid-cols-2 gap-6">
               <motion.div 
                 className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-6 hover:border-white/40 transition-all duration-300 hover:scale-105"
@@ -284,10 +284,10 @@ const About = () => {
                 <div className="flex items-center gap-3 mb-3">
                   <Award className="text-white" size={20} />
                   <h3 className="text-lg font-mono font-semibold text-white">Microsoft Learn Student Ambassador</h3>
-                </div>
+      </div>
                 <p className="text-gray-300 font-mono text-sm">Community Leadership</p>
               </motion.div>
-            </div>
+        </div>
           </motion.div>
         </motion.div>
       </div>

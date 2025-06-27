@@ -151,7 +151,7 @@ const Skills = () => {
           {/* Skills Categories */}
           <motion.div 
             variants={containerVariants}
-            className="grid lg:grid-cols-2 gap-8 mb-20"
+            className="grid md:grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-20"
           >
             {skillCategories.map((category, categoryIndex) => (
               <motion.div
@@ -163,16 +163,16 @@ const Skills = () => {
                   delay: categoryIndex * 0.1,
                   ease: "easeOut" 
                 }}
-                className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300 hover:scale-105 group"
+                className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-4 sm:p-6 lg:p-8 hover:border-white/40 transition-all duration-300 hover:scale-105 group"
               >
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-white/10 rounded-lg group-hover:bg-white/20 transition-all duration-300">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-6">
+                  <div className="p-2 sm:p-3 bg-white/10 rounded-lg group-hover:bg-white/20 transition-all duration-300 flex-shrink-0">
                     {category.icon}
                   </div>
-                  <h2 className="text-2xl font-mono font-bold">&gt; {category.title.toUpperCase().replace(/\s+/g, '_')}</h2>
+                  <h2 className="text-lg sm:text-xl lg:text-2xl font-mono font-bold break-words">&gt; {category.title.toUpperCase().replace(/\s+/g, '_')}</h2>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {category.skills.map((skill, skillIndex) => (
                     <motion.div
                       key={skill.name}
@@ -182,26 +182,26 @@ const Skills = () => {
                         duration: 0.4,
                         delay: categoryIndex * 0.1 + skillIndex * 0.05
                       }}
-                      className="bg-white/5 backdrop-blur-sm border border-white/20 rounded-lg p-4 hover:border-white/40 transition-all duration-300 hover:scale-105"
+                      className="bg-white/5 backdrop-blur-sm border border-white/20 rounded-lg p-3 sm:p-4 hover:border-white/40 transition-all duration-300 hover:scale-105"
                     >
-                      <div className="flex items-center gap-3 mb-2">
+                      <div className="flex items-center gap-2 sm:gap-3 mb-2">
                         {skill.icon && (
                           <img 
                             src={skill.icon} 
                             alt={skill.name}
-                            className="w-8 h-8 filter brightness-0 invert"
+                            className="w-6 h-6 sm:w-8 sm:h-8 filter brightness-0 invert flex-shrink-0"
                           />
                         )}
-                        <h3 className="font-mono font-medium text-white">{skill.name}</h3>
+                        <h3 className="font-mono font-medium text-white text-sm sm:text-base break-words">{skill.name}</h3>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-400 font-mono">{skill.level}</span>
+                        <span className="text-xs sm:text-sm text-gray-400 font-mono">{skill.level}</span>
                         <div className="flex gap-1">
                           {[...Array(skill.level === 'Advanced' ? 3 : skill.level === 'Intermediate' ? 2 : 1)].map((_, i) => (
-                            <div key={i} className="w-2 h-2 bg-white rounded-full" />
+                            <div key={i} className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full" />
                           ))}
                           {[...Array(3 - (skill.level === 'Advanced' ? 3 : skill.level === 'Intermediate' ? 2 : 1))].map((_, i) => (
-                            <div key={i} className="w-2 h-2 bg-gray-600 rounded-full" />
+                            <div key={i} className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-600 rounded-full" />
                           ))}
                         </div>
                       </div>

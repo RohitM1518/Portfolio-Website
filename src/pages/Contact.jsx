@@ -186,8 +186,8 @@ const Contact = () => {
                       placeholder="Project_Collaboration"
                     />
                   </div>
-
-                  <div>
+   
+    <div>
                     <label htmlFor="message" className="block text-sm font-mono font-medium text-gray-300 mb-2">
                       MESSAGE
                     </label>
@@ -219,34 +219,34 @@ const Contact = () => {
             {/* Contact Info & Social */}
             <motion.div variants={itemVariants} className="space-y-8">
               {/* Contact Information */}
-              <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300">
-                <h3 className="text-2xl font-mono font-bold mb-6 flex items-center gap-3">
-                  <Phone className="text-white" size={24} />
+              <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-4 sm:p-6 lg:p-8 hover:border-white/40 transition-all duration-300">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-mono font-bold mb-4 sm:mb-6 flex items-center gap-3">
+                  <Phone className="text-white w-5 h-5 sm:w-6 sm:h-6" />
                   &gt; CONTACT_INFO
                 </h3>
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {contactInfo.map((info, index) => (
                     <motion.div
                       key={info.title}
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.3 + index * 0.1 }}
-                      className="flex items-center gap-4 p-4 bg-white/5 rounded-lg border border-white/20 hover:border-white/40 transition-all duration-300 hover:scale-105"
+                      className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white/5 rounded-lg border border-white/20 hover:border-white/40 transition-all duration-300 hover:scale-105"
                     >
-                      <div className="p-3 bg-white/10 rounded-lg">
+                      <div className="p-2 sm:p-3 bg-white/10 rounded-lg flex-shrink-0">
                         {info.icon}
                       </div>
-                      <div>
-                        <h4 className="font-mono font-semibold text-white text-sm">{info.title}</h4>
+                      <div className="min-w-0 flex-1">
+                        <h4 className="font-mono font-semibold text-white text-xs sm:text-sm">{info.title}</h4>
                         {info.link ? (
                           <a 
                             href={info.link}
-                            className="text-gray-300 font-mono text-sm hover:text-white transition-colors"
+                            className="text-gray-300 font-mono text-xs sm:text-sm hover:text-white transition-colors break-words"
                           >
                             {info.value}
                           </a>
                         ) : (
-                          <p className="text-gray-300 font-mono text-sm">{info.value}</p>
+                          <p className="text-gray-300 font-mono text-xs sm:text-sm break-words">{info.value}</p>
                         )}
                       </div>
                     </motion.div>
@@ -255,12 +255,12 @@ const Contact = () => {
               </div>
 
               {/* Social Links */}
-              <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300">
-                <h3 className="text-2xl font-mono font-bold mb-6 flex items-center gap-3">
-                  <Github className="text-white" size={24} />
+              <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-4 sm:p-6 lg:p-8 hover:border-white/40 transition-all duration-300">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-mono font-bold mb-4 sm:mb-6 flex items-center gap-3">
+                  <Github className="text-white w-5 h-5 sm:w-6 sm:h-6" />
                   &gt; SOCIAL_LINKS
                 </h3>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
                   {socialLinks.map((social, index) => (
                     <motion.a
                       key={social.name}
@@ -272,27 +272,27 @@ const Contact = () => {
                       transition={{ delay: 0.5 + index * 0.1 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex flex-col items-center p-4 bg-white/5 rounded-lg border border-white/20 hover:border-white/40 transition-all duration-300 group"
+                      className="flex flex-col items-center p-3 sm:p-4 bg-white/5 rounded-lg border border-white/20 hover:border-white/40 transition-all duration-300 group"
                     >
-                      <div className="p-3 bg-white/10 rounded-lg mb-2 group-hover:bg-white/20 transition-all duration-300">
+                      <div className="p-2 sm:p-3 bg-white/10 rounded-lg mb-2 group-hover:bg-white/20 transition-all duration-300">
                         {social.icon}
                       </div>
-                      <span className="font-mono text-sm text-white">{social.name}</span>
+                      <span className="font-mono text-xs sm:text-sm text-white text-center break-words">{social.name}</span>
                     </motion.a>
                   ))}
                 </div>
               </div>
 
               {/* Quick Response */}
-              <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300">
-                <h3 className="text-2xl font-mono font-bold mb-4">&gt; QUICK_RESPONSE</h3>
-                <p className="text-gray-300 font-mono text-sm leading-relaxed mb-4">
+              <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-4 sm:p-6 lg:p-8 hover:border-white/40 transition-all duration-300">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-mono font-bold mb-4">&gt; QUICK_RESPONSE</h3>
+                <p className="text-gray-300 font-mono text-xs sm:text-sm leading-relaxed mb-4">
                   I typically respond to emails within 24 hours. For urgent matters, 
                   feel free to reach out via phone or LinkedIn.
                 </p>
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                  <span className="font-mono text-sm text-gray-300">Currently available for new projects</span>
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse flex-shrink-0" />
+                  <span className="font-mono text-xs sm:text-sm text-gray-300">Currently available for new projects</span>
                 </div>
               </div>
             </motion.div>
@@ -305,36 +305,38 @@ const Contact = () => {
             transition={{ duration: 0.6, delay: 0.8 }}
             className="text-center mt-20"
           >
-            <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300">
-              <h2 className="text-3xl font-mono font-bold mb-4">&gt; LET'S_BUILD_SOMETHING_AMAZING</h2>
-              <p className="text-gray-300 mb-6 max-w-2xl mx-auto font-mono">
+            <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-4 sm:p-6 lg:p-8 hover:border-white/40 transition-all duration-300">
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-mono font-bold mb-4 break-words">&gt; LET'S_BUILD_SOMETHING_AMAZING</h2>
+              <p className="text-sm sm:text-base text-gray-300 mb-6 max-w-2xl mx-auto font-mono leading-relaxed">
                 Whether you have a project in mind, want to collaborate, or just want to say hello, 
                 I'm always open to new opportunities and connections.
               </p>
-              <div className="flex justify-center gap-4">
+              <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
                 <motion.a
                   href="mailto:rmugalkhod.cse@gmail.com"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-6 py-3 bg-white text-black rounded-lg font-mono font-medium hover:bg-gray-200 transition-all duration-300"
+                  className="px-4 sm:px-6 py-3 bg-white text-black rounded-lg font-mono font-medium hover:bg-gray-200 transition-all duration-300 text-sm sm:text-base"
                 >
-                  EMAIL_ME()
+                  <span className="hidden sm:inline">EMAIL_ME()</span>
+                  <span className="sm:hidden">EMAIL</span>
                 </motion.a>
                 <motion.a
-                  href="https://linkedin.com/in/rohit-mugalkhod"
+                  href="https://linkedin.com/in/rohit-mugalkhod-192466220/"
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-6 py-3 bg-white/10 border border-white/20 text-white rounded-lg font-mono font-medium hover:bg-white/20 hover:border-white/40 transition-all duration-300"
+                  className="px-4 sm:px-6 py-3 bg-white/10 border border-white/20 text-white rounded-lg font-mono font-medium hover:bg-white/20 hover:border-white/40 transition-all duration-300 text-sm sm:text-base"
                 >
-                  CONNECT_ON_LINKEDIN()
+                  <span className="hidden sm:inline">CONNECT_ON_LINKEDIN()</span>
+                  <span className="sm:hidden">LINKEDIN</span>
                 </motion.a>
               </div>
             </div>
           </motion.div>
         </motion.div>
-      </div>
+    </div>
     </div>
   )
 }

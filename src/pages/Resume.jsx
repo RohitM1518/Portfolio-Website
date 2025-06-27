@@ -106,17 +106,17 @@ const Resume = () => {
             </p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Left Column - Enhanced Profile Card */}
             <motion.div variants={itemVariants} className="lg:col-span-1">
-              <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg overflow-hidden sticky top-8 hover:border-white/40 transition-all duration-300 group">
+              <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg overflow-hidden lg:sticky lg:top-8 hover:border-white/40 transition-all duration-300 group">
                 {/* Profile Header with Image */}
                 <div className="relative">
                   {/* Background gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80 z-10" />
                   
                   {/* Profile Image - Optimized for portrait */}
-                  <div className="relative h-80 overflow-hidden">
+                  <div className="relative h-64 sm:h-72 lg:h-80 overflow-hidden">
                     <motion.img 
                       src={RohitMImg} 
                       alt="Rohit Mugalkhod" 
@@ -127,9 +127,9 @@ const Resume = () => {
                   </div>
                   
                   {/* Profile Info Overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 z-20">
                     <motion.h2 
-                      className="text-2xl font-mono font-bold text-white mb-1 tracking-wider"
+                      className="text-lg sm:text-xl lg:text-2xl font-mono font-bold text-white mb-1 tracking-wider break-words"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 }}
@@ -137,7 +137,7 @@ const Resume = () => {
                       ROHIT_MUGALKHOD
                     </motion.h2>
                     <motion.p 
-                      className="text-gray-300 font-mono text-sm mb-2"
+                      className="text-gray-300 font-mono text-xs sm:text-sm mb-2"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 }}
@@ -159,76 +159,76 @@ const Resume = () => {
                   <div className="absolute top-4 right-4 z-20">
                     <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
                   </div>
-                </div>
+        </div>
 
                 {/* Profile Details */}
-                <div className="p-6 space-y-6">
+                <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
                   {/* Contact Info */}
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-mono font-semibold text-white flex items-center gap-2">
+                  <div className="space-y-3 sm:space-y-4">
+                    <h3 className="text-base sm:text-lg font-mono font-semibold text-white flex items-center gap-2">
                       <Phone size={16} />
                       &gt; CONTACT
                     </h3>
-                    <div className="space-y-3">
+                    <div className="space-y-2 sm:space-y-3">
                       <motion.a
                         href="mailto:rmugalkhod.cse@gmail.com"
-                        className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/10 hover:border-white/30 hover:bg-white/10 transition-all duration-300 group"
+                        className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-white/5 rounded-lg border border-white/10 hover:border-white/30 hover:bg-white/10 transition-all duration-300 group"
                         whileHover={{ x: 5 }}
                       >
-                        <div className="p-2 bg-white/10 rounded-lg group-hover:bg-white/20 transition-all duration-300">
-                          <Mail size={14} className="text-white" />
-                        </div>
-                        <div>
-                          <p className="text-white font-mono text-sm">EMAIL</p>
-                          <p className="text-gray-400 font-mono text-xs">rmugalkhod.cse@gmail.com</p>
-                        </div>
-                        <ExternalLink size={12} className="text-gray-400 ml-auto group-hover:text-white transition-colors" />
+                        <div className="p-1.5 sm:p-2 bg-white/10 rounded-lg group-hover:bg-white/20 transition-all duration-300 flex-shrink-0">
+                          <Mail size={12} sm:size={14} className="text-white" />
+          </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-white font-mono text-xs sm:text-sm">EMAIL</p>
+                          <p className="text-gray-400 font-mono text-xs truncate">rmugalkhod.cse@gmail.com</p>
+            </div>
+                        <ExternalLink size={10} className="text-gray-400 group-hover:text-white transition-colors flex-shrink-0" />
                       </motion.a>
                       
                       <motion.a
                         href="tel:+918073971460"
-                        className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/10 hover:border-white/30 hover:bg-white/10 transition-all duration-300 group"
+                        className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-white/5 rounded-lg border border-white/10 hover:border-white/30 hover:bg-white/10 transition-all duration-300 group"
                         whileHover={{ x: 5 }}
                       >
-                        <div className="p-2 bg-white/10 rounded-lg group-hover:bg-white/20 transition-all duration-300">
-                          <Phone size={14} className="text-white" />
+                        <div className="p-1.5 sm:p-2 bg-white/10 rounded-lg group-hover:bg-white/20 transition-all duration-300 flex-shrink-0">
+                          <Phone size={12} className="text-white" />
                         </div>
-                        <div>
-                          <p className="text-white font-mono text-sm">PHONE</p>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-white font-mono text-xs sm:text-sm">PHONE</p>
                           <p className="text-gray-400 font-mono text-xs">+91 8073971460</p>
                         </div>
-                        <ExternalLink size={12} className="text-gray-400 ml-auto group-hover:text-white transition-colors" />
+                        <ExternalLink size={10} className="text-gray-400 group-hover:text-white transition-colors flex-shrink-0" />
                       </motion.a>
                     </div>
-                  </div>
+            </div>
 
                   {/* Education */}
-                  <div>
-                    <h3 className="text-lg font-mono font-semibold text-white flex items-center gap-2 mb-4">
+            <div>
+                    <h3 className="text-base sm:text-lg font-mono font-semibold text-white flex items-center gap-2 mb-3 sm:mb-4">
                       <GraduationCap size={16} />
                       &gt; EDUCATION
                     </h3>
-                    <div className="bg-white/5 rounded-lg p-4 border border-white/10 hover:border-white/30 transition-all duration-300">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <h4 className="font-mono font-semibold text-white text-sm">B.Tech Computer Science</h4>
+                    <div className="bg-white/5 rounded-lg p-3 sm:p-4 border border-white/10 hover:border-white/30 transition-all duration-300">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-mono font-semibold text-white text-xs sm:text-sm break-words">B.Tech Computer Science</h4>
                           <p className="text-gray-300 font-mono text-xs">Presidency University</p>
                         </div>
-                        <div className="text-right">
+                        <div className="sm:text-right flex-shrink-0">
                           <div className="px-2 py-1 bg-white/20 rounded text-xs font-mono text-white">
                             9.53/10
                           </div>
-                        </div>
-                      </div>
+            </div>
+          </div>
                       <div className="flex items-center gap-2 text-gray-400 font-mono text-xs">
                         <Calendar size={10} />
                         <span>2021 - 2025</span>
                       </div>
-                    </div>
-                  </div>
+        </div>
+      </div>
 
                   {/* Languages with Progress */}
-                  <div>
+        <div>
                     <h3 className="text-lg font-mono font-semibold text-white flex items-center gap-2 mb-4">
                       <Award size={16} />
                       &gt; LANGUAGES
@@ -264,12 +264,13 @@ const Resume = () => {
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={handleDownload}
-                    className="w-full px-6 py-4 bg-white text-black rounded-lg font-mono font-medium hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl"
+                    className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-white text-black rounded-lg font-mono font-medium hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2 sm:gap-3 shadow-lg hover:shadow-xl text-sm sm:text-base"
                   >
-                    <Download size={20} />
-                    DOWNLOAD_RESUME()
+                    <Download size={16} className="sm:w-5 sm:h-5" />
+                    <span className="hidden sm:inline">DOWNLOAD_RESUME()</span>
+                    <span className="sm:hidden">DOWNLOAD</span>
                   </motion.button>
-                </div>
+          </div>
               </div>
             </motion.div>
 
@@ -277,7 +278,7 @@ const Resume = () => {
             <div className="lg:col-span-2 space-y-8">
               {/* About */}
               <motion.div variants={itemVariants} className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300">
-                <h3 className="text-2xl font-mono font-bold mb-6 flex items-center gap-3">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-mono font-bold mb-6 flex items-center gap-3">
                   <Code className="text-white" size={24} />
                   &gt; CAREER_OBJECTIVE
                 </h3>
@@ -290,7 +291,7 @@ const Resume = () => {
 
               {/* Experience */}
               <motion.div variants={itemVariants} className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300">
-                <h3 className="text-2xl font-mono font-bold mb-6 flex items-center gap-3">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-mono font-bold mb-6 flex items-center gap-3">
                   <Briefcase className="text-white" size={24} />
                   &gt; PROFESSIONAL_EXPERIENCE
                 </h3>
@@ -308,21 +309,21 @@ const Resume = () => {
                     <p className="text-gray-300 font-mono text-sm">Plentra Technologies, India | Oct 2024 - Nov 2024</p>
                     <p className="text-gray-400 font-mono text-sm mt-2">
                       Led MERN stack project migrating data from MongoDB to Firestore, highlighting full-stack and database skills.
-                    </p>
-                  </div>
+                </p>
+              </div>
                   <div className="border-l-2 border-white/20 pl-6">
                     <h4 className="text-lg font-mono font-semibold text-white">Web Development Intern</h4>
                     <p className="text-gray-300 font-mono text-sm">Zidio Development, India | Apr 2024 - Jun 2024</p>
                     <p className="text-gray-400 font-mono text-sm mt-2">
                       Developed and maintained full-stack applications, including Feedback Collection and Chat Applications.
-                    </p>
-                  </div>
-                </div>
+                </p>
+              </div>
+            </div>
               </motion.div>
 
               {/* Skills */}
               <motion.div variants={itemVariants} className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300">
-                <h3 className="text-2xl font-mono font-bold mb-6 flex items-center gap-3">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-mono font-bold mb-6 flex items-center gap-3">
                   <Code className="text-white" size={24} />
                   &gt; TECHNICAL_SKILLS
                 </h3>
@@ -344,7 +345,7 @@ const Resume = () => {
 
               {/* Projects */}
               <motion.div variants={itemVariants} className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300">
-                <h3 className="text-2xl font-mono font-bold mb-6 flex items-center gap-3">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-mono font-bold mb-6 flex items-center gap-3">
                   <Award className="text-white" size={24} />
                   &gt; KEY_PROJECTS
                 </h3>
@@ -360,7 +361,7 @@ const Resume = () => {
 
               {/* Achievements */}
               <motion.div variants={itemVariants} className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300">
-                <h3 className="text-2xl font-mono font-bold mb-6 flex items-center gap-3">
+                <h3 className="text-lg sm:text-xl lg:text-2xl font-mono font-bold mb-6 flex items-center gap-3">
                   <Award className="text-white" size={24} />
                   &gt; ACHIEVEMENTS
                 </h3>

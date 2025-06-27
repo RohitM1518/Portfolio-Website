@@ -107,7 +107,7 @@ const Header = () => {
                             <span className="text-xs text-gray-400 font-medium tracking-wider font-mono">
                                 DEVELOPER
                             </span>
-                        </div>
+                    </div>
                     </NavLink>
                 </motion.div>
 
@@ -131,7 +131,7 @@ const Header = () => {
                                 >
                                     {({ isActive }) => (
                                         <>
-                                            {item.name}
+                                    {item.name}
                                             {isActive && (
                                                 <motion.div
                                                     layoutId="activeTab"
@@ -197,13 +197,13 @@ const Header = () => {
                                                 }`
                                             }
                                             onClick={() => setMobileMenuOpen(false)}
-                                        >
-                                            {item.name}
-                                        </NavLink>
+                                    >
+                                        {item.name}
+                                    </NavLink>
                                     </motion.li>
-                                ))}
-                            </ul>
-                        </div>
+                            ))}
+                        </ul>
+                    </div>
                     </motion.div>
                 )}
             </AnimatePresence>
