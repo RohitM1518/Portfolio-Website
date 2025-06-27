@@ -1,19 +1,27 @@
-import Header from "./Header";
-import Footer from "./Footer";
-import { Button } from "./Button";
-import Section from "./Section";
-import Hero from "./Hero";
-import Icon from '../components/Icon'
-import Card from './Card'
+import Button from "./Button";
+import Card from "./Card";
 import ContactForm from "./ContactForm";
+import Footer from "./Footer";
+import Header from "./Header";
+import Hero from "./Hero";
+import Icon from "./Icon";
+import Project from "./Project";
+import Section from "./Section";
+import ModernCard from "./ModernCard";
+import ModernHero from "./ModernHero";
+import ScrollToTop from "./ScrollToTop";
 
 export {
-    Header,
-    Footer,
     Button,
-    Section,
+    Card,
+    ContactForm,
+    Footer,
+    Header,
     Hero,
     Icon,
-    Card,
-    ContactForm
+    Project,
+    Section,
+    ModernCard,
+    ModernHero,
+    ScrollToTop
 }

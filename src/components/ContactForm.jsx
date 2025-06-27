@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button } from './index'
+import Button from './Button'
+
 const ContactForm = () => {
     return (
         <div className='flex h-full w- items-center'>

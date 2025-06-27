@@ -1,9 +1,14 @@
 import React from 'react'
 
-const Icon = ({src,title}) => {
+const Icon = ({ src, title }) => {
   return (
-    <div>
-        <img className='hover:cursor-pointer transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 ' src={src} alt="" width={30} height={30} title={title}/> 
+    <div className="group">
+      <img 
+        className='w-6 h-6 filter brightness-0 invert opacity-70 group-hover:opacity-100 transition-all duration-300' 
+        src={src} 
+        alt={title || "Social Icon"} 
+        title={title}
+      /> 
     </div>
   )
 }

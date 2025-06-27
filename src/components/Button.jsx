@@ -1,7 +1,7 @@
 import React from 'react'
 import {useNavigate } from 'react-router-dom'
 
-export const Button = ({children,url,className=''}) => {
+const Button = ({children,url,className=''}) => {
     const navigate = useNavigate();
     const clickHandle=()=>{
         navigate(url);
@@ -15,3 +15,5 @@ export const Button = ({children,url,className=''}) => {
     </div>
   )
 }
+
+export default Button

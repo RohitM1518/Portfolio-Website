@@ -1,7 +1,7 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 import { Card } from '../components'
-import { GitImage, HTML } from '../assets/icons/index'
-import {
+import { 
   JavaColored,
   HTMLColored,
   PythonColored,
@@ -9,45 +9,271 @@ import {
   ReactColored,
   javascriptcolored,
   mongodb,
-  DockerImage
+  DockerImage,
+  GitImage
 } from '../assets/icons/index'
+import { Code, Database, Cloud, Palette, Wrench, BookOpen } from 'lucide-react'
 
 const Skills = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  }
+
+  const skillCategories = [
+    {
+      title: "Web Development",
+      icon: <Code className="text-white" size={24} />,
+      skills: [
+        { name: "React", icon: ReactColored, level: "Advanced" },
+        { name: "JavaScript", icon: javascriptcolored, level: "Advanced" },
+        { name: "HTML/CSS", icon: HTMLColored, level: "Advanced" },
+        { name: "Tailwind CSS", icon: TailwindColored, level: "Advanced" }
+      ]
+    },
+    {
+      title: "Backend & Databases",
+      icon: <Database className="text-white" size={24} />,
+      skills: [
+        { name: "MongoDB", icon: mongodb, level: "Advanced" },
+        { name: "Express.js", level: "Advanced" },
+        { name: "PostgreSQL", level: "Intermediate" },
+        { name: "MySQL", level: "Intermediate" }
+      ]
+    },
+    {
+      title: "Programming Languages",
+      icon: <Code className="text-white" size={24} />,
+      skills: [
+        { name: "Python", icon: PythonColored, level: "Advanced" },
+        { name: "Java", icon: JavaColored, level: "Advanced" },
+        { name: "JavaScript", icon: javascriptcolored, level: "Advanced" }
+      ]
+    },
+    {
+      title: "Cloud & DevOps",
+      icon: <Cloud className="text-white" size={24} />,
+      skills: [
+        { name: "Google Cloud Platform", level: "Intermediate" },
+        { name: "Docker", icon: DockerImage, level: "Intermediate" },
+        { name: "Git & GitHub", icon: GitImage, level: "Advanced" },
+        { name: "Railway", level: "Intermediate" }
+      ]
+    },
+    {
+      title: "AI & Machine Learning",
+      icon: <Wrench className="text-white" size={24} />,
+      skills: [
+        { name: "RAG Pipeline", level: "Intermediate" },
+        { name: "Gemini AI", level: "Intermediate" },
+        { name: "Machine Learning", level: "Beginner" },
+        { name: "FastAPI", level: "Intermediate" }
+      ]
+    },
+    {
+      title: "Design & Tools",
+      icon: <Palette className="text-white" size={24} />,
+      skills: [
+        { name: "Adobe Premiere Pro", level: "Intermediate" },
+        { name: "Canva", level: "Advanced" },
+        { name: "Figma", level: "Intermediate" },
+        { name: "UI/UX Design", level: "Intermediate" }
+      ]
+    }
+  ]
+
+  const coursework = [
+    "Data Structures and Algorithms",
+    "Operating Systems",
+    "Computer Networks",
+    "AI and Machine Learning",
+    "Cryptography and Network Security",
+    "Big Data",
+    "Cloud Computing"
+  ]
+
+  const softSkills = [
+    "Communication",
+    "Team Collaboration", 
+    "Problem Solving",
+    "Adaptability",
+    "Critical Thinking",
+    "Leadership",
+    "Creativity"
+  ]
+
   return (
-    <div>
-      <div className='flex flex-row gap-10 max-sm:flex-col max-sm:grid-cols-2 max-lg:grid max-lg:grid-cols-3  justify-around'>
-        <Card skill='Tailwind CSS' skillimg={TailwindColored} />
-        <Card skill='React' skillimg={ReactColored} />
-        <Card skill='MongoDB' skillimg={mongodb} />
-        <Card skill='Docker' skillimg={DockerImage} />
-
+    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+      {/* Animated background particles */}
+      <div className="absolute inset-0 opacity-20">
+        {[...Array(50)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${2 + Math.random() * 3}s`
+            }}
+          />
+        ))}
       </div>
-      <div className='flex flex-row gap-10 max-sm:flex-col max-sm:grid-cols-2 max-lg:grid max-lg:grid-cols-3 justify-around'>
-        <Card skill='Java' skillimg={JavaColored} />
-        <Card skill='Python' skillimg={PythonColored} />
-        <Card skill='JavaScript' skillimg={javascriptcolored} />
-        <Card skill='Git' skillimg={GitImage} />
-      </div>
 
+      <div className="max-w-7xl mx-auto px-6 py-20 relative z-10">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-20"
+          >
+            <h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 text-white relative">
+              <span className="inline-block animate-glitch">TECHNICAL</span>
+              <span className="inline-block ml-4 animate-glitch-delay">SKILLS</span>
+            </h1>
+            <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed font-mono">
+              &gt; A comprehensive overview of my technical expertise, spanning full-stack development, 
+              AI/ML, cloud platforms, and modern design tools.
+            </p>
+          </motion.div>
 
-      <div className='flex justify-center mt-8 border shadow-lg p-4'>
-        <div>
-        <div>
-        <h1 className=' text-center text-3xl font-semibold'>Course Work</h1>
-        </div>
-        <ul className='flex flex-col gap-3 mt-3 list-disc'>
-          <li>Data Structures and Algorithm</li>
-          <li>Operating System</li>
-          <li>Data Communication and Computer Networks</li>
-          <li>AI and ML</li>
-          <li>Cryptography and Network Security</li>
-          <li>Mobile Application Development</li>
-          
-        </ul>
-        </div>
-      </div>
-      <div className='mt-5 mb-5 flex justify-center text-sm md:text-md opacity-70 tracking-widest'>
-        <p>Lot More to Come...</p>
+          {/* Skills Categories */}
+          <motion.div 
+            variants={containerVariants}
+            className="grid lg:grid-cols-2 gap-8 mb-20"
+          >
+            {skillCategories.map((category, categoryIndex) => (
+              <motion.div
+                key={category.title}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  duration: 0.6,
+                  delay: categoryIndex * 0.1,
+                  ease: "easeOut" 
+                }}
+                className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300 hover:scale-105 group"
+              >
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-3 bg-white/10 rounded-lg group-hover:bg-white/20 transition-all duration-300">
+                    {category.icon}
+                  </div>
+                  <h2 className="text-2xl font-mono font-bold">&gt; {category.title.toUpperCase().replace(/\s+/g, '_')}</h2>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  {category.skills.map((skill, skillIndex) => (
+                    <motion.div
+                      key={skill.name}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ 
+                        duration: 0.4,
+                        delay: categoryIndex * 0.1 + skillIndex * 0.05
+                      }}
+                      className="bg-white/5 backdrop-blur-sm border border-white/20 rounded-lg p-4 hover:border-white/40 transition-all duration-300 hover:scale-105"
+                    >
+                      <div className="flex items-center gap-3 mb-2">
+                        {skill.icon && (
+                          <img 
+                            src={skill.icon} 
+                            alt={skill.name}
+                            className="w-8 h-8 filter brightness-0 invert"
+                          />
+                        )}
+                        <h3 className="font-mono font-medium text-white">{skill.name}</h3>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-400 font-mono">{skill.level}</span>
+                        <div className="flex gap-1">
+                          {[...Array(skill.level === 'Advanced' ? 3 : skill.level === 'Intermediate' ? 2 : 1)].map((_, i) => (
+                            <div key={i} className="w-2 h-2 bg-white rounded-full" />
+                          ))}
+                          {[...Array(3 - (skill.level === 'Advanced' ? 3 : skill.level === 'Intermediate' ? 2 : 1))].map((_, i) => (
+                            <div key={i} className="w-2 h-2 bg-gray-600 rounded-full" />
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Coursework */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="mb-20"
+          >
+            <div className="flex items-center gap-3 mb-8">
+              <div className="p-3 bg-white/10 rounded-lg">
+                <BookOpen className="text-white" size={24} />
+              </div>
+              <h2 className="text-3xl font-mono font-bold">&gt; RELEVANT_COURSEWORK</h2>
+            </div>
+            
+            <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {coursework.map((course, index) => (
+                  <motion.div
+                    key={course}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.4, delay: 0.7 + index * 0.05 }}
+                    className="flex items-center gap-3 p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all duration-300"
+                  >
+                    <div className="w-2 h-2 bg-white rounded-full" />
+                    <span className="font-mono text-white">{course}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Soft Skills */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+          >
+            <div className="flex items-center gap-3 mb-8">
+              <div className="p-3 bg-white/10 rounded-lg">
+                <Palette className="text-white" size={24} />
+              </div>
+              <h2 className="text-3xl font-mono font-bold">&gt; SOFT_SKILLS</h2>
+            </div>
+            
+            <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300">
+              <div className="flex flex-wrap gap-4">
+                {softSkills.map((skill, index) => (
+                  <motion.span
+                    key={skill}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.4, delay: 0.9 + index * 0.05 }}
+                    className="px-4 py-2 bg-white/10 border border-white/20 rounded-lg font-mono text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 hover:scale-105"
+                  >
+                    {skill}
+                  </motion.span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   )
