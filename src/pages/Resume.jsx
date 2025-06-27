@@ -302,8 +302,8 @@ const Resume = () => {
                     <p className="text-gray-400 font-mono text-sm mt-2">
                       Successfully delivered key projects including website revamp, AI-powered chatbot with RAG capabilities, 
                       and marketing analytics tool. Focused on modernizing company infrastructure.
-                    </p>
-                  </div>
+                </p>
+              </div>
                   <div className="border-l-2 border-white/20 pl-6">
                     <h4 className="text-lg font-mono font-semibold text-white">Web Development Intern</h4>
                     <p className="text-gray-300 font-mono text-sm">Plentra Technologies, India | Oct 2024 - Nov 2024</p>
