@@ -1,9 +1,11 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { ModernCard } from '../components/index'
+import { useTheme } from '../context/ThemeContext'
 import { GraduationCap, Briefcase, Award, Code, Heart } from 'lucide-react'
 
 const About = () => {
+  const { currentTheme } = useTheme()
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -54,14 +56,15 @@ const About = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden" style={{ background: 'var(--color-backgroundGradient)', color: 'var(--color-text)' }}>
       {/* Animated background particles */}
       <div className="absolute inset-0 opacity-20">
         {[...Array(50)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+            className="absolute w-1 h-1 rounded-full animate-pulse"
             style={{
+              backgroundColor: currentTheme.primary,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 3}s`,
@@ -79,11 +82,11 @@ const About = () => {
         >
           {/* Header */}
           <motion.div variants={itemVariants} className="text-center mb-20">
-            <h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 text-white relative">
+            <h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 relative" style={{ color: 'var(--color-text)' }}>
               <span className="inline-block animate-glitch">ABOUT</span>
               <span className="inline-block ml-4 animate-glitch-delay">ME</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed font-mono">
+            <p className="text-xl max-w-4xl mx-auto leading-relaxed font-mono" style={{ color: 'var(--color-textSecondary)' }}>
               &gt; A passionate computer science engineering student with expertise in full-stack web development, 
               and a strong interest and foundational experience in AI and machine learning, including RAG and cloud platforms like GCP.
             </p>
@@ -91,14 +94,14 @@ const About = () => {
 
           {/* Career Objective */}
           <motion.div variants={itemVariants} className="mb-20">
-            <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300 group">
+            <div className="glass-card p-8 group">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-white/10 rounded-lg group-hover:bg-white/20 transition-all duration-300">
-                  <Code className="text-white" size={24} />
+                <div className="p-3 rounded-lg transition-all duration-300" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
+                  <Code size={24} style={{ color: 'var(--color-primary)' }} />
                 </div>
-                <h2 className="text-lg sm:text-2xl lg:text-3xl font-mono font-bold break-words">&gt; CAREER_OBJECTIVE</h2>
+                <h2 className="text-lg sm:text-2xl lg:text-3xl font-mono font-bold break-words" style={{ color: 'var(--color-text)' }}>&gt; CAREER_OBJECTIVE</h2>
               </div>
-              <p className="text-gray-300 text-lg leading-relaxed font-mono">
+              <p className="text-lg leading-relaxed font-mono" style={{ color: 'var(--color-textSecondary)' }}>
                 A passionate computer science engineering student with expertise in full-stack web development, 
                 and a strong interest and foundational experience in AI and machine learning, including RAG and cloud platforms like GCP. 
                 I am flexible and ready to explore diverse opportunities in the tech industry, adapting to various roles beyond full-stack development.
@@ -109,36 +112,36 @@ const About = () => {
           {/* Education */}
           <motion.div variants={itemVariants} className="mb-20">
             <div className="flex items-center gap-3 mb-8">
-              <div className="p-3 bg-white/10 rounded-lg">
-                <GraduationCap className="text-white" size={24} />
+              <div className="p-3 rounded-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
+                <GraduationCap size={24} style={{ color: 'var(--color-primary)' }} />
               </div>
-              <h2 className="text-lg sm:text-2xl lg:text-3xl font-mono font-bold break-words">&gt; EDUCATION</h2>
+              <h2 className="text-lg sm:text-2xl lg:text-3xl font-mono font-bold break-words" style={{ color: 'var(--color-text)' }}>&gt; EDUCATION</h2>
             </div>
             
             <div className="grid md:grid-cols-2 gap-6">
               <motion.div 
-                className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-6 hover:border-white/40 transition-all duration-300 hover:scale-105"
+                className="glass-card p-6 hover:scale-105"
                 whileHover={{ y: -5 }}
               >
-                <h3 className="text-xl font-mono font-semibold text-white mb-2">B.Tech Computer Science Engineering</h3>
-                <p className="text-gray-300 mb-2 font-mono">Presidency University, Bangalore</p>
-                <p className="text-sm text-gray-400 mb-3 font-mono">Dec 2021 - Jul 2025</p>
+                <h3 className="text-xl font-mono font-semibold mb-2" style={{ color: 'var(--color-text)' }}>B.Tech Computer Science Engineering</h3>
+                <p className="mb-2 font-mono" style={{ color: 'var(--color-textSecondary)' }}>Presidency University, Bangalore</p>
+                <p className="text-sm mb-3 font-mono" style={{ color: 'var(--color-textSecondary)' }}>Dec 2021 - Jul 2025</p>
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 bg-white/20 text-white rounded font-mono text-sm font-medium">
+                  <span className="px-3 py-1 rounded font-mono text-sm font-medium" style={{ backgroundColor: 'var(--color-primary)', color: 'var(--color-text)' }}>
                     CGPA: 9.53/10
                   </span>
                 </div>
               </motion.div>
               
               <motion.div 
-                className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-6 hover:border-white/40 transition-all duration-300 hover:scale-105"
+                className="glass-card p-6 hover:scale-105"
                 whileHover={{ y: -5 }}
               >
-                <h3 className="text-xl font-mono font-semibold text-white mb-2">Higher Education (12th Grade)</h3>
-                <p className="text-gray-300 mb-2 font-mono">SRA PU College, Banahatti</p>
-                <p className="text-sm text-gray-400 mb-3 font-mono">Jun 2019 - Jul 2021</p>
+                <h3 className="text-xl font-mono font-semibold mb-2" style={{ color: 'var(--color-text)' }}>Higher Education (12th Grade)</h3>
+                <p className="mb-2 font-mono" style={{ color: 'var(--color-textSecondary)' }}>SRA PU College, Banahatti</p>
+                <p className="text-sm mb-3 font-mono" style={{ color: 'var(--color-textSecondary)' }}>Jun 2019 - Jul 2021</p>
                 <div className="flex items-center gap-2">
-                  <span className="px-3 py-1 bg-white/20 text-white rounded font-mono text-sm font-medium">
+                  <span className="px-3 py-1 rounded font-mono text-sm font-medium" style={{ backgroundColor: 'var(--color-primary)', color: 'var(--color-text)' }}>
                     Percentage: 94.5%
                   </span>
                 </div>
@@ -149,35 +152,46 @@ const About = () => {
           {/* Professional Experience */}
           <motion.div variants={itemVariants} className="mb-20">
             <div className="flex items-center gap-3 mb-8">
-              <div className="p-3 bg-white/10 rounded-lg">
-                <Briefcase className="text-white" size={24} />
+              <div className="p-3 rounded-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
+                <Briefcase size={24} style={{ color: 'var(--color-primary)' }} />
               </div>
-              <h2 className="text-lg sm:text-2xl lg:text-3xl font-mono font-bold break-words">&gt; PROFESSIONAL_EXPERIENCE</h2>
+              <h2 className="text-lg sm:text-2xl lg:text-3xl font-mono font-bold break-words" style={{ color: 'var(--color-text)' }}>&gt; PROFESSIONAL_EXPERIENCE</h2>
             </div>
             
             <div className="space-y-6">
               {experiences.map((exp, index) => (
                 <motion.div
                   key={index}
-                  className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300 group"
+                  className="glass-card p-8 group"
                   whileHover={{ scale: 1.02 }}
                 >
                   <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
                     <div>
-                      <h3 className="text-2xl font-mono font-bold text-white mb-2">{exp.title}</h3>
-                      <p className="text-lg text-gray-300 font-mono">{exp.company}</p>
+                      <h3 className="text-2xl font-mono font-bold mb-2" style={{ color: 'var(--color-text)' }}>{exp.title}</h3>
+                      <p className="text-lg font-mono" style={{ color: 'var(--color-textSecondary)' }}>{exp.company}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm text-gray-400 font-mono">{exp.period}</p>
-                      <p className="text-sm text-gray-400 font-mono">{exp.location}</p>
+                      <p className="text-sm font-mono" style={{ color: 'var(--color-textSecondary)' }}>{exp.period}</p>
+                      <p className="text-sm font-mono" style={{ color: 'var(--color-textSecondary)' }}>{exp.location}</p>
                     </div>
                   </div>
-                  <p className="text-gray-300 mb-4 font-mono leading-relaxed">{exp.description}</p>
+                  <p className="mb-4 font-mono leading-relaxed" style={{ color: 'var(--color-textSecondary)' }}>{exp.description}</p>
                   <div className="flex flex-wrap gap-2">
                     {exp.technologies.map((tech, techIndex) => (
                       <span 
                         key={techIndex} 
-                        className="px-3 py-1 bg-white/10 text-white rounded text-sm font-mono hover:bg-white/20 transition-all duration-300"
+                        className="px-3 py-1 rounded text-sm font-mono transition-all duration-300"
+                        style={{ 
+                          backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                          color: 'var(--color-text)',
+                          border: `1px solid var(--color-primary)`
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.backgroundColor = 'var(--color-primary)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                        }}
                       >
                         {tech}
                       </span>
@@ -191,21 +205,21 @@ const About = () => {
           {/* Skills Overview */}
           <motion.div variants={itemVariants} className="mb-20">
             <div className="flex items-center gap-3 mb-8">
-              <div className="p-3 bg-white/10 rounded-lg">
-                <Code className="text-white" size={24} />
-      </div>
-              <h2 className="text-lg sm:text-2xl lg:text-3xl font-mono font-bold break-words">&gt; TECHNICAL_SKILLS</h2>
-      </div>
+              <div className="p-3 rounded-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
+                <Code size={24} style={{ color: 'var(--color-primary)' }} />
+              </div>
+              <h2 className="text-lg sm:text-2xl lg:text-3xl font-mono font-bold break-words" style={{ color: 'var(--color-text)' }}>&gt; TECHNICAL_SKILLS</h2>
+            </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               <motion.div 
-                className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-6 hover:border-white/40 transition-all duration-300 hover:scale-105"
+                className="glass-card p-6 hover:scale-105"
                 whileHover={{ y: -5 }}
               >
-                <h3 className="text-lg font-mono font-semibold text-white mb-4">WEB_DEVELOPMENT</h3>
+                <h3 className="text-lg font-mono font-semibold mb-4" style={{ color: 'var(--color-text)' }}>WEB_DEVELOPMENT</h3>
                 <div className="flex flex-wrap gap-2">
                   {["React", "Redux", "TailwindCSS", "Express.js", "Spring Boot"].map((skill) => (
-                    <span key={skill} className="px-2 py-1 bg-white/10 text-white rounded text-sm font-mono">
+                    <span key={skill} className="px-2 py-1 rounded text-sm font-mono" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'var(--color-text)' }}>
                       {skill}
                     </span>
                   ))}
@@ -213,13 +227,13 @@ const About = () => {
               </motion.div>
               
               <motion.div 
-                className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-6 hover:border-white/40 transition-all duration-300 hover:scale-105"
+                className="glass-card p-6 hover:scale-105"
                 whileHover={{ y: -5 }}
               >
-                <h3 className="text-lg font-mono font-semibold text-white mb-4">DATABASES</h3>
+                <h3 className="text-lg font-mono font-semibold mb-4" style={{ color: 'var(--color-text)' }}>DATABASES</h3>
                 <div className="flex flex-wrap gap-2">
                   {["MySQL", "MongoDB", "PostgreSQL"].map((skill) => (
-                    <span key={skill} className="px-2 py-1 bg-white/10 text-white rounded text-sm font-mono">
+                    <span key={skill} className="px-2 py-1 rounded text-sm font-mono" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'var(--color-text)' }}>
                       {skill}
                     </span>
                   ))}
@@ -227,13 +241,13 @@ const About = () => {
               </motion.div>
               
               <motion.div 
-                className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-6 hover:border-white/40 transition-all duration-300 hover:scale-105"
+                className="glass-card p-6 hover:scale-105"
                 whileHover={{ y: -5 }}
               >
-                <h3 className="text-lg font-mono font-semibold text-white mb-4">LANGUAGES</h3>
+                <h3 className="text-lg font-mono font-semibold mb-4" style={{ color: 'var(--color-text)' }}>LANGUAGES</h3>
                 <div className="flex flex-wrap gap-2">
                   {["Python", "Java", "JavaScript"].map((skill) => (
-                    <span key={skill} className="px-2 py-1 bg-white/10 text-white rounded text-sm font-mono">
+                    <span key={skill} className="px-2 py-1 rounded text-sm font-mono" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'var(--color-text)' }}>
                       {skill}
                     </span>
                   ))}
@@ -241,13 +255,13 @@ const About = () => {
               </motion.div>
               
               <motion.div 
-                className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-6 hover:border-white/40 transition-all duration-300 hover:scale-105"
+                className="glass-card p-6 hover:scale-105"
                 whileHover={{ y: -5 }}
               >
-                <h3 className="text-lg font-mono font-semibold text-white mb-4">CLOUD_&_OTHERS</h3>
+                <h3 className="text-lg font-mono font-semibold mb-4" style={{ color: 'var(--color-text)' }}>CLOUD_&_OTHERS</h3>
                 <div className="flex flex-wrap gap-2">
                   {["GCP", "Docker", "Git", "AI/ML"].map((skill) => (
-                    <span key={skill} className="px-2 py-1 bg-white/10 text-white rounded text-sm font-mono">
+                    <span key={skill} className="px-2 py-1 rounded text-sm font-mono" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'var(--color-text)' }}>
                       {skill}
                     </span>
                   ))}
@@ -259,33 +273,33 @@ const About = () => {
           {/* Achievements */}
           <motion.div variants={itemVariants}>
             <div className="flex items-center gap-3 mb-8">
-              <div className="p-3 bg-white/10 rounded-lg">
-                <Award className="text-white" size={24} />
+              <div className="p-3 rounded-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
+                <Award size={24} style={{ color: 'var(--color-primary)' }} />
               </div>
-              <h2 className="text-lg sm:text-2xl lg:text-3xl font-mono font-bold break-words">&gt; ACHIEVEMENTS</h2>
-      </div>
+              <h2 className="text-lg sm:text-2xl lg:text-3xl font-mono font-bold break-words" style={{ color: 'var(--color-text)' }}>&gt; ACHIEVEMENTS</h2>
+            </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               <motion.div 
-                className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-6 hover:border-white/40 transition-all duration-300 hover:scale-105"
+                className="glass-card p-6 hover:scale-105"
                 whileHover={{ y: -5 }}
               >
                 <div className="flex items-center gap-3 mb-3">
-                  <Award className="text-white" size={20} />
-                  <h3 className="text-lg font-mono font-semibold text-white">Book Review Competition</h3>
+                  <Award size={20} style={{ color: 'var(--color-primary)' }} />
+                  <h3 className="text-lg font-mono font-semibold" style={{ color: 'var(--color-text)' }}>Book Review Competition</h3>
                 </div>
-                <p className="text-gray-300 font-mono text-sm">Second Prize - 2023</p>
+                <p className="font-mono text-sm" style={{ color: 'var(--color-textSecondary)' }}>Second Prize - 2023</p>
               </motion.div>
               
               <motion.div 
-                className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-6 hover:border-white/40 transition-all duration-300 hover:scale-105"
+                className="glass-card p-6 hover:scale-105"
                 whileHover={{ y: -5 }}
               >
                 <div className="flex items-center gap-3 mb-3">
-                  <Award className="text-white" size={20} />
-                  <h3 className="text-lg font-mono font-semibold text-white">Microsoft Learn Student Ambassador</h3>
-      </div>
-                <p className="text-gray-300 font-mono text-sm">Community Leadership</p>
+                  <Award size={20} style={{ color: 'var(--color-primary)' }} />
+                  <h3 className="text-lg font-mono font-semibold" style={{ color: 'var(--color-text)' }}>Microsoft Learn Student Ambassador</h3>
+                </div>
+                <p className="font-mono text-sm" style={{ color: 'var(--color-textSecondary)' }}>Community Leadership</p>
               </motion.div>
         </div>
           </motion.div>

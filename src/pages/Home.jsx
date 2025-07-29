@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { ModernHero, Section, Icon } from '../components'
+import { ModernHero, Section, Icon, Button } from '../components'
+import { useTheme } from '../context/ThemeContext'
 import { CSS, Reactico, HTML, Java, Javascript, NodeJS } from '../assets/icons/index'
 
 const Home = () => {
   const navigate = useNavigate()
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const { currentTheme } = useTheme()
 
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
-
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
 
   const techStack = [
     'React', 'JavaScript', 'Node.js', 'MongoDB', 'Express.js', 'Python', 'Java', 'Docker', 
@@ -28,20 +21,8 @@ const Home = () => {
   ]
 
   return (
-    <div className="bg-black text-white min-h-screen relative overflow-hidden">
-      {/* Cursor Follower */}
-      <motion.div
-        className="fixed w-4 h-4 bg-white rounded-full pointer-events-none z-50 mix-blend-difference"
-        animate={{
-          x: mousePosition.x - 8,
-          y: mousePosition.y - 8,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 500,
-          damping: 28
-        }}
-      />
+    <div className="min-h-screen relative overflow-hidden" style={{ background: 'var(--color-backgroundGradient)', color: 'var(--color-text)' }}>
+
 
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center relative">
@@ -57,7 +38,19 @@ const Home = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
             >
-              <span className="glitch" data-text="ROHIT">ROHIT</span>
+              {'ROHIT   M'.split('').map((letter, index) => (
+                <span 
+                  key={index}
+                  className={`inline-block ${letter === ' ' ? 'w-4' : 'hover:glitch-hover cursor-default'}`}
+                  data-text={letter}
+                  style={{ 
+                    animationDelay: `${index * 0.1}s`,
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  {letter}
+                </span>
+              ))}
             </motion.h1>
             
             <motion.div
@@ -66,7 +59,7 @@ const Home = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="mb-12"
             >
-              <h2 className="text-lg sm:text-xl md:text-3xl lg:text-4xl text-gray-400 font-mono typewriter text-center px-4">
+              <h2 className="text-lg sm:text-xl md:text-3xl lg:text-4xl font-mono typewriter text-center px-4" style={{ color: 'var(--color-textSecondary)' }}>
                 Full-Stack Developer & AI Enthusiast
               </h2>
             </motion.div>
@@ -78,19 +71,28 @@ const Home = () => {
               className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center px-4"
             >
               <motion.button
-                whileHover={{ scale: 1.05, backgroundColor: '#ffffff', color: '#000000' }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/projects')}
-                className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white font-mono font-medium transition-all duration-300 hover:shadow-lg text-sm sm:text-base"
+                className="px-6 sm:px-8 py-3 sm:py-4 border-2 font-mono font-medium transition-all duration-300 hover:shadow-lg text-sm sm:text-base"
+                style={{ 
+                  borderColor: 'var(--color-primary)', 
+                  color: 'var(--color-primary)',
+                  backgroundColor: 'transparent'
+                }}
               >
                 VIEW PROJECTS
               </motion.button>
               
               <motion.button
-                whileHover={{ scale: 1.05, backgroundColor: '#000000', color: '#ffffff' }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/contact')}
-                className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-black font-mono font-medium transition-all duration-300 hover:shadow-lg text-sm sm:text-base"
+                className="px-6 sm:px-8 py-3 sm:py-4 font-mono font-medium transition-all duration-300 hover:shadow-lg text-sm sm:text-base"
+                style={{ 
+                  backgroundColor: 'var(--color-primary)', 
+                  color: 'var(--color-text)'
+                }}
               >
                 GET IN TOUCH
               </motion.button>
@@ -103,7 +105,8 @@ const Home = () => {
           {[...Array(20)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-1 h-1 bg-white rounded-full"
+              className="absolute w-1 h-1 rounded-full"
+              style={{ backgroundColor: currentTheme.primary }}
               initial={{
                 x: Math.random() * window.innerWidth,
                 y: Math.random() * window.innerHeight,
@@ -136,8 +139,8 @@ const Home = () => {
         
         {/* First Row - Left to Right */}
         <div className="relative overflow-hidden py-4">
-          <div className="absolute left-0 top-0 w-16 sm:w-24 lg:w-32 h-full bg-gradient-to-r from-black to-transparent z-10"></div>
-          <div className="absolute right-0 top-0 w-16 sm:w-24 lg:w-32 h-full bg-gradient-to-l from-black to-transparent z-10"></div>
+          <div className="absolute left-0 top-0 w-16 sm:w-24 lg:w-32 h-full z-10" style={{ background: 'linear-gradient(to right, var(--color-backgroundGradient), transparent)' }}></div>
+          <div className="absolute right-0 top-0 w-16 sm:w-24 lg:w-32 h-full z-10" style={{ background: 'linear-gradient(to left, var(--color-backgroundGradient), transparent)' }}></div>
           
           <motion.div
             className="flex gap-4 sm:gap-6 lg:gap-8 whitespace-nowrap"
@@ -153,7 +156,7 @@ const Home = () => {
                 key={index}
                 className="flex-shrink-0 px-3 sm:px-4 lg:px-6 py-2 sm:py-3 lg:py-4 glass-card glass-card-hover"
               >
-                <span className="text-sm sm:text-base lg:text-lg font-mono text-white/80 hover:text-white transition-colors">
+                <span className="text-sm sm:text-base lg:text-lg font-mono transition-colors" style={{ color: 'var(--color-textSecondary)' }}>
                   {tech}
                 </span>
               </div>
@@ -163,8 +166,8 @@ const Home = () => {
 
         {/* Second Row - Right to Left */}
         <div className="relative overflow-hidden py-4">
-          <div className="absolute left-0 top-0 w-16 sm:w-24 lg:w-32 h-full bg-gradient-to-r from-black to-transparent z-10"></div>
-          <div className="absolute right-0 top-0 w-16 sm:w-24 lg:w-32 h-full bg-gradient-to-l from-black to-transparent z-10"></div>
+          <div className="absolute left-0 top-0 w-16 sm:w-24 lg:w-32 h-full z-10" style={{ background: 'linear-gradient(to right, var(--color-backgroundGradient), transparent)' }}></div>
+          <div className="absolute right-0 top-0 w-16 sm:w-24 lg:w-32 h-full z-10" style={{ background: 'linear-gradient(to left, var(--color-backgroundGradient), transparent)' }}></div>
           
           <motion.div
             className="flex gap-4 sm:gap-6 lg:gap-8 whitespace-nowrap"
@@ -180,7 +183,7 @@ const Home = () => {
                 key={index}
                 className="flex-shrink-0 px-3 sm:px-4 lg:px-6 py-2 sm:py-3 lg:py-4 glass-card glass-card-hover"
               >
-                <span className="text-sm sm:text-base lg:text-lg font-mono text-white/80 hover:text-white transition-colors">
+                <span className="text-sm sm:text-base lg:text-lg font-mono transition-colors" style={{ color: 'var(--color-textSecondary)' }}>
                   {skill}
                 </span>
               </div>
@@ -202,7 +205,7 @@ const Home = () => {
             <h2 className="text-4xl md:text-6xl font-bold mb-8 font-mono">
               ABOUT ME
             </h2>
-            <p className="text-xl text-gray-400 leading-relaxed mb-8 font-mono">
+            <p className="text-xl leading-relaxed mb-8 font-mono" style={{ color: 'var(--color-textSecondary)' }}>
               I'm a passionate full-stack developer with expertise in modern web technologies 
               and AI integration. I love creating innovative solutions that push the boundaries 
               of what's possible on the web.
@@ -211,7 +214,12 @@ const Home = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate('/about')}
-              className="px-8 py-4 border border-white text-white font-mono hover:bg-white hover:text-black transition-all duration-300"
+              className="px-8 py-4 border font-mono transition-all duration-300"
+              style={{ 
+                borderColor: 'var(--color-primary)', 
+                color: 'var(--color-primary)',
+                backgroundColor: 'transparent'
+              }}
             >
               LEARN MORE
             </motion.button>
@@ -227,7 +235,7 @@ const Home = () => {
               <div className="p-8 h-full flex items-center justify-center">
                 <div className="text-center">
                   <div className="text-6xl font-mono mb-4">{'</>'}</div>
-                  <div className="text-2xl font-mono text-gray-400">Code is Poetry</div>
+                  <div className="text-2xl font-mono" style={{ color: 'var(--color-textSecondary)' }}>Code is Poetry</div>
             </div>
             </div>
             </motion.div>
@@ -247,16 +255,21 @@ const Home = () => {
           <h2 className="text-4xl md:text-6xl font-bold mb-8 font-mono">
             LET'S BUILD SOMETHING AMAZING
           </h2>
-          <p className="text-xl text-gray-400 mb-12 font-mono">
+          <p className="text-xl mb-12 font-mono" style={{ color: 'var(--color-textSecondary)' }}>
             Ready to bring your ideas to life? Let's collaborate and create something extraordinary.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center px-4">
             <motion.button
-              whileHover={{ scale: 1.05, backgroundColor: '#ffffff', color: '#000000' }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate('/contact')}
-              className="px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white font-mono font-medium transition-all duration-300 text-sm sm:text-base"
+              className="px-6 sm:px-8 py-3 sm:py-4 border-2 font-mono font-medium transition-all duration-300 text-sm sm:text-base"
+              style={{ 
+                borderColor: 'var(--color-primary)', 
+                color: 'var(--color-primary)',
+                backgroundColor: 'transparent'
+              }}
             >
               START A PROJECT
             </motion.button>
@@ -265,7 +278,11 @@ const Home = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate('/resume')}
-              className="px-8 py-4 bg-white text-black font-mono font-medium transition-all duration-300"
+              className="px-8 py-4 font-mono font-medium transition-all duration-300"
+              style={{ 
+                backgroundColor: 'var(--color-primary)', 
+                color: 'var(--color-text)'
+              }}
             >
               VIEW RESUME
             </motion.button>

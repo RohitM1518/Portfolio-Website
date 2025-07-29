@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import Icon from './Icon'
+import { useTheme } from '../context/ThemeContext'
 import {
   Discord,
   Github,
@@ -9,6 +10,7 @@ import {
 } from '../assets/icons/index'
 
 const Footer = () => {
+  const { currentTheme } = useTheme()
   const socialLinks = [
     { icon: Discord, url: "#", name: "Discord" },
     { icon: Github, url: "https://github.com/RohitM1518", name: "GitHub" },
@@ -17,14 +19,18 @@ const Footer = () => {
   ]
 
   return (
-    <footer className="bg-black border-t border-white/20 mt-20 relative">
+    <footer className="mt-20 relative" style={{ 
+      background: 'var(--color-backgroundGradient)', 
+      borderTop: `1px solid var(--color-primary)` 
+    }}>
       {/* Animated background particles */}
       <div className="absolute inset-0 opacity-10">
         {[...Array(20)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+            className="absolute w-1 h-1 rounded-full animate-pulse"
             style={{
+              backgroundColor: currentTheme.primary,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 3}s`,
@@ -44,10 +50,10 @@ const Footer = () => {
             viewport={{ once: true }}
             className="text-center md:text-left"
           >
-            <h3 className="text-2xl font-mono font-bold text-white mb-2 tracking-wider">
+            <h3 className="text-2xl font-mono font-bold mb-2 tracking-wider" style={{ color: 'var(--color-text)' }}>
               &gt; ROHIT_MUGALKHOD
             </h3>
-            <p className="text-gray-400 font-mono text-sm">Full-Stack_Developer && AI_Enthusiast</p>
+            <p className="font-mono text-sm" style={{ color: 'var(--color-textSecondary)' }}>Full-Stack_Developer && AI_Enthusiast</p>
           </motion.div>
 
           {/* Center - Social Links */}
@@ -73,7 +79,19 @@ const Footer = () => {
                   delay: 0.3 + index * 0.1 
                 }}
                 viewport={{ once: true }}
-                className="p-3 bg-white/5 backdrop-blur-sm border border-white/20 rounded-lg hover:bg-white/10 hover:border-white/40 transition-all duration-300 group"
+                className="p-3 backdrop-blur-sm rounded-lg transition-all duration-300 group"
+                style={{
+                  backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid var(--color-primary)`,
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                  e.target.style.borderColor = 'var(--color-secondary)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                  e.target.style.borderColor = 'var(--color-primary)';
+                }}
                 title={social.name}
               >
                 <Icon src={social.icon} className="w-6 h-6" />
@@ -89,10 +107,10 @@ const Footer = () => {
             viewport={{ once: true }}
             className="text-center md:text-right"
           >
-            <p className="text-gray-400 text-sm font-mono">
+            <p className="text-sm font-mono" style={{ color: 'var(--color-textSecondary)' }}>
               © {new Date().getFullYear()} ROHIT_MUGALKHOD
             </p>
-            <p className="text-gray-500 text-xs font-mono mt-1">
+            <p className="text-xs font-mono mt-1" style={{ color: 'var(--color-textSecondary)' }}>
               ALL_RIGHTS_RESERVED
             </p>
           </motion.div>
@@ -104,10 +122,11 @@ const Footer = () => {
           whileInView={{ opacity: 1, scaleX: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
           viewport={{ once: true }}
-          className="mt-8 pt-8 border-t border-white/20"
+          className="mt-8 pt-8"
+          style={{ borderTop: `1px solid var(--color-primary)` }}
         >
           <div className="text-center">
-            <p className="text-gray-400 text-sm font-mono">
+            <p className="text-sm font-mono" style={{ color: 'var(--color-textSecondary)' }}>
               &gt; DESIGNED_AND_DEVELOPED_WITH &lt;3 IN BANGALORE
             </p>
           </div>

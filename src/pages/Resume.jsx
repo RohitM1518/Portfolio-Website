@@ -1,10 +1,12 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import { useTheme } from '../context/ThemeContext'
 import { Download, Mail, Phone, MapPin, Calendar, Award, Code, Briefcase, GraduationCap, ExternalLink } from 'lucide-react'
 import RohitMImg from '../assets/RohitMImg.jpg'
 import ResumePath from '../assets/Resume/RohitM.pdf'
 
 const Resume = () => {
+  const { currentTheme } = useTheme()
   const handleDownload = () => {
     const downloadLink = document.createElement('a')
     downloadLink.href = ResumePath
@@ -73,14 +75,15 @@ const Resume = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden" style={{ background: 'var(--color-backgroundGradient)', color: 'var(--color-text)' }}>
       {/* Animated background particles */}
       <div className="absolute inset-0 opacity-20">
         {[...Array(50)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+            className="absolute w-1 h-1 rounded-full animate-pulse"
             style={{
+              backgroundColor: currentTheme.primary,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 3}s`,
@@ -98,10 +101,10 @@ const Resume = () => {
         >
           {/* Header */}
           <motion.div variants={itemVariants} className="text-center mb-16">
-            <h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 text-white relative">
+            <h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 relative" style={{ color: 'var(--color-text)' }}>
               <span className="inline-block animate-glitch">RESUME</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto font-mono">
+            <p className="text-xl max-w-3xl mx-auto font-mono" style={{ color: 'var(--color-textSecondary)' }}>
               &gt; A comprehensive overview of my professional journey, skills, and achievements
             </p>
           </motion.div>
@@ -109,7 +112,7 @@ const Resume = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Left Column - Enhanced Profile Card */}
             <motion.div variants={itemVariants} className="lg:col-span-1">
-              <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg overflow-hidden lg:sticky lg:top-8 hover:border-white/40 transition-all duration-300 group">
+              <div className="glass-card overflow-hidden lg:sticky lg:top-8 group">
                 {/* Profile Header with Image */}
                 <div className="relative">
                   {/* Background gradient overlay */}

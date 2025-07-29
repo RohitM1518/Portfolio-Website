@@ -10,6 +10,7 @@ import Section from "./Section";
 import ModernCard from "./ModernCard";
 import ModernHero from "./ModernHero";
 import ScrollToTop from "./ScrollToTop";
+import ColorPicker from "./ColorPicker";
 
 export {
     Button,
@@ -23,5 +24,6 @@ export {
     Section,
     ModernCard,
     ModernHero,
-    ScrollToTop
+    ScrollToTop,
+    ColorPicker
 }

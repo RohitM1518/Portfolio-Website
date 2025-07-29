@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { ModernCard } from '../components'
+import { useTheme } from '../context/ThemeContext'
 import BlogImg from "../assets/icons/blog.png"
 import YoutubeImg from "../assets/icons/youtube.png"
 import PortfolioImg from "../assets/icons/portfolio.jpg"
@@ -9,6 +10,7 @@ import { Feedback, SocialMedia } from '../assets/icons'
 import { ExternalLink, Github } from 'lucide-react'
 
 const Projects = () => {
+  const { currentTheme } = useTheme()
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -67,14 +69,15 @@ const Projects = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden" style={{ background: 'var(--color-backgroundGradient)', color: 'var(--color-text)' }}>
       {/* Animated background particles */}
       <div className="absolute inset-0 opacity-20">
         {[...Array(50)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+            className="absolute w-1 h-1 rounded-full animate-pulse"
             style={{
+              backgroundColor: currentTheme.primary,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 3}s`,
@@ -97,11 +100,11 @@ const Projects = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-20"
           >
-            <h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 text-white relative">
+            <h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 relative" style={{ color: 'var(--color-text)' }}>
               <span className="inline-block animate-glitch">MY</span>
               <span className="inline-block ml-4 animate-glitch-delay">PROJECTS</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed font-mono">
+            <p className="text-xl max-w-4xl mx-auto leading-relaxed font-mono" style={{ color: 'var(--color-textSecondary)' }}>
               &gt; A showcase of my recent work spanning full-stack development, AI/ML applications, 
               and modern web technologies. Each project represents a unique challenge and learning experience.
             </p>
@@ -122,7 +125,7 @@ const Projects = () => {
                   delay: index * 0.1,
                   ease: "easeOut" 
                 }}
-                className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg overflow-hidden hover:border-white/40 transition-all duration-300 hover:scale-105 group"
+                className="glass-card overflow-hidden hover:scale-105 group"
               >
                 <div className="relative h-48 overflow-hidden">
                   <img 
@@ -134,10 +137,10 @@ const Projects = () => {
                 </div>
                 
                 <div className="p-6">
-                  <h3 className="text-2xl font-mono font-bold text-white mb-3 group-hover:text-gray-200 transition-colors">
+                  <h3 className="text-2xl font-mono font-bold mb-3 transition-colors" style={{ color: 'var(--color-text)' }}>
                     {project.title}
                   </h3>
-                  <p className="text-gray-300 mb-4 font-mono text-sm leading-relaxed">
+                  <p className="mb-4 font-mono text-sm leading-relaxed" style={{ color: 'var(--color-textSecondary)' }}>
                     {project.description}
                   </p>
                   
@@ -145,7 +148,18 @@ const Projects = () => {
                     {project.technologies.map((tech, techIndex) => (
                       <span 
                         key={techIndex} 
-                        className="px-2 py-1 bg-white/10 border border-white/20 text-white rounded text-xs font-mono hover:bg-white/20 transition-all duration-300"
+                        className="px-2 py-1 rounded text-xs font-mono transition-all duration-300"
+                        style={{ 
+                          backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                          color: 'var(--color-text)',
+                          border: `1px solid var(--color-primary)`
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.backgroundColor = 'var(--color-primary)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                        }}
                       >
                         {tech}
                       </span>
@@ -160,7 +174,18 @@ const Projects = () => {
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="flex items-center gap-2 px-4 py-2 bg-white/10 border border-white/20 rounded-lg font-mono text-sm text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300"
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-sm transition-all duration-300"
+                        style={{ 
+                          backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                          color: 'var(--color-text)',
+                          border: `1px solid var(--color-primary)`
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.backgroundColor = 'var(--color-primary)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                        }}
                       >
                         <Github size={16} />
                         Code
@@ -173,7 +198,11 @@ const Projects = () => {
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="flex items-center gap-2 px-4 py-2 bg-white text-black rounded-lg font-mono text-sm hover:bg-gray-200 transition-all duration-300"
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-sm transition-all duration-300"
+                        style={{ 
+                          backgroundColor: 'var(--color-primary)', 
+                          color: 'var(--color-text)'
+                        }}
                       >
                         <ExternalLink size={16} />
                         Live
@@ -192,16 +221,20 @@ const Projects = () => {
             transition={{ duration: 0.6, delay: 0.8 }}
             className="text-center"
           >
-            <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300">
-              <h2 className="text-3xl font-mono font-bold mb-4">&gt; INTERESTED_IN_COLLABORATION?</h2>
-              <p className="text-gray-300 mb-6 max-w-2xl mx-auto font-mono">
+            <div className="glass-card p-8">
+              <h2 className="text-3xl font-mono font-bold mb-4" style={{ color: 'var(--color-text)' }}>&gt; INTERESTED_IN_COLLABORATION?</h2>
+              <p className="mb-6 max-w-2xl mx-auto font-mono" style={{ color: 'var(--color-textSecondary)' }}>
                 I'm always excited to work on new projects and collaborate with fellow developers. 
                 Let's build something amazing together!
               </p>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-3 bg-white text-black rounded-lg font-mono font-medium hover:bg-gray-200 transition-all duration-300"
+                className="px-8 py-3 rounded-lg font-mono font-medium transition-all duration-300"
+                style={{ 
+                  backgroundColor: 'var(--color-primary)', 
+                  color: 'var(--color-text)'
+                }}
               >
                 GET_IN_TOUCH()
               </motion.button>

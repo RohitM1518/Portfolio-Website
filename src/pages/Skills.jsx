@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
 import { Card } from '../components'
+import { useTheme } from '../context/ThemeContext'
 import { 
   JavaColored,
   HTMLColored,
@@ -15,6 +16,7 @@ import {
 import { Code, Database, Cloud, Palette, Wrench, BookOpen } from 'lucide-react'
 
 const Skills = () => {
+  const { currentTheme } = useTheme()
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -108,14 +110,15 @@ const Skills = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden" style={{ background: 'var(--color-backgroundGradient)', color: 'var(--color-text)' }}>
       {/* Animated background particles */}
       <div className="absolute inset-0 opacity-20">
         {[...Array(50)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+            className="absolute w-1 h-1 rounded-full animate-pulse"
             style={{
+              backgroundColor: currentTheme.primary,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 3}s`,
@@ -138,11 +141,11 @@ const Skills = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-20"
           >
-            <h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 text-white relative">
+            <h1 className="text-5xl md:text-7xl font-mono font-bold mb-6 relative" style={{ color: 'var(--color-text)' }}>
               <span className="inline-block animate-glitch">TECHNICAL</span>
               <span className="inline-block ml-4 animate-glitch-delay">SKILLS</span>
             </h1>
-            <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed font-mono">
+            <p className="text-xl max-w-4xl mx-auto leading-relaxed font-mono" style={{ color: 'var(--color-textSecondary)' }}>
               &gt; A comprehensive overview of my technical expertise, spanning full-stack development, 
               AI/ML, cloud platforms, and modern design tools.
             </p>
@@ -163,13 +166,13 @@ const Skills = () => {
                   delay: categoryIndex * 0.1,
                   ease: "easeOut" 
                 }}
-                className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-4 sm:p-6 lg:p-8 hover:border-white/40 transition-all duration-300 hover:scale-105 group"
+                className="glass-card p-4 sm:p-6 lg:p-8 hover:scale-105 group"
               >
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-6">
-                  <div className="p-2 sm:p-3 bg-white/10 rounded-lg group-hover:bg-white/20 transition-all duration-300 flex-shrink-0">
-                    {category.icon}
+                  <div className="p-2 sm:p-3 rounded-lg transition-all duration-300 flex-shrink-0" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
+                    {React.cloneElement(category.icon, { style: { color: 'var(--color-primary)' } })}
                   </div>
-                  <h2 className="text-lg sm:text-xl lg:text-2xl font-mono font-bold break-words">&gt; {category.title.toUpperCase().replace(/\s+/g, '_')}</h2>
+                  <h2 className="text-lg sm:text-xl lg:text-2xl font-mono font-bold break-words" style={{ color: 'var(--color-text)' }}>&gt; {category.title.toUpperCase().replace(/\s+/g, '_')}</h2>
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -182,7 +185,7 @@ const Skills = () => {
                         duration: 0.4,
                         delay: categoryIndex * 0.1 + skillIndex * 0.05
                       }}
-                      className="bg-white/5 backdrop-blur-sm border border-white/20 rounded-lg p-3 sm:p-4 hover:border-white/40 transition-all duration-300 hover:scale-105"
+                      className="glass-card p-3 sm:p-4 hover:scale-105"
                     >
                       <div className="flex items-center gap-2 sm:gap-3 mb-2">
                         {skill.icon && (
@@ -192,16 +195,16 @@ const Skills = () => {
                             className="w-6 h-6 sm:w-8 sm:h-8 filter brightness-0 invert flex-shrink-0"
                           />
                         )}
-                        <h3 className="font-mono font-medium text-white text-sm sm:text-base break-words">{skill.name}</h3>
+                        <h3 className="font-mono font-medium text-sm sm:text-base break-words" style={{ color: 'var(--color-text)' }}>{skill.name}</h3>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs sm:text-sm text-gray-400 font-mono">{skill.level}</span>
+                        <span className="text-xs sm:text-sm font-mono" style={{ color: 'var(--color-textSecondary)' }}>{skill.level}</span>
                         <div className="flex gap-1">
                           {[...Array(skill.level === 'Advanced' ? 3 : skill.level === 'Intermediate' ? 2 : 1)].map((_, i) => (
-                            <div key={i} className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full" />
+                            <div key={i} className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full" style={{ backgroundColor: 'var(--color-primary)' }} />
                           ))}
                           {[...Array(3 - (skill.level === 'Advanced' ? 3 : skill.level === 'Intermediate' ? 2 : 1))].map((_, i) => (
-                            <div key={i} className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-600 rounded-full" />
+                            <div key={i} className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full" style={{ backgroundColor: 'var(--color-textSecondary)' }} />
                           ))}
                         </div>
                       </div>
@@ -220,13 +223,13 @@ const Skills = () => {
             className="mb-20"
           >
             <div className="flex items-center gap-3 mb-8">
-              <div className="p-3 bg-white/10 rounded-lg">
-                <BookOpen className="text-white" size={24} />
+              <div className="p-3 rounded-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
+                <BookOpen size={24} style={{ color: 'var(--color-primary)' }} />
               </div>
-              <h2 className="text-3xl font-mono font-bold">&gt; RELEVANT_COURSEWORK</h2>
+              <h2 className="text-3xl font-mono font-bold" style={{ color: 'var(--color-text)' }}>&gt; RELEVANT_COURSEWORK</h2>
             </div>
             
-            <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300">
+            <div className="glass-card p-8">
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {coursework.map((course, index) => (
                   <motion.div
@@ -234,10 +237,17 @@ const Skills = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.4, delay: 0.7 + index * 0.05 }}
-                    className="flex items-center gap-3 p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all duration-300"
+                    className="flex items-center gap-3 p-3 rounded-lg transition-all duration-300"
+                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                    }}
                   >
-                    <div className="w-2 h-2 bg-white rounded-full" />
-                    <span className="font-mono text-white">{course}</span>
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: 'var(--color-primary)' }} />
+                    <span className="font-mono" style={{ color: 'var(--color-text)' }}>{course}</span>
                   </motion.div>
                 ))}
               </div>
@@ -251,13 +261,13 @@ const Skills = () => {
             transition={{ duration: 0.6, delay: 0.8 }}
           >
             <div className="flex items-center gap-3 mb-8">
-              <div className="p-3 bg-white/10 rounded-lg">
-                <Palette className="text-white" size={24} />
+              <div className="p-3 rounded-lg" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
+                <Palette size={24} style={{ color: 'var(--color-primary)' }} />
               </div>
-              <h2 className="text-3xl font-mono font-bold">&gt; SOFT_SKILLS</h2>
+              <h2 className="text-3xl font-mono font-bold" style={{ color: 'var(--color-text)' }}>&gt; SOFT_SKILLS</h2>
             </div>
             
-            <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-lg p-8 hover:border-white/40 transition-all duration-300">
+            <div className="glass-card p-8">
               <div className="flex flex-wrap gap-4">
                 {softSkills.map((skill, index) => (
                   <motion.span
@@ -265,7 +275,18 @@ const Skills = () => {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.4, delay: 0.9 + index * 0.05 }}
-                    className="px-4 py-2 bg-white/10 border border-white/20 rounded-lg font-mono text-white hover:bg-white/20 hover:border-white/40 transition-all duration-300 hover:scale-105"
+                    className="px-4 py-2 rounded-lg font-mono transition-all duration-300 hover:scale-105"
+                    style={{ 
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                      color: 'var(--color-text)',
+                      border: `1px solid var(--color-primary)`
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = 'var(--color-primary)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                    }}
                   >
                     {skill}
                   </motion.span>
