@@ -23,30 +23,13 @@ const Footer = () => {
       background: 'var(--color-backgroundGradient)', 
       borderTop: `1px solid var(--color-primary)` 
     }}>
-      {/* Animated background particles */}
-      <div className="absolute inset-0 opacity-10">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 rounded-full animate-pulse"
-            style={{
-              backgroundColor: currentTheme.primary,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 3}s`
-            }}
-          />
-        ))}
-      </div>
-
       <div className="max-w-7xl mx-auto px-6 py-12 relative z-10">
         <div className="grid md:grid-cols-3 gap-8 items-center">
           {/* Left - Brand */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
             viewport={{ once: true }}
             className="text-center md:text-left"
           >
@@ -60,7 +43,7 @@ const Footer = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
             viewport={{ once: true }}
             className="flex justify-center gap-6"
           >
@@ -70,13 +53,12 @@ const Footer = () => {
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                whileHover={{ scale: 1.2, y: -5 }}
-                whileTap={{ scale: 0.9 }}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ y: -3 }}
                 transition={{ 
                   duration: 0.3,
-                  delay: 0.3 + index * 0.1 
+                  delay: 0.2 + index * 0.1 
                 }}
                 viewport={{ once: true }}
                 className="p-3 backdrop-blur-sm rounded-lg transition-all duration-300 group"
@@ -101,9 +83,9 @@ const Footer = () => {
 
           {/* Right - Copyright */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             viewport={{ once: true }}
             className="text-center md:text-right"
           >
@@ -118,9 +100,9 @@ const Footer = () => {
 
         {/* Bottom Section */}
         <motion.div
-          initial={{ opacity: 0, scaleX: 0 }}
-          whileInView={{ opacity: 1, scaleX: 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
           viewport={{ once: true }}
           className="mt-8 pt-8"
           style={{ borderTop: `1px solid var(--color-primary)` }}
