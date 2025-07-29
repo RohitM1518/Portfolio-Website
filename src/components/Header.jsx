@@ -3,8 +3,10 @@ import { NavLink } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import ColorPicker from './ColorPicker'
+import { useTheme } from '../context/ThemeContext'
 
 const Header = () => {
+    const { currentTheme } = useTheme();
     const linkItems = [
         { name: 'Home', link: '/' },
         { name: 'About', link: '/about' },
@@ -42,17 +44,38 @@ const Header = () => {
             setScrolled(isScrolled)
         }
 
+        const handleEscape = (event) => {
+            if (event.key === 'Escape') {
+                setMobileMenuOpen(false)
+            }
+        }
+
         if (isMobileMenuOpen) {
             document.addEventListener('click', handleOutsideClick)
+            document.addEventListener('keydown', handleEscape)
+            // Prevent body scroll when mobile menu is open
+            document.body.style.overflow = 'hidden'
         }
         
         window.addEventListener('scroll', handleScroll)
 
         return () => {
             document.removeEventListener('click', handleOutsideClick)
+            document.removeEventListener('keydown', handleEscape)
             window.removeEventListener('scroll', handleScroll)
+            document.body.style.overflow = 'unset'
         }
     }, [isMobileMenuOpen])
+
+    // Calculate header background based on theme and scroll state
+    const getHeaderBackground = () => {
+        if (!scrolled) {
+            return 'transparent'
+        }
+        
+        // Use theme background gradient with transparency for header
+        return `${currentTheme.backgroundGradient.replace(')', ', 0.95)').replace('linear-gradient', 'linear-gradient')}`
+    }
 
     return (
         <motion.div 
@@ -61,13 +84,13 @@ const Header = () => {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className={`fixed w-full z-50 transition-all duration-300 ${
                 scrolled 
-                    ? 'backdrop-blur-md border-b border-white/10' 
+                    ? 'backdrop-blur-md border-b' 
                     : 'bg-transparent'
             }`}
             style={{
-                background: scrolled ? 'var(--color-backgroundGradient)' : 'transparent',
+                background: getHeaderBackground(),
                 backdropFilter: scrolled ? 'blur(10px)' : 'none',
-                borderBottom: scrolled ? `1px solid var(--color-primary)` : 'none'
+                borderBottom: scrolled ? `1px solid ${currentTheme.primary}20` : 'none'
             }}
         >
             <div className='max-w-7xl mx-auto flex justify-between items-center p-4 px-6'>
@@ -84,9 +107,9 @@ const Header = () => {
                             
                             {/* Main logo container */}
                             <div className="relative w-12 h-12 rounded-full bg-white p-0.5 group-hover:scale-110 transition-transform duration-300">
-                                <div className="w-full h-full rounded-full flex items-center justify-center" style={{ background: 'var(--color-backgroundGradient)' }}>
+                                <div className="w-full h-full rounded-full flex items-center justify-center" style={{ background: currentTheme.backgroundGradient }}>
                                     {/* Logo content */}
-                                    <span className="text-xl font-bold font-mono glitch" data-text="R" style={{ color: 'var(--color-text)' }}>
+                                    <span className="text-xl font-bold font-mono glitch" data-text="R" style={{ color: currentTheme.text }}>
                                         R
                                     </span>
                                 </div>
@@ -107,10 +130,10 @@ const Header = () => {
                         
                         {/* Brand Text */}
                         <div className="flex flex-col">
-                            <span className="text-xl font-bold transition-colors duration-300 font-mono" style={{ color: 'var(--color-text)' }}>
+                            <span className="text-xl font-bold transition-colors duration-300 font-mono" style={{ color: currentTheme.text }}>
                                 ROHIT
                             </span>
-                            <span className="text-xs font-medium tracking-wider font-mono" style={{ color: 'var(--color-textSecondary)' }}>
+                            <span className="text-xs font-medium tracking-wider font-mono" style={{ color: currentTheme.textSecondary }}>
                                 DEVELOPER
                             </span>
                     </div>
@@ -135,7 +158,7 @@ const Header = () => {
                                         }`
                                     }
                                     style={({ isActive }) => ({
-                                        color: isActive ? 'var(--color-primary)' : 'var(--color-textSecondary)'
+                                        color: isActive ? currentTheme.primary : currentTheme.textSecondary
                                     })}
                                 >
                                     {({ isActive }) => (
@@ -145,7 +168,7 @@ const Header = () => {
                                                 <motion.div
                                                     layoutId="activeTab"
                                                     className="absolute -bottom-1 left-0 right-0 h-0.5"
-                                                    style={{ backgroundColor: 'var(--color-primary)' }}
+                                                    style={{ backgroundColor: currentTheme.primary }}
                                                     initial={false}
                                                     transition={{ type: "spring", stiffness: 500, damping: 30 }}
                                                 />
@@ -173,7 +196,7 @@ const Header = () => {
                         ref={buttonRef}
                         whileTap={{ scale: 0.95 }}
                         className='p-3 rounded-lg hover:bg-white/10 transition-colors relative z-10'
-                        style={{ color: 'var(--color-text)' }}
+                        style={{ color: currentTheme.text }}
                         onClick={toggleMobileMenu}
                         aria-label="Toggle mobile menu"
                         aria-expanded={isMobileMenuOpen}
@@ -197,54 +220,58 @@ const Header = () => {
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className='lg:hidden backdrop-blur-md border-t border-white/10 overflow-hidden'
+                        className='lg:hidden backdrop-blur-md border-t overflow-hidden'
                         style={{ 
-                            backgroundColor: 'rgba(0, 0, 0, 0.95)',
-                            backdropFilter: 'blur(10px)'
+                            background: `rgba(0, 0, 0, 0.20)`,
+                            backdropFilter: 'blur(10px)',
+                            borderTopColor: `${currentTheme.primary}20`
                         }}
                     >
                         <div className="max-w-7xl mx-auto px-6 py-6">
-                                                    <ul className='flex flex-col space-y-2'>
-                            {linkItems.map((item, index) => (
-                                <motion.li 
-                                    key={item.name}
+                            <ul className='flex flex-col space-y-2'>
+                                {linkItems.map((item, index) => (
+                                    <motion.li 
+                                        key={item.name}
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -20 }}
+                                        transition={{ duration: 0.3, delay: index * 0.05 }}
+                                    >
+                                        <NavLink
+                                            to={item.link}
+                                            className={({ isActive }) => 
+                                                `block transition-colors duration-300 font-medium py-3 px-4 rounded-lg hover:bg-white/10 font-mono ${
+                                                    isActive ? 'bg-white/10' : ''
+                                                }`
+                                            }
+                                            style={({ isActive }) => ({
+                                                color: isActive ? currentTheme.primary : currentTheme.textSecondary
+                                            })}
+                                            onClick={() => setMobileMenuOpen(false)}
+                                        >
+                                            {item.name}
+                                        </NavLink>
+                                    </motion.li>
+                                ))}
+                                
+                                {/* Mobile Color Picker */}
+                                <motion.li
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: -20 }}
-                                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                                    transition={{ duration: 0.3, delay: 0.3 }}
+                                    className="pt-4 border-t"
+                                    style={{ borderTopColor: `${currentTheme.primary}20` }}
                                 >
-                                    <NavLink
-                                        to={item.link}
-                                        className={({ isActive }) => 
-                                            `block transition-colors duration-300 font-medium py-3 px-4 rounded-lg hover:bg-white/10 font-mono ${
-                                                isActive ? 'bg-white/10' : ''
-                                            }`
-                                        }
-                                        style={({ isActive }) => ({
-                                            color: isActive ? 'var(--color-primary)' : 'var(--color-textSecondary)'
-                                        })}
-                                        onClick={() => setMobileMenuOpen(false)}
-                                    >
-                                        {item.name}
-                                    </NavLink>
+                                    <div className="px-4 py-2">
+                                        <p className="text-xs font-mono mb-3" style={{ color: currentTheme.textSecondary }}>
+                                            THEME CUSTOMIZER
+                                        </p>
+                                        <ColorPicker />
+                                    </div>
                                 </motion.li>
-                            ))}
-                            
-                            {/* Mobile Color Picker */}
-                            <motion.li
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -20 }}
-                                transition={{ duration: 0.3, delay: 0.3 }}
-                                className="pt-4 border-t border-white/10"
-                            >
-                                <div className="px-4 py-2">
-                                    <p className="text-xs text-gray-400 font-mono mb-3">THEME CUSTOMIZER</p>
-                                    <ColorPicker />
-                                </div>
-                            </motion.li>
-                        </ul>
-                    </div>
+                            </ul>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>

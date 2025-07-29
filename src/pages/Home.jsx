@@ -38,7 +38,7 @@ const Home = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
             >
-              {'ROHIT   M'.split('').map((letter, index) => (
+              {'ROHIT  M'.split('').map((letter, index) => (
                 <span 
                   key={index}
                   className={`inline-block ${letter === ' ' ? 'w-4' : 'hover:glitch-hover cursor-default'}`}
