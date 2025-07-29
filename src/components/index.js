@@ -11,6 +11,7 @@ import ModernCard from "./ModernCard";
 import ModernHero from "./ModernHero";
 import ScrollToTop from "./ScrollToTop";
 import ColorPicker from "./ColorPicker";
+import Earth from "./Earth";
 
 export {
     Button,
@@ -25,5 +26,6 @@ export {
     ModernCard,
     ModernHero,
     ScrollToTop,
-    ColorPicker
+    ColorPicker,
+    Earth
 }

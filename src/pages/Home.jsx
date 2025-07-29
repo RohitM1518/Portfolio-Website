@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { ModernHero, Section, Icon, Button } from '../components'
+import { ModernHero, Section, Icon, Button, Earth } from '../components'
 import { useTheme } from '../context/ThemeContext'
 import { CSS, Reactico, HTML, Java, Javascript, NodeJS } from '../assets/icons/index'
 
 const Home = () => {
   const navigate = useNavigate()
   const { currentTheme } = useTheme()
+  const [showEarth, setShowEarth] = useState(true)
 
 
   const techStack = [
@@ -26,7 +27,10 @@ const Home = () => {
 
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center relative">
-        <div className="max-w-7xl mx-auto px-6 text-center">
+        {/* 3D Earth Background */}
+        {showEarth && <Earth className="z-0 opacity-60" />}
+        
+        <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -41,12 +45,18 @@ const Home = () => {
               {'ROHIT  M'.split('').map((letter, index) => (
                 <span 
                   key={index}
-                  className={`inline-block ${letter === ' ' ? 'w-4' : 'hover:glitch-hover cursor-default'}`}
+                  className={`inline-block ${
+                    letter === ' ' ? 'w-4' : 
+                    letter === 'O' ? `earth-toggle ${showEarth ? 'active' : ''} hover:scale-110 cursor-pointer transition-all duration-300 font-bold` : 
+                    'hover:glitch-hover cursor-default'
+                  }`}
                   data-text={letter}
                   style={{ 
                     animationDelay: `${index * 0.1}s`,
-                    transition: 'all 0.3s ease'
+                    transition: 'all 0.3s ease',
+                    color: letter === 'O' ? (showEarth ? 'var(--color-primary)' : 'var(--color-text)') : 'inherit'
                   }}
+                  onClick={letter === 'O' ? () => setShowEarth(!showEarth) : undefined}
                 >
                   {letter}
                 </span>

@@ -339,3 +339,31 @@ select:focus {
   79% { transform: translate(-2px, 2px); }
 }
 
+/* 3D Earth component styles */
+.earth-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.earth-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Earth toggle button styles */
+.earth-toggle {
+  position: relative;
+  transition: all 0.3s ease;
+  color: var(--color-textSecondary);
+}
+
+.earth-toggle.active {
+  color: var(--color-primary);
+  transform: scale(1.05);
+}
+

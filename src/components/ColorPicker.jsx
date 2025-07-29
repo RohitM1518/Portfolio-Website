@@ -64,14 +64,14 @@ const ColorPicker = () => {
       preview: 'linear-gradient(135deg, #7C2D12 0%, #991B1B 100%)'
     },
     {
-      name: 'Cyber',
-      gradient: 'linear-gradient(135deg, #000000 0%, #1a0033 50%, #000000 100%)',
-      preview: 'linear-gradient(135deg, #000000 0%, #1a0033 50%, #000000 100%)'
+      name: 'Forest',
+      gradient: 'linear-gradient(135deg, #0F2027 0%, #203A43 50%, #2C5364 100%)',
+      preview: 'linear-gradient(135deg, #0F2027 0%, #203A43 50%, #2C5364 100%)'
     },
     {
-      name: 'Neon',
-      gradient: 'linear-gradient(135deg, #1a0033 0%, #330066 50%, #1a0033 100%)',
-      preview: 'linear-gradient(135deg, #1a0033 0%, #330066 50%, #1a0033 100%)'
+      name: 'Midnight',
+      gradient: 'linear-gradient(135deg, #0B1426 0%, #1E293B 50%, #334155 100%)',
+      preview: 'linear-gradient(135deg, #0B1426 0%, #1E293B 50%, #334155 100%)'
     },
     {
       name: 'Space',
@@ -115,17 +115,17 @@ const ColorPicker = () => {
       }
     },
     {
-      name: 'Cyber',
+      name: 'Forest',
       colors: {
-        primary: '#00D4FF',
-        backgroundGradient: 'linear-gradient(135deg, #000000 0%, #1a0033 50%, #000000 100%)'
+        primary: '#10B981',
+        backgroundGradient: 'linear-gradient(135deg, #0F2027 0%, #203A43 50%, #2C5364 100%)'
       }
     },
     {
-      name: 'Neon',
+      name: 'Midnight',
       colors: {
-        primary: '#FF0080',
-        backgroundGradient: 'linear-gradient(135deg, #1a0033 0%, #330066 50%, #1a0033 100%)'
+        primary: '#6366F1',
+        backgroundGradient: 'linear-gradient(135deg, #0B1426 0%, #1E293B 50%, #334155 100%)'
       }
     }
   ];
