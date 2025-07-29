@@ -359,11 +359,32 @@ select:focus {
 .earth-toggle {
   position: relative;
   transition: all 0.3s ease;
-  color: var(--color-textSecondary);
+  color: #ffffff !important;
 }
 
 .earth-toggle.active {
-  color: var(--color-primary);
+  color: #ffffff !important;
   transform: scale(1.05);
+}
+
+/* Slot machine effect for name */
+.slot-machine-letter {
+  transition: all 0.2s ease;
+  animation: slotMachine 0.3s ease-in-out;
+}
+
+@keyframes slotMachine {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(5px);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 

@@ -9,7 +9,56 @@ const Home = () => {
   const navigate = useNavigate()
   const { currentTheme } = useTheme()
   const [showEarth, setShowEarth] = useState(true)
+  const [currentLetters, setCurrentLetters] = useState(['R', 'O', 'H', 'I', 'T', ' ', 'M'])
+  const [isAnimating, setIsAnimating] = useState(true)
+  
+  // Characters to cycle through for each letter position
+  const characterSets = {
+    0: ['R', 'D', 'P', 'E', 'B', 'H', 'G', 'N', 'W', 'M', 'E', 'G', 'L', 'I', 'P', 'V', 'A', 'C', 'S', 'R', 'A', 'S', 'C', 'S', 'P', 'E', 'D', 'F', 'D', 'D', 'I', 'C', 'I', 'T', 'S', 'E', 'K', 'I', 'B', 'E', 'O', 'R', 'E', 'R'],
+    1: ['O', 'E', 'R', 'N', 'U', 'A', 'E', 'I', 'I', 'A', 'X', 'U', 'E', 'N', 'I', 'I', 'R', 'R', 'C', 'C', 'N', 'T', 'T', 'O', 'P', 'N', 'E', 'O', 'E', 'R', 'N', 'R', 'N', 'A', 'K', 'X', 'N', 'O', 'R', 'X', 'U', 'E', 'X', 'O'],
+    2: ['H', 'V', 'O', 'G', 'I', 'C', 'K', 'N', 'Z', 'S', 'P', 'R', 'A', 'N', 'O', 'S', 'C', 'A', 'I', 'I', 'A', 'R', 'R', 'N', 'E', 'T', 'D', 'C', 'T', 'I', 'S', 'E', 'N', 'L', 'I', 'P', 'O', 'W', 'L', 'C', 'T', 'S', 'T', 'H'],
+    3: ['I', 'E', 'G', 'I', 'L', 'K', 'E', 'J', 'A', 'T', 'E', 'U', 'D', 'O', 'V', 'I', 'H', 'F', 'E', 'E', 'L', 'A', 'A', 'S', 'C', 'H', 'I', 'U', 'E', 'V', 'P', 'A', 'O', 'E', 'L', 'E', 'W', 'L', 'E', 'E', 'S', 'T', 'E', 'I'],
+    4: ['T', 'L', 'R', 'N', 'D', 'E', 'R', 'A', 'R', 'E', 'R', 'R', 'E', 'V', 'A', 'O', 'I', 'T', 'N', 'N', 'Y', 'T', 'E', 'U', 'I', 'U', 'C', 'S', 'R', 'E', 'I', 'T', 'V', 'N', 'T', 'D', 'E', 'D', 'G', 'E', 'A', 'I', 'D', 'T'],
+    5: [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    6: ['M', 'E', 'A', 'E', 'E', 'R', 'G', 'E', 'D', 'R', 'T', 'L', 'R', 'A', 'T', 'N', 'T', 'S', 'T', 'T', 'S', 'G', 'G', 'L', 'A', 'S', 'A', 'T', 'N', 'N', 'R', 'I', 'A', 'T', 'E', 'E', 'D', 'E', 'E', 'A', 'B', 'L', 'E', 'M']
+  }
 
+
+  // Slot machine effect for individual letters
+  useEffect(() => {
+    const speed = 20 // Constant fast speed (20ms)
+    let intervalId
+    let currentIndex = 0
+
+    const cycleLetters = () => {
+      if (currentIndex < characterSets[0].length) {
+        // Update all letters simultaneously
+        setCurrentLetters([
+          characterSets[0][currentIndex],
+          characterSets[1][currentIndex],
+          characterSets[2][currentIndex],
+          characterSets[3][currentIndex],
+          characterSets[4][currentIndex],
+          characterSets[5][currentIndex],
+          characterSets[6][currentIndex]
+        ])
+        
+        currentIndex++
+      } else {
+        // Animation complete, set final state
+        setCurrentLetters(['R', 'O', 'H', 'I', 'T', ' ', 'M'])
+        setIsAnimating(false)
+        clearInterval(intervalId)
+      }
+    }
+
+    // Start the cycle with constant speed
+    intervalId = setInterval(cycleLetters, speed)
+
+    return () => {
+      if (intervalId) clearInterval(intervalId)
+    }
+  }, [])
 
   const techStack = [
     'React', 'JavaScript', 'Node.js', 'MongoDB', 'Express.js', 'Python', 'Java', 'Docker', 
@@ -42,12 +91,12 @@ const Home = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
             >
-              {'ROHIT  M'.split('').map((letter, index) => (
+              {currentLetters.map((letter, index) => (
                 <span 
                   key={index}
-                  className={`inline-block ${
+                  className={`inline-block slot-machine-letter ${
                     letter === ' ' ? 'w-4' : 
-                    letter === 'O' ? `earth-toggle ${showEarth ? 'active' : ''} hover:scale-110 cursor-pointer transition-all duration-300 font-bold` : 
+                    letter === 'O' && !isAnimating ? `earth-toggle ${showEarth ? 'active' : ''} hover:scale-110 cursor-pointer transition-all duration-300 font-bold relative` : 
                     'hover:glitch-hover cursor-default'
                   }`}
                   data-text={letter}
@@ -56,9 +105,14 @@ const Home = () => {
                     transition: 'all 0.3s ease',
                     color: letter === 'O' ? (showEarth ? 'var(--color-primary)' : 'var(--color-text)') : 'inherit'
                   }}
-                  onClick={letter === 'O' ? () => setShowEarth(!showEarth) : undefined}
+                  onClick={letter === 'O' && !isAnimating ? () => setShowEarth(!showEarth) : undefined}
                 >
                   {letter}
+                  {letter === 'O' && !isAnimating && (
+                    <span className="absolute inset-0 flex items-center justify-center text-xs opacity-60">
+                      {showEarth ? '🌍' : '⚪'}
+                    </span>
+                  )}
                 </span>
               ))}
             </motion.h1>
@@ -70,7 +124,7 @@ const Home = () => {
               className="mb-12"
             >
               <h2 className="text-lg sm:text-xl md:text-3xl lg:text-4xl font-mono typewriter text-center px-4" style={{ color: 'var(--color-textSecondary)' }}>
-                Full-Stack Developer & AI Enthusiast
+                Developer & AI Enthusiast
               </h2>
             </motion.div>
 
