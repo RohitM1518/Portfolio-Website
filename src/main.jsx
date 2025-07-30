@@ -9,38 +9,61 @@ import Skills from './pages/Skills.jsx'
 import Resume from './pages/Resume.jsx'
 import Contact from './pages/Contact.jsx'
 import Home from './pages/Home.jsx'
+import Login from './pages/Login.jsx'
+import AdminDashboard from './pages/AdminDashboard.jsx'
+import AdminSettings from './pages/AdminSettings.jsx'
+import { AdminLayout, ProtectedRoute } from './components'
 
-const router=createBrowserRouter([{
-  path: '/',
-  element:<App />,
-  children: [
-    {
-      path: '/',
-      element: <Home />,
-    },
-    {
-      path: '/about',
-      element: <About />,
-    },
-    {
-      path: '/skills',
-      element: <Skills />,
-    },
-    {
-      path: '/projects',
-      element: <Projects />,
-    },
-    {
-      path: '/resume',
-      element: <Resume />,
-    },
-    {
-      path: '/contact',
-      element: <Contact />,
-    },
-  ],
-
-}])
+const router=createBrowserRouter([
+  {
+    path: '/',
+    element:<App />,
+    children: [
+      {
+        path: '/',
+        element: <Home />,
+      },
+      {
+        path: '/about',
+        element: <About />,
+      },
+      {
+        path: '/skills',
+        element: <Skills />,
+      },
+      {
+        path: '/projects',
+        element: <Projects />,
+      },
+      {
+        path: '/resume',
+        element: <Resume />,
+      },
+      {
+        path: '/contact',
+        element: <Contact />,
+      },
+    ],
+  },
+  {
+    path: '/admin',
+    element: <AdminLayout />,
+    children: [
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'dashboard',
+        element: <ProtectedRoute><AdminDashboard /></ProtectedRoute>,
+      },
+      {
+        path: 'settings',
+        element: <ProtectedRoute><AdminSettings /></ProtectedRoute>,
+      },
+    ],
+  },
+])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

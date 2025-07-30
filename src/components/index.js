@@ -13,6 +13,10 @@ import ScrollToTop from "./ScrollToTop";
 import ColorPicker from "./ColorPicker";
 import Earth from "./Earth";
 
+export { default as AdminLayout } from './AdminLayout.jsx'
+export { default as ProtectedRoute } from './ProtectedRoute.jsx'
+export { default as AdminSettings } from '../pages/AdminSettings.jsx'
+
 export {
     Button,
     Card,

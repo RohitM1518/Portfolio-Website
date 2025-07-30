@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Settings, BarChart3 } from 'lucide-react'
 import ColorPicker from './ColorPicker'
 import { useTheme } from '../context/ThemeContext'
 import { useInteractionTracking } from '../hooks/useInteractionTracking.js'
@@ -9,6 +9,10 @@ import { useInteractionTracking } from '../hooks/useInteractionTracking.js'
 const Header = () => {
     const { currentTheme } = useTheme();
     const { trackButtonClick } = useInteractionTracking();
+    
+    // Check if admin is logged in
+    const isAdminLoggedIn = localStorage.getItem('admin') && localStorage.getItem('isAuthenticated');
+    
     const linkItems = [
         { name: 'Home', link: '/' },
         { name: 'About', link: '/about' },
@@ -16,6 +20,11 @@ const Header = () => {
         { name: 'Projects', link: '/projects' },
         { name: 'Resume', link: '/resume' },
         { name: 'Contact', link: '/contact' }
+    ]
+    
+    const adminLinkItems = [
+        { name: 'Dashboard', link: '/admin/dashboard', icon: <BarChart3 size={16} /> },
+        { name: 'Settings', link: '/admin/settings', icon: <Settings size={16} /> }
     ]
 
     const [isMobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -185,6 +194,60 @@ const Header = () => {
                                 </NavLink>
                             </motion.li>
                         ))}
+                        
+                        {/* Admin Navigation */}
+                        {isAdminLoggedIn && (
+                            <>
+                                <motion.div
+                                    initial={{ opacity: 0, y: -20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.6, delay: 0.6 }}
+                                    className="w-px h-6"
+                                    style={{ backgroundColor: currentTheme.primary + '30' }}
+                                />
+                                {adminLinkItems.map((item, index) => (
+                                    <motion.li 
+                                        key={item.name}
+                                        initial={{ opacity: 0, y: -20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.6, delay: (0.7 + index * 0.1) }}
+                                    >
+                                        <NavLink
+                                            to={item.link}
+                                            onClick={() => trackButtonClick('admin_navigation', {
+                                                linkName: item.name,
+                                                linkPath: item.link,
+                                                position: 'desktop_header'
+                                              })}
+                                            className={({ isActive }) => 
+                                                `relative transition-colors duration-300 font-medium font-mono flex items-center gap-2 ${
+                                                    isActive ? '' : ''
+                                                }`
+                                            }
+                                            style={({ isActive }) => ({
+                                                color: isActive ? currentTheme.primary : currentTheme.textSecondary
+                                            })}
+                                        >
+                                            {({ isActive }) => (
+                                                <>
+                                                    {item.icon}
+                                                    {item.name}
+                                                    {isActive && (
+                                                        <motion.div
+                                                            layoutId="activeTab"
+                                                            className="absolute -bottom-1 left-0 right-0 h-0.5"
+                                                            style={{ backgroundColor: currentTheme.primary }}
+                                                            initial={false}
+                                                            transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                                        />
+                                                    )}
+                                                </>
+                                            )}
+                                        </NavLink>
+                                    </motion.li>
+                                ))}
+                            </>
+                        )}
                     </ul>
                     
                     {/* Color Picker */}
@@ -266,12 +329,60 @@ const Header = () => {
                                     </motion.li>
                                 ))}
                                 
+                                {/* Admin Navigation in Mobile */}
+                                {isAdminLoggedIn && (
+                                    <>
+                                        <motion.li
+                                            initial={{ opacity: 0, x: -20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            exit={{ opacity: 0, x: -20 }}
+                                            transition={{ duration: 0.3, delay: 0.3 }}
+                                            className="pt-4 border-t"
+                                            style={{ borderTopColor: `${currentTheme.primary}30` }}
+                                        >
+                                            <p className="text-xs font-mono px-4 py-2" style={{ color: currentTheme.textSecondary }}>
+                                                ADMIN PANEL
+                                            </p>
+                                        </motion.li>
+                                        {adminLinkItems.map((item, index) => (
+                                            <motion.li 
+                                                key={item.name}
+                                                initial={{ opacity: 0, x: -20 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                exit={{ opacity: 0, x: -20 }}
+                                                transition={{ duration: 0.3, delay: (0.35 + index * 0.05) }}
+                                            >
+                                                <NavLink
+                                                    to={item.link}
+                                                    onClick={() => trackButtonClick('admin_navigation', {
+                                                        linkName: item.name,
+                                                        linkPath: item.link,
+                                                        position: 'mobile_header'
+                                                      })}
+                                                    className={({ isActive }) => 
+                                                        `block transition-colors duration-300 font-medium py-3 px-4 rounded-lg hover:bg-white/10 font-mono flex items-center gap-3 ${
+                                                            isActive ? 'bg-white/10' : ''
+                                                        }`
+                                                    }
+                                                    style={({ isActive }) => ({
+                                                        color: isActive ? currentTheme.primary : currentTheme.textSecondary
+                                                    })}
+                                                    onClick={() => setMobileMenuOpen(false)}
+                                                >
+                                                    {item.icon}
+                                                    {item.name}
+                                                </NavLink>
+                                            </motion.li>
+                                        ))}
+                                    </>
+                                )}
+                                
                                 {/* Mobile Color Picker */}
                                 <motion.li
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: -20 }}
-                                    transition={{ duration: 0.3, delay: 0.3 }}
+                                    transition={{ duration: 0.3, delay: isAdminLoggedIn ? 0.45 : 0.3 }}
                                     className="pt-4 border-t"
                                     style={{ borderTopColor: `${currentTheme.primary}20` }}
                                 >
