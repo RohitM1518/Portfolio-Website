@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useTheme } from '../context/ThemeContext'
 import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter, MessageCircle } from 'lucide-react'
+import { usePageTracking } from '../hooks/useInteractionTracking.js'
 
 const Contact = () => {
   const { currentTheme } = useTheme()
+  const { trackFormSubmission, trackSocialMediaClick, trackLinkClick } = usePageTracking('contact')
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,6 +23,17 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    
+    // Track form submission
+    trackFormSubmission('contact_form', {
+      formType: 'contact',
+      hasName: !!formData.name,
+      hasEmail: !!formData.email,
+      hasSubject: !!formData.subject,
+      hasMessage: !!formData.message,
+      messageLength: formData.message.length
+    })
+    
     // Create mailto link with form data
     const mailtoLink = `mailto:rmugalkhod.cse@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(
       `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
@@ -309,6 +322,10 @@ const Contact = () => {
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      onClick={() => trackSocialMediaClick(social.name.toLowerCase(), {
+                        platform: social.name,
+                        url: social.url
+                      })}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.5 + index * 0.1 }}

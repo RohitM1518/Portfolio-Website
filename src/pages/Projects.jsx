@@ -8,9 +8,11 @@ import PortfolioImg from "../assets/icons/portfolio.jpg"
 import ChatImg from '../assets/icons/chatImage.jpg'
 import { Feedback, SocialMedia } from '../assets/icons'
 import { ExternalLink, Github } from 'lucide-react'
+import { usePageTracking } from '../hooks/useInteractionTracking.js'
 
 const Projects = () => {
   const { currentTheme } = useTheme()
+  const { trackProjectView, trackLinkClick } = usePageTracking('projects')
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -126,6 +128,12 @@ const Projects = () => {
                   ease: "easeOut" 
                 }}
                 className="glass-card overflow-hidden hover:scale-105 group"
+                onMouseEnter={() => trackProjectView(project.title, {
+                  projectIndex: index,
+                  technologies: project.technologies,
+                  hasGithub: !!project.githubUrl,
+                  hasLiveUrl: !!project.liveUrl
+                })}
               >
                 <div className="relative h-48 overflow-hidden">
                   <img 
@@ -172,6 +180,11 @@ const Projects = () => {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() => trackLinkClick('github_link', {
+                          projectName: project.title,
+                          linkType: 'github',
+                          url: project.githubUrl
+                        })}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className="flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-sm transition-all duration-300"
@@ -196,6 +209,11 @@ const Projects = () => {
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() => trackLinkClick('live_link', {
+                          projectName: project.title,
+                          linkType: 'live',
+                          url: project.liveUrl
+                        })}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className="flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-sm transition-all duration-300"

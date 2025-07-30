@@ -4,10 +4,28 @@ import { useTheme } from '../context/ThemeContext'
 import { Download, Mail, Phone, MapPin, Calendar, Award, Code, Briefcase, GraduationCap, ExternalLink } from 'lucide-react'
 import RohitMImg from '../assets/RohitMImg.jpg'
 import ResumePath from '../assets/Resume/RohitM.pdf'
+import { usePageTracking, useResumeTracking } from '../hooks/useInteractionTracking.js'
 
 const Resume = () => {
   const { currentTheme } = useTheme()
+  const { trackButtonClick } = usePageTracking('resume')
+  const { trackResumeDownload } = useResumeTracking()
+  
   const handleDownload = () => {
+    // Track the resume download
+    trackResumeDownload('resume', 'download_button', {
+      resumeVersion: '2024',
+      format: 'PDF',
+      fileName: 'RohitM(Resume).pdf'
+    })
+    
+    // Track button click
+    trackButtonClick('download_button', {
+      buttonText: 'DOWNLOAD_RESUME()',
+      position: 'resume_section'
+    })
+    
+    // Perform the actual download
     const downloadLink = document.createElement('a')
     downloadLink.href = ResumePath
     downloadLink.download = 'RohitM(Resume).pdf'

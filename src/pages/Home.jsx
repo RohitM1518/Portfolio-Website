@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom'
 import { ModernHero, Section, Icon, Button, Earth } from '../components'
 import { useTheme } from '../context/ThemeContext'
 import { CSS, Reactico, HTML, Java, Javascript, NodeJS } from '../assets/icons/index'
+import { usePageTracking } from '../hooks/useInteractionTracking.js'
 
 const Home = () => {
   const navigate = useNavigate()
   const { currentTheme } = useTheme()
+  const { trackButtonClick } = usePageTracking('home')
   const [showEarth, setShowEarth] = useState(true)
   const [currentLetters, setCurrentLetters] = useState(['R', 'O', 'H', 'I', 'T', ' ', 'M'])
   const [isAnimating, setIsAnimating] = useState(true)
@@ -137,7 +139,13 @@ const Home = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('/projects')}
+                onClick={() => {
+                  trackButtonClick('view_projects_button', {
+                    buttonText: 'VIEW PROJECTS',
+                    position: 'hero_section'
+                  });
+                  navigate('/projects');
+                }}
                 className="px-6 sm:px-8 py-3 sm:py-4 border-2 font-mono font-medium transition-all duration-300 hover:shadow-lg text-sm sm:text-base"
                 style={{ 
                   borderColor: 'var(--color-primary)', 
@@ -151,7 +159,13 @@ const Home = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => navigate('/contact')}
+                onClick={() => {
+                  trackButtonClick('get_in_touch_button', {
+                    buttonText: 'GET IN TOUCH',
+                    position: 'hero_section'
+                  });
+                  navigate('/contact');
+                }}
                 className="px-6 sm:px-8 py-3 sm:py-4 font-mono font-medium transition-all duration-300 hover:shadow-lg text-sm sm:text-base"
                 style={{ 
                   backgroundColor: 'var(--color-primary)', 

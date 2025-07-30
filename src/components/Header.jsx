@@ -4,9 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import ColorPicker from './ColorPicker'
 import { useTheme } from '../context/ThemeContext'
+import { useInteractionTracking } from '../hooks/useInteractionTracking.js'
 
 const Header = () => {
     const { currentTheme } = useTheme();
+    const { trackButtonClick } = useInteractionTracking();
     const linkItems = [
         { name: 'Home', link: '/' },
         { name: 'About', link: '/about' },
@@ -152,6 +154,11 @@ const Header = () => {
                             >
                                 <NavLink
                                     to={item.link}
+                                    onClick={() => trackButtonClick('header_navigation', {
+                                        linkName: item.name,
+                                        linkPath: item.link,
+                                        position: 'desktop_header'
+                                      })}
                                     className={({ isActive }) => 
                                         `relative transition-colors duration-300 font-medium font-mono ${
                                             isActive ? '' : ''
@@ -239,6 +246,11 @@ const Header = () => {
                                     >
                                         <NavLink
                                             to={item.link}
+                                            onClick={() => trackButtonClick('header_navigation', {
+                                                linkName: item.name,
+                                                linkPath: item.link,
+                                                position: 'mobile_header'
+                                              })}
                                             className={({ isActive }) => 
                                                 `block transition-colors duration-300 font-medium py-3 px-4 rounded-lg hover:bg-white/10 font-mono ${
                                                     isActive ? 'bg-white/10' : ''
