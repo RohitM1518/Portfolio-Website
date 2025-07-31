@@ -86,6 +86,8 @@ const AdminDashboard = () => {
       }
 
       const data = await response.json();
+      console.log('Dashboard stats received:', data.data);
+      console.log('Page visits data:', data.data?.pageVisits);
       setStats(data.data);
     } catch (err) {
       setError(err.message);
@@ -570,29 +572,45 @@ const AdminDashboard = () => {
             <h3 className="text-lg font-semibold mb-4" style={{ color: currentTheme.text }}>
               Most Visited Pages
             </h3>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={stats?.pageVisits || []} layout="horizontal">
-                <CartesianGrid strokeDasharray="3 3" stroke={currentTheme.textSecondary + '20'} />
-                <XAxis 
-                  type="number"
-                  stroke={currentTheme.textSecondary}
-                  fontSize={12}
-                />
-                <YAxis 
-                  type="category" 
-                  dataKey="_id" 
-                  stroke={currentTheme.textSecondary}
-                  fontSize={12}
-                  width={100}
-                />
-                <Tooltip content={<CustomTooltip />} />
-                <Bar 
-                  dataKey="count" 
-                  fill={currentTheme.secondary}
-                  radius={[0, 4, 4, 0]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
+            {(!stats?.pageVisits || stats.pageVisits.length === 0) ? (
+              <div className="flex items-center justify-center h-[300px]">
+                <div className="text-center">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: currentTheme.primary + '20' }}>
+                    <BarChart3 size={24} style={{ color: currentTheme.primary }} />
+                  </div>
+                  <p className="text-sm" style={{ color: currentTheme.textSecondary }}>
+                    No page visit data available
+                  </p>
+                  <p className="text-xs mt-1" style={{ color: currentTheme.textSecondary }}>
+                    Page visits will appear here once users start browsing
+                  </p>
+                </div>
+              </div>
+                         ) : (
+               <ResponsiveContainer width="100%" height={300}>
+                 <BarChart data={stats.pageVisits}>
+                   <CartesianGrid strokeDasharray="3 3" stroke={currentTheme.textSecondary + '20'} />
+                   <XAxis 
+                     dataKey="_id" 
+                     stroke={currentTheme.textSecondary}
+                     fontSize={12}
+                     angle={-45}
+                     textAnchor="end"
+                     height={80}
+                   />
+                   <YAxis 
+                     stroke={currentTheme.textSecondary}
+                     fontSize={12}
+                   />
+                   <Tooltip content={<CustomTooltip />} />
+                   <Bar 
+                     dataKey="count" 
+                     fill={currentTheme.primary}
+                     radius={[4, 4, 0, 0]}
+                   />
+                 </BarChart>
+               </ResponsiveContainer>
+             )}
           </div>
         </motion.div>
 

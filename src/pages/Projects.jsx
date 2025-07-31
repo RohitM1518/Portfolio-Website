@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { ModernCard } from '../components'
 import { useTheme } from '../context/ThemeContext'
@@ -13,6 +13,8 @@ import { usePageTracking } from '../hooks/useInteractionTracking.js'
 const Projects = () => {
   const { currentTheme } = useTheme()
   const { trackProjectView, trackLinkClick } = usePageTracking('projects')
+  const [visibleCards, setVisibleCards] = useState(new Set())
+  const cardRefs = useRef([])
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -22,6 +24,35 @@ const Projects = () => {
       }
     }
   }
+
+  // Intersection Observer for scroll-based animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleCards(prev => new Set([...prev, entry.target.dataset.index]))
+          } else {
+            setVisibleCards(prev => {
+              const newSet = new Set(prev)
+              newSet.delete(entry.target.dataset.index)
+              return newSet
+            })
+          }
+        })
+      },
+      {
+        threshold: 0.3,
+        rootMargin: '0px 0px -50px 0px'
+      }
+    )
+
+    cardRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref)
+    })
+
+    return () => observer.disconnect()
+  }, [])
 
   const projects = [
     {
@@ -36,28 +67,27 @@ const Projects = () => {
       title: "Intellia",
       description: "An AI-powered chatbot with integrated knowledge base and source-referencing capabilities via RAG pipeline. Features full-stack development with authentication and cloud deployment.",
       image: ChatImg,
-      githubUrl: "https://github.com/RohitM1518/Chat-Application.git",
-      liveUrl: "https://rohitchatapp1518.netlify.app/",
       technologies: ["React", "Express.js", "GCP", "RAG Pipeline", "Authentication", "Cloud Deployment"]
     },
     {
-      title: "Website Revamp",
+      title: "Datazymes Website Revamp",
       description: "Complete website transformation from WordPress/PHP to modern stack, enhancing UI/UX with responsive design and admin functionality for content management.",
       image: PortfolioImg,
-      githubUrl: "https://github.com/RohitM1518/Portfolio-Website.git",
-      liveUrl: "https://rohit-m.netlify.app/",
+      liveUrl: "https://datazymes.ai/",
       technologies: ["React", "PostgreSQL", "Tailwind CSS", "Express.js", "Responsive Design", "Admin Panel"]
     },
     {
       title: "Nebula AI",
       description: "Advanced AI chatbot with integrated knowledge base featuring source-referencing capabilities through RAG pipeline. Deployed on GCP for scalability and reliability.",
       image: ChatImg,
+      liveUrl: "https://myralis-frontend-836855490690.europe-west1.run.app/",
       technologies: ["React", "Express.js", "GCP", "RAG Pipeline", "AI/ML", "Cloud Deployment"]
     },
     {
       title: "NOVO Mix",
       description: "Marketing analytics tool with advanced insights generation. Integrated frontend with backend services using FastAPI, featuring Gemini for analytics with Celery and Redis for background processing.",
       image: BlogImg,
+      liveUrl: "https://novomix.appdatazymes.com/",
       technologies: ["React", "Python", "FastAPI", "Gemini", "Celery", "Redis", "Analytics"]
     },
     {
@@ -117,24 +147,32 @@ const Projects = () => {
             variants={containerVariants}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20"
           >
-            {projects.map((project, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ 
-                  duration: 0.6,
-                  delay: index * 0.1,
-                  ease: "easeOut" 
-                }}
-                className="glass-card overflow-hidden hover:scale-105 group"
-                onMouseEnter={() => trackProjectView(project.title, {
-                  projectIndex: index,
-                  technologies: project.technologies,
-                  hasGithub: !!project.githubUrl,
-                  hasLiveUrl: !!project.liveUrl
-                })}
-              >
+            {projects.map((project, index) => {
+              const isVisible = visibleCards.has(index.toString())
+              const isSmallScreen = window.innerWidth < 768
+              
+              return (
+                <motion.div
+                  key={index}
+                  ref={(el) => (cardRefs.current[index] = el)}
+                  data-index={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ 
+                    duration: 0.6,
+                    delay: index * 0.1,
+                    ease: "easeOut" 
+                  }}
+                  className={`glass-card overflow-hidden transition-all duration-500 ${
+                    isSmallScreen && isVisible ? 'scale-105' : 'hover:scale-105'
+                  } group`}
+                  onMouseEnter={() => trackProjectView(project.title, {
+                    projectIndex: index,
+                    technologies: project.technologies,
+                    hasGithub: !!project.githubUrl,
+                    hasLiveUrl: !!project.liveUrl
+                  })}
+                >
                 <div className="relative h-48 overflow-hidden">
                   <img 
                     src={project.image} 
@@ -158,15 +196,19 @@ const Projects = () => {
                         key={techIndex} 
                         className="px-2 py-1 rounded text-xs font-mono transition-all duration-300"
                         style={{ 
-                          backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                          backgroundColor: isSmallScreen && isVisible ? 'var(--color-primary)' : 'rgba(255, 255, 255, 0.1)', 
                           color: 'var(--color-text)',
                           border: `1px solid var(--color-primary)`
                         }}
                         onMouseEnter={(e) => {
-                          e.target.style.backgroundColor = 'var(--color-primary)';
+                          if (!isSmallScreen) {
+                            e.target.style.backgroundColor = 'var(--color-primary)';
+                          }
                         }}
                         onMouseLeave={(e) => {
-                          e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                          if (!isSmallScreen) {
+                            e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                          }
                         }}
                       >
                         {tech}
@@ -189,15 +231,19 @@ const Projects = () => {
                         whileTap={{ scale: 0.95 }}
                         className="flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-sm transition-all duration-300"
                         style={{ 
-                          backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                          backgroundColor: isSmallScreen && isVisible ? 'var(--color-primary)' : 'rgba(255, 255, 255, 0.1)', 
                           color: 'var(--color-text)',
                           border: `1px solid var(--color-primary)`
                         }}
                         onMouseEnter={(e) => {
-                          e.target.style.backgroundColor = 'var(--color-primary)';
+                          if (!isSmallScreen) {
+                            e.target.style.backgroundColor = 'var(--color-primary)';
+                          }
                         }}
                         onMouseLeave={(e) => {
-                          e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                          if (!isSmallScreen) {
+                            e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                          }
                         }}
                       >
                         <Github size={16} />
@@ -229,7 +275,7 @@ const Projects = () => {
                   </div>
                 </div>
               </motion.div>
-            ))}
+            )})}
           </motion.div>
 
           {/* Call to Action */}
@@ -239,8 +285,8 @@ const Projects = () => {
             transition={{ duration: 0.6, delay: 0.8 }}
             className="text-center"
           >
-            <div className="glass-card p-8">
-              <h2 className="text-3xl font-mono font-bold mb-4" style={{ color: 'var(--color-text)' }}>&gt; INTERESTED_IN_COLLABORATION?</h2>
+            <div className="glass-card p-4 sm:p-6 md:p-8">
+              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-mono font-bold mb-4 break-words" style={{ color: 'var(--color-text)' }}>&gt; INTERESTED_IN_COLLABORATION?</h2>
               <p className="mb-6 max-w-2xl mx-auto font-mono" style={{ color: 'var(--color-textSecondary)' }}>
                 I'm always excited to work on new projects and collaborate with fellow developers. 
                 Let's build something amazing together!

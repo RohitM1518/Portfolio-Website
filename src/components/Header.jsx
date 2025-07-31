@@ -85,7 +85,8 @@ const Header = () => {
         }
         
         // Use theme background gradient with transparency for header
-        return `${currentTheme.backgroundGradient.replace(')', ', 0.95)').replace('linear-gradient', 'linear-gradient')}`
+        const backgroundGradient = currentTheme.backgroundGradient || 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)'
+        return `${backgroundGradient.replace(')', ', 0.95)').replace('linear-gradient', 'linear-gradient')}`
     }
 
     return (
@@ -118,7 +119,7 @@ const Header = () => {
                             
                             {/* Main logo container */}
                             <div className="relative w-12 h-12 rounded-full bg-white p-0.5 group-hover:scale-110 transition-transform duration-300">
-                                <div className="w-full h-full rounded-full flex items-center justify-center" style={{ background: currentTheme.backgroundGradient }}>
+                                <div className="w-full h-full rounded-full flex items-center justify-center" style={{ background: currentTheme.backgroundGradient || 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)' }}>
                                     {/* Logo content */}
                                     <span className="text-xl font-bold font-mono glitch" data-text="R" style={{ color: currentTheme.text }}>
                                         R
@@ -142,12 +143,12 @@ const Header = () => {
                         {/* Brand Text */}
                         <div className="flex flex-col">
                             <span className="text-xl font-bold transition-colors duration-300 font-mono" style={{ color: currentTheme.text }}>
-                                ROHIT
+                                ROHIT M
                             </span>
                             <span className="text-xs font-medium tracking-wider font-mono" style={{ color: currentTheme.textSecondary }}>
                                 DEVELOPER
                             </span>
-                    </div>
+                        </div>
                     </NavLink>
                 </motion.div>
 
@@ -179,7 +180,7 @@ const Header = () => {
                                 >
                                     {({ isActive }) => (
                                         <>
-                                    {item.name}
+                                            {item.name}
                                             {isActive && (
                                                 <motion.div
                                                     layoutId="activeTab"
@@ -309,11 +310,14 @@ const Header = () => {
                                     >
                                         <NavLink
                                             to={item.link}
-                                            onClick={() => trackButtonClick('header_navigation', {
-                                                linkName: item.name,
-                                                linkPath: item.link,
-                                                position: 'mobile_header'
-                                              })}
+                                            onClick={() => {
+                                                trackButtonClick('header_navigation', {
+                                                    linkName: item.name,
+                                                    linkPath: item.link,
+                                                    position: 'mobile_header'
+                                                });
+                                                setMobileMenuOpen(false);
+                                            }}
                                             className={({ isActive }) => 
                                                 `block transition-colors duration-300 font-medium py-3 px-4 rounded-lg hover:bg-white/10 font-mono ${
                                                     isActive ? 'bg-white/10' : ''
@@ -322,7 +326,6 @@ const Header = () => {
                                             style={({ isActive }) => ({
                                                 color: isActive ? currentTheme.primary : currentTheme.textSecondary
                                             })}
-                                            onClick={() => setMobileMenuOpen(false)}
                                         >
                                             {item.name}
                                         </NavLink>
@@ -354,11 +357,14 @@ const Header = () => {
                                             >
                                                 <NavLink
                                                     to={item.link}
-                                                    onClick={() => trackButtonClick('admin_navigation', {
-                                                        linkName: item.name,
-                                                        linkPath: item.link,
-                                                        position: 'mobile_header'
-                                                      })}
+                                                    onClick={() => {
+                                                        trackButtonClick('admin_navigation', {
+                                                            linkName: item.name,
+                                                            linkPath: item.link,
+                                                            position: 'mobile_header'
+                                                        });
+                                                        setMobileMenuOpen(false);
+                                                    }}
                                                     className={({ isActive }) => 
                                                         `block transition-colors duration-300 font-medium py-3 px-4 rounded-lg hover:bg-white/10 font-mono flex items-center gap-3 ${
                                                             isActive ? 'bg-white/10' : ''
@@ -367,7 +373,6 @@ const Header = () => {
                                                     style={({ isActive }) => ({
                                                         color: isActive ? currentTheme.primary : currentTheme.textSecondary
                                                     })}
-                                                    onClick={() => setMobileMenuOpen(false)}
                                                 >
                                                     {item.icon}
                                                     {item.name}
