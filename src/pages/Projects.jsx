@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { ModernCard } from '../components'
 import { useTheme } from '../context/ThemeContext'
 import BlogImg from "../assets/icons/blog.png"
@@ -11,8 +12,9 @@ import { ExternalLink, Github } from 'lucide-react'
 import { usePageTracking } from '../hooks/useInteractionTracking.js'
 
 const Projects = () => {
+  const navigate = useNavigate()
   const { currentTheme } = useTheme()
-  const { trackProjectView, trackLinkClick } = usePageTracking('projects')
+  const { trackProjectView, trackLinkClick, trackButtonClick } = usePageTracking('projects')
   const [visibleCards, setVisibleCards] = useState(new Set())
   const cardRefs = useRef([])
   const containerVariants = {
@@ -294,6 +296,14 @@ const Projects = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  trackButtonClick('get_in_touch_button', {
+                    buttonText: 'GET_IN_TOUCH()',
+                    position: 'projects_page_cta',
+                    page: 'projects'
+                  });
+                  navigate('/contact');
+                }}
                 className="px-8 py-3 rounded-lg font-mono font-medium transition-all duration-300"
                 style={{ 
                   backgroundColor: 'var(--color-primary)', 

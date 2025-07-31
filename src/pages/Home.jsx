@@ -5,11 +5,13 @@ import { ModernHero, Section, Icon, Button, Earth } from '../components'
 import { useTheme } from '../context/ThemeContext'
 import { CSS, Reactico, HTML, Java, Javascript, NodeJS } from '../assets/icons/index'
 import { usePageTracking } from '../hooks/useInteractionTracking.js'
+import { useScrollToTopImmediate } from '../hooks/useScrollToTop.js'
 
 const Home = () => {
   const navigate = useNavigate()
   const { currentTheme } = useTheme()
   const { trackButtonClick } = usePageTracking('home')
+  const scrollToTop = useScrollToTopImmediate()
   const [showEarth, setShowEarth] = useState(true)
   const [currentLetters, setCurrentLetters] = useState(['R', 'O', 'H', 'I', 'T', ' ', 'M'])
   const [isAnimating, setIsAnimating] = useState(true)
@@ -74,7 +76,6 @@ const Home = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ background: 'var(--color-backgroundGradient)', color: 'var(--color-text)' }}>
-
 
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center relative">

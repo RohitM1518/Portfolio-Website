@@ -25,6 +25,8 @@
 
 html {
   scroll-behavior: smooth;
+  height: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -36,6 +38,14 @@ body {
   background: var(--color-backgroundGradient);
   color: var(--color-text);
   transition: background 0.5s ease, color 0.3s ease;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Ensure proper scroll behavior */
+#root {
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* Theme transition for all elements */
