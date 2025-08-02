@@ -155,6 +155,117 @@ const ChatBot = () => {
     }
   };
 
+  const sendSuggestedMessage = async (question) => {
+    setIsLoading(true);
+
+    // Add user message to chat
+    const userMessage = {
+      id: Date.now(),
+      role: 'user',
+      content: question,
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+
+    // Add a placeholder for the AI response
+    const aiMessageId = Date.now() + 1;
+    const newAiMessage = {
+      id: aiMessageId,
+      role: 'assistant',
+      content: '',
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, newAiMessage]);
+
+    try {
+      // Create request body
+      const requestBody = {
+        message: question,
+        sessionId: sessionId
+      };
+
+      // Use streaming endpoint
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/chat/send`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Handle streaming response
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        
+        if (done) break;
+        
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || ''; // Keep incomplete line in buffer
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              
+              if (data.type === 'chunk') {
+                // Update the AI message with the new chunk
+                setMessages(prev => prev.map(msg => 
+                  msg.id === aiMessageId 
+                    ? { ...msg, content: msg.content + data.content }
+                    : msg
+                ));
+              } else if (data.type === 'complete') {
+                // Finalize the AI message
+                setMessages(prev => prev.map(msg => 
+                  msg.id === aiMessageId 
+                    ? { ...msg, content: data.message }
+                    : msg
+                ));
+              } else if (data.type === 'error') {
+                // Handle error
+                setMessages(prev => prev.map(msg => 
+                  msg.id === aiMessageId 
+                    ? { ...msg, content: data.message }
+                    : msg
+                ));
+              }
+            } catch (error) {
+              console.error('Error parsing SSE data:', error);
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      const errorMessage = {
+        id: aiMessageId,
+        role: 'assistant',
+        content: 'Sorry, I encountered an error. Please try again.',
+        timestamp: new Date()
+      };
+      setMessages(prev => prev.map(msg => 
+        msg.id === aiMessageId ? errorMessage : msg
+      ));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSuggestedQuestion = (question) => {
+    sendSuggestedMessage(question);
+  };
+
   return (
     <div className="fixed bottom-4 right-4 z-50">
       {/* Chat Toggle Button */}
@@ -236,7 +347,7 @@ const ChatBot = () => {
                     </p>
                     <div className="grid grid-cols-1 gap-2">
                       <button
-                        onClick={() => setInputMessage("Tell me about your projects")}
+                        onClick={() => handleSuggestedQuestion("Tell me about your projects")}
                         className="text-left p-2 rounded-lg border transition-all duration-200 hover:scale-105 text-xs"
                         style={{
                           background: currentTheme.primary + '10',
@@ -248,7 +359,7 @@ const ChatBot = () => {
                         💼 Tell me about your projects
                       </button>
                       <button
-                        onClick={() => setInputMessage("What technologies do you work with?")}
+                        onClick={() => handleSuggestedQuestion("What technologies do you work with?")}
                         className="text-left p-2 rounded-lg border transition-all duration-200 hover:scale-105 text-xs"
                         style={{
                           background: currentTheme.primary + '10',
@@ -260,7 +371,7 @@ const ChatBot = () => {
                         🛠️ What technologies do you work with?
                       </button>
                       <button
-                        onClick={() => setInputMessage("What's your experience with AI and machine learning?")}
+                        onClick={() => handleSuggestedQuestion("What's your experience with AI and machine learning?")}
                         className="text-left p-2 rounded-lg border transition-all duration-200 hover:scale-105 text-xs"
                         style={{
                           background: currentTheme.primary + '10',
@@ -272,7 +383,7 @@ const ChatBot = () => {
                         🤖 What's your experience with AI and machine learning?
                       </button>
                       <button
-                        onClick={() => setInputMessage("How can I contact you?")}
+                        onClick={() => handleSuggestedQuestion("How can I contact you?")}
                         className="text-left p-2 rounded-lg border transition-all duration-200 hover:scale-105 text-xs"
                         style={{
                           background: currentTheme.primary + '10',
