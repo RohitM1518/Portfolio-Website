@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import { Outlet, useLocation } from 'react-router-dom'
 import { Header, Footer, ScrollToTop } from './components'
+import ChatBot from './components/ChatBot'
 import { ThemeProvider } from './context/ThemeContext'
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <div className='w-full h-20'></div>
           <Outlet />
           <Footer />
+          <ChatBot />
         </div>
       </div>
     </ThemeProvider>

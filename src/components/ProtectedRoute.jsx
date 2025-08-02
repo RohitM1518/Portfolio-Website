@@ -1,49 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 
 const ProtectedRoute = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
-  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const { currentTheme } = useTheme();
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const storedAuth = localStorage.getItem('isAuthenticated');
-        const adminData = localStorage.getItem('admin');
-
-        if (!storedAuth || !adminData) {
-          setIsAuthenticated(false);
-          setLoading(false);
-          return;
-        }
-
-        // Verify token with backend
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/me`, {
-          credentials: 'include',
-        });
-
-        if (response.ok) {
-          setIsAuthenticated(true);
-        } else {
-          // Clear invalid auth data
-          localStorage.removeItem('admin');
-          localStorage.removeItem('isAuthenticated');
-          setIsAuthenticated(false);
-        }
-      } catch (error) {
-        console.error('Auth check error:', error);
-        setIsAuthenticated(false);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
-  }, []);
+  const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
     return (

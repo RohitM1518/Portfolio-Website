@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
-import { RouterProvider, createBrowserRouter, useLocation } from 'react-router-dom'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import About from './pages/About.jsx'
 import Projects from './pages/Projects.jsx'
 import Skills from './pages/Skills.jsx'
@@ -12,7 +12,9 @@ import Home from './pages/Home.jsx'
 import Login from './pages/Login.jsx'
 import AdminDashboard from './pages/AdminDashboard.jsx'
 import AdminSettings from './pages/AdminSettings.jsx'
-import { AdminLayout, ProtectedRoute } from './components'
+import DocumentManager from './pages/DocumentManager.jsx'
+import { ProtectedRoute } from './components'
+import { AuthProvider } from './context/AuthContext'
 
 const router=createBrowserRouter([
   {
@@ -43,23 +45,21 @@ const router=createBrowserRouter([
         path: '/contact',
         element: <Contact />,
       },
-    ],
-  },
-  {
-    path: '/admin',
-    element: <AdminLayout />,
-    children: [
       {
-        path: 'login',
+        path: '/admin/login',
         element: <Login />,
       },
       {
-        path: 'dashboard',
+        path: '/admin/dashboard',
         element: <ProtectedRoute><AdminDashboard /></ProtectedRoute>,
       },
       {
-        path: 'settings',
+        path: '/admin/settings',
         element: <ProtectedRoute><AdminSettings /></ProtectedRoute>,
+      },
+      {
+        path: '/admin/documents',
+        element: <ProtectedRoute><DocumentManager /></ProtectedRoute>,
       },
     ],
   },
@@ -67,6 +67,8 @@ const router=createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <AuthProvider>
+      <RouterProvider router={router}/>
+    </AuthProvider>
   </React.StrictMode>,
 )

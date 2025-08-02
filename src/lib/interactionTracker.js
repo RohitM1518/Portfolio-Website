@@ -46,7 +46,7 @@ class InteractionTracker {
       metadata: {
         ...metadata,
         downloadTime: new Date().toISOString(),
-        fileType: 'pdf',
+        fileType: 'document',
         userAgent: navigator.userAgent,
         url: window.location.href
       }

@@ -1,17 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Settings, BarChart3 } from 'lucide-react'
+import { Menu, X, Settings, BarChart3, FileText } from 'lucide-react'
 import ColorPicker from './ColorPicker'
 import { useTheme } from '../context/ThemeContext'
+import { useAuth } from '../context/AuthContext'
 import { useInteractionTracking } from '../hooks/useInteractionTracking.js'
 
 const Header = () => {
     const { currentTheme } = useTheme();
     const { trackButtonClick } = useInteractionTracking();
+    const { isAuthenticated } = useAuth();
     
     // Check if admin is logged in
-    const isAdminLoggedIn = localStorage.getItem('admin') && localStorage.getItem('isAuthenticated');
+    const isAdminLoggedIn = isAuthenticated;
     
     const linkItems = [
         { name: 'Home', link: '/' },
@@ -24,6 +26,7 @@ const Header = () => {
     
     const adminLinkItems = [
         { name: 'Dashboard', link: '/admin/dashboard', icon: <BarChart3 size={16} /> },
+        { name: 'Documents', link: '/admin/documents', icon: <FileText size={16} /> },
         { name: 'Settings', link: '/admin/settings', icon: <Settings size={16} /> }
     ]
 
@@ -222,6 +225,8 @@ const Header = () => {
                                               })}
                                             className={({ isActive }) => 
                                                 `relative transition-colors duration-300 font-medium font-mono flex items-center gap-2 ${
+                                                    item.isProminent ? 'px-3 py-1 rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30' : ''
+                                                } ${
                                                     isActive ? '' : ''
                                                 }`
                                             }

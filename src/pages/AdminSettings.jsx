@@ -158,21 +158,13 @@ const AdminSettings = () => {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--color-backgroundGradient)' }}>
-      <div className="max-w-7xl mx-auto px-6 py-20">
-        {/* Header */}
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Logout Button */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex justify-between items-center mb-8"
+          className="flex justify-end items-center mb-8"
         >
-          <div>
-            <h1 className="text-3xl font-bold mb-2" style={{ color: currentTheme.text }}>
-              Admin Settings
-            </h1>
-            <p className="text-sm" style={{ color: currentTheme.textSecondary }}>
-              Manage your admin account and preferences
-            </p>
-          </div>
           <button
             onClick={handleLogout}
             className="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors hover:scale-105"

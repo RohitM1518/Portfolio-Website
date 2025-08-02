@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Lock, User } from 'lucide-react';
+import { User, Lock, Eye, EyeOff } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { currentTheme } = useTheme();
+  const { login } = useAuth();
+  
   const [formData, setFormData] = useState({
     username: '',
     password: ''
@@ -12,8 +17,6 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const navigate = useNavigate();
-  const { currentTheme } = useTheme();
 
   const handleInputChange = (e) => {
     setFormData({
@@ -29,27 +32,14 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+      const result = await login(formData.username, formData.password);
+      
+      if (result.success) {
+        // Redirect to admin dashboard
+        navigate('/admin/dashboard');
+      } else {
+        setError(result.message || 'Login failed. Please try again.');
       }
-
-      // Store admin info in localStorage
-      localStorage.setItem('admin', JSON.stringify(data.data.admin));
-      localStorage.setItem('isAuthenticated', 'true');
-
-      // Redirect to admin dashboard
-      navigate('/admin/dashboard');
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.');
     } finally {
