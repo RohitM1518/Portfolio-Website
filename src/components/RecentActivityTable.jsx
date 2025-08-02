@@ -444,7 +444,7 @@ const RecentActivityTable = () => {
                   interactions.map((interaction) => (
                     <tr
                       key={interaction._id}
-                      className="transition-colors hover:bg-gray-50"
+                      className="transition-colors"
                     >
                       <td className="px-4 py-4">
                         <div className="flex items-center space-x-3">

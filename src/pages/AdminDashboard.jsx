@@ -15,7 +15,8 @@ import {
   Clock,
   Filter,
   AlertTriangle,
-  Settings
+  Settings,
+  Bot
 } from 'lucide-react';
 import { 
   LineChart, 
@@ -348,6 +349,50 @@ const AdminDashboard = () => {
               </div>
             </div>
           </div>
+
+          {/* Chatbot Analytics */}
+          <div
+            className="p-6 rounded-xl transition-all duration-300 hover:scale-105"
+            style={{
+              background: `linear-gradient(135deg, ${currentTheme.primary}20, ${currentTheme.secondary}20)`,
+              border: `1px solid ${currentTheme.primary}30`,
+              backdropFilter: 'blur(10px)'
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium" style={{ color: currentTheme.textSecondary }}>
+                  Chatbot Sessions
+                </p>
+                <p className="text-2xl font-bold mt-1" style={{ color: currentTheme.text }}>
+                  {stats?.chatbot?.totalSessions || 0}
+                </p>
+                <p className="text-xs mt-1" style={{ color: currentTheme.textSecondary }}>
+                  {stats?.chatbot?.totalMessages || 0} total messages
+                </p>
+                <p className="text-xs" style={{ color: currentTheme.textSecondary }}>
+                  {stats?.chatbot?.recentSessions || 0} in last {stats?.dateRange?.days || 30} days
+                </p>
+                <button
+                  onClick={() => navigate('/admin/chat-conversations')}
+                  className="mt-2 text-xs px-3 py-1 rounded-lg transition-colors hover:scale-105"
+                  style={{
+                    background: currentTheme.primary + '30',
+                    color: currentTheme.primary,
+                    border: `1px solid ${currentTheme.primary}50`
+                  }}
+                >
+                  View Conversations →
+                </button>
+              </div>
+              <div
+                className="p-3 rounded-lg"
+                style={{ background: '#06b6d420' }}
+              >
+                <Bot size={24} style={{ color: '#06b6d4' }} />
+              </div>
+            </div>
+          </div>
         </motion.div>
 
         {/* Charts Section */}
@@ -495,6 +540,98 @@ const AdminDashboard = () => {
               </ResponsiveContainer>
             )}
           </div>
+        </motion.div>
+
+        {/* Recent Chat Conversations */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="p-6 rounded-xl mb-8"
+          style={{
+            background: `linear-gradient(135deg, ${currentTheme.primary}10, ${currentTheme.secondary}10)`,
+            border: `1px solid ${currentTheme.primary}20`,
+            backdropFilter: 'blur(10px)'
+          }}
+        >
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold" style={{ color: currentTheme.text }}>
+              Recent Chat Conversations
+            </h3>
+            <div className="flex items-center space-x-2">
+              <Bot size={20} style={{ color: currentTheme.primary }} />
+              <span className="text-sm" style={{ color: currentTheme.textSecondary }}>
+                {stats?.chatbot?.recentConversations?.length || 0} conversations
+              </span>
+            </div>
+          </div>
+
+          {stats?.chatbot?.recentConversations?.length > 0 ? (
+            <div className="space-y-4">
+              {stats.chatbot.recentConversations.map((chat, index) => (
+                <motion.div
+                  key={chat.sessionId}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="p-4 rounded-lg border transition-all duration-200 hover:scale-[1.02]"
+                  style={{
+                    background: currentTheme.surface + '80',
+                    borderColor: currentTheme.primary + '20'
+                  }}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-3 mb-2">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-2 h-2 rounded-full" style={{ background: currentTheme.primary }}></div>
+                          <span className="text-sm font-medium" style={{ color: currentTheme.text }}>
+                            Session {chat.sessionId.substring(0, 8)}...
+                          </span>
+                        </div>
+                        <span className="text-xs px-2 py-1 rounded-full" style={{ 
+                          background: currentTheme.primary + '20', 
+                          color: currentTheme.primary 
+                        }}>
+                          {chat.totalMessages} messages
+                        </span>
+                      </div>
+                      
+                      <div className="space-y-1">
+                        <p className="text-sm" style={{ color: currentTheme.textSecondary }}>
+                          <span className="font-medium">First question:</span> {chat.firstUserMessage}
+                        </p>
+                        <p className="text-sm" style={{ color: currentTheme.textSecondary }}>
+                          <span className="font-medium">Last message:</span> {chat.lastMessage}
+                        </p>
+                      </div>
+                      
+                      <div className="flex items-center space-x-4 mt-3 text-xs" style={{ color: currentTheme.textSecondary }}>
+                        <span>👤 {chat.userMessageCount} user messages</span>
+                        <span>🤖 {chat.aiMessageCount} AI responses</span>
+                        {chat.duration > 0 && <span>⏱️ {chat.duration} min duration</span>}
+                      </div>
+                    </div>
+                    
+                    <div className="text-right text-xs" style={{ color: currentTheme.textSecondary }}>
+                      <p>{new Date(chat.createdAt).toLocaleDateString()}</p>
+                      <p>{new Date(chat.createdAt).toLocaleTimeString()}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <Bot size={48} className="mx-auto mb-4" style={{ color: currentTheme.textSecondary }} />
+              <h3 className="text-lg font-medium mb-2" style={{ color: currentTheme.text }}>
+                No chat conversations yet
+              </h3>
+              <p style={{ color: currentTheme.textSecondary }}>
+                Chat conversations will appear here once users start interacting with NEO.
+              </p>
+            </div>
+          )}
         </motion.div>
 
         {/* Enhanced Recent Activity */}

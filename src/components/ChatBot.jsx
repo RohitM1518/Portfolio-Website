@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, User } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, User, Hand } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 const ChatBot = () => {
@@ -8,6 +8,9 @@ const ChatBot = () => {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId] = useState(() => `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+  const [showPulse, setShowPulse] = useState(true);
+  const [showHiMessage, setShowHiMessage] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
   const { currentTheme } = useTheme();
@@ -23,6 +26,22 @@ const ChatBot = () => {
   useEffect(() => {
     if (isOpen) {
       inputRef.current?.focus();
+    }
+  }, [isOpen]);
+
+  // Animation effect for the chat icon
+  useEffect(() => {
+    const pulseInterval = setInterval(() => {
+      setShowPulse(prev => !prev);
+    }, 3000); // Pulse every 3 seconds
+
+    return () => clearInterval(pulseInterval);
+  }, []);
+
+  // Stop pulse when chat is opened
+  useEffect(() => {
+    if (isOpen) {
+      setShowPulse(false);
     }
   }, [isOpen]);
 
@@ -268,18 +287,109 @@ const ChatBot = () => {
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes wave {
+          0%, 100% {
+            transform: rotate(0deg);
+          }
+          25% {
+            transform: rotate(-10deg);
+          }
+          75% {
+            transform: rotate(10deg);
+          }
+        }
+      `}</style>
+      
       {/* Chat Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-110"
+        onMouseEnter={() => {
+          setIsHovered(true);
+          setShowHiMessage(true);
+        }}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          setTimeout(() => setShowHiMessage(false), 2000); // Keep message visible for 2 seconds
+        }}
+        className={`rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110 relative ${
+          showPulse && !isOpen && messages.length === 0 ? 'animate-pulse' : ''
+        }`}
         style={{ 
           background: currentTheme.primary,
           color: 'white'
         }}
         aria-label="Toggle chat"
       >
-        {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
+        {isOpen ? <X size={24} /> : (isHovered ? 
+          <Bot 
+            size={24} 
+            style={{ 
+              animation: 'wave 0.6s ease-in-out infinite',
+              transformOrigin: 'center'
+            }}
+          /> : <Bot size={24} />)}
+        
+        {/* Pulse ring animation */}
+        {showPulse && !isOpen && messages.length === 0 && (
+          <div className="absolute inset-0 rounded-full animate-ping opacity-75" 
+               style={{ background: currentTheme.primary }}></div>
+        )}
       </button>
+
+      {/* Hi Message Tooltip */}
+      {showHiMessage && !isOpen && messages.length === 0 && (
+        <div 
+          className="absolute bottom-16 right-0 mb-2 p-3 rounded-lg shadow-lg border transition-all duration-300"
+          style={{
+            background: currentTheme.cardBackground,
+            borderColor: currentTheme.primary + '30',
+            backdropFilter: 'blur(10px)',
+            minWidth: '200px',
+            animation: 'fadeIn 0.3s ease-in-out forwards'
+          }}
+        >
+          <div className="flex items-center space-x-2">
+            <Bot 
+              size={16} 
+              style={{ 
+                color: currentTheme.primary,
+                animation: 'wave 0.6s ease-in-out infinite',
+                transformOrigin: 'center'
+              }} 
+            />
+            <div>
+              <p className="font-medium text-sm" style={{ color: currentTheme.text }}>
+                I am NEO, Rohit's assistant
+              </p>
+              <p className="text-xs" style={{ color: currentTheme.textSecondary }}>
+                Click to chat with me!
+              </p>
+            </div>
+          </div>
+          
+          {/* Arrow pointing to button */}
+          <div 
+            className="absolute -bottom-1 right-4 w-2 h-2 transform rotate-45"
+            style={{ 
+              background: currentTheme.cardBackground,
+              borderRight: `1px solid ${currentTheme.primary}30`,
+              borderBottom: `1px solid ${currentTheme.primary}30`
+            }}
+          ></div>
+        </div>
+      )}
 
       {/* Chat Window */}
       {isOpen && (
@@ -417,9 +527,12 @@ const ChatBot = () => {
                       )}
                       <div className="flex-1">
                         <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                        <p className="text-xs opacity-70 mt-1">
-                          {new Date(message.timestamp).toLocaleTimeString()}
-                        </p>
+                        {/* Only show timestamp if message has content */}
+                        {message.content && (
+                          <p className="text-xs opacity-70 mt-1">
+                            {new Date(message.timestamp).toLocaleTimeString()}
+                          </p>
+                        )}
                       </div>
                       {message.role === 'user' && (
                         <User size={16} className="mt-1 flex-shrink-0" />
@@ -429,7 +542,8 @@ const ChatBot = () => {
                 </div>
               ))}
               
-              {isLoading && (
+              {/* Only show loading indicator if no AI message is being processed */}
+              {isLoading && !messages.some(msg => msg.role === 'assistant' && !msg.content) && (
                 <div className="flex justify-start">
                   <div 
                     className="max-w-[80%] p-3 rounded-lg"

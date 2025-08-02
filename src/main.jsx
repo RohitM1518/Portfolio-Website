@@ -13,6 +13,7 @@ import Login from './pages/Login.jsx'
 import AdminDashboard from './pages/AdminDashboard.jsx'
 import AdminSettings from './pages/AdminSettings.jsx'
 import DocumentManager from './pages/DocumentManager.jsx'
+import ChatConversationsTable from './components/ChatConversationsTable.jsx'
 import { ProtectedRoute } from './components'
 import { AuthProvider } from './context/AuthContext'
 
@@ -60,6 +61,10 @@ const router=createBrowserRouter([
       {
         path: '/admin/documents',
         element: <ProtectedRoute><DocumentManager /></ProtectedRoute>,
+      },
+      {
+        path: '/admin/chat-conversations',
+        element: <ProtectedRoute><ChatConversationsTable /></ProtectedRoute>,
       },
     ],
   },
