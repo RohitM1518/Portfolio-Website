@@ -196,7 +196,7 @@ const ChatBot = () => {
             >
               <div className="flex items-center space-x-2">
                 <Bot size={20} />
-                <span className="font-semibold">Portfolio Assistant</span>
+                <span className="font-semibold">NEO</span>
               </div>
               <div className="flex items-center space-x-2">
                 <button
@@ -227,7 +227,64 @@ const ChatBot = () => {
               {messages.length === 0 && (
                 <div className="text-center text-sm" style={{ color: currentTheme.textSecondary }}>
                   <Bot size={32} className="mx-auto mb-2" style={{ color: currentTheme.textSecondary }} />
-                  <p>Hi! I'm your portfolio assistant. Ask me anything about my projects, skills, or experience!</p>
+                  <p>Hi! I'm NEO, your AI assistant. Ask me anything about my projects, skills, or experience!</p>
+                  
+                  {/* Suggested Questions */}
+                  <div className="mt-6 space-y-2">
+                    <p className="text-xs font-medium mb-3" style={{ color: currentTheme.textSecondary }}>
+                      Try asking me about:
+                    </p>
+                    <div className="grid grid-cols-1 gap-2">
+                      <button
+                        onClick={() => setInputMessage("Tell me about your projects")}
+                        className="text-left p-2 rounded-lg border transition-all duration-200 hover:scale-105 text-xs"
+                        style={{
+                          background: currentTheme.primary + '10',
+                          borderColor: currentTheme.primary + '30',
+                          color: currentTheme.text,
+                          border: `1px solid ${currentTheme.primary}30`
+                        }}
+                      >
+                        💼 Tell me about your projects
+                      </button>
+                      <button
+                        onClick={() => setInputMessage("What technologies do you work with?")}
+                        className="text-left p-2 rounded-lg border transition-all duration-200 hover:scale-105 text-xs"
+                        style={{
+                          background: currentTheme.primary + '10',
+                          borderColor: currentTheme.primary + '30',
+                          color: currentTheme.text,
+                          border: `1px solid ${currentTheme.primary}30`
+                        }}
+                      >
+                        🛠️ What technologies do you work with?
+                      </button>
+                      <button
+                        onClick={() => setInputMessage("What's your experience with AI and machine learning?")}
+                        className="text-left p-2 rounded-lg border transition-all duration-200 hover:scale-105 text-xs"
+                        style={{
+                          background: currentTheme.primary + '10',
+                          borderColor: currentTheme.primary + '30',
+                          color: currentTheme.text,
+                          border: `1px solid ${currentTheme.primary}30`
+                        }}
+                      >
+                        🤖 What's your experience with AI and machine learning?
+                      </button>
+                      <button
+                        onClick={() => setInputMessage("How can I contact you?")}
+                        className="text-left p-2 rounded-lg border transition-all duration-200 hover:scale-105 text-xs"
+                        style={{
+                          background: currentTheme.primary + '10',
+                          borderColor: currentTheme.primary + '30',
+                          color: currentTheme.text,
+                          border: `1px solid ${currentTheme.primary}30`
+                        }}
+                      >
+                        📧 How can I contact you?
+                      </button>
+                    </div>
+                  </div>
                 </div>
               )}
               
