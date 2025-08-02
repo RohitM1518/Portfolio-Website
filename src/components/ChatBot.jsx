@@ -43,41 +43,95 @@ const ChatBot = () => {
 
     setMessages(prev => [...prev, newUserMessage]);
 
+    // Add a placeholder for the AI response
+    const aiMessageId = Date.now() + 1;
+    const newAiMessage = {
+      id: aiMessageId,
+      role: 'assistant',
+      content: '',
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, newAiMessage]);
+
     try {
+      // Create request body
+      const requestBody = {
+        message: userMessage,
+        sessionId: sessionId
+      };
+
+      // Use streaming endpoint
       const response = await fetch(`${import.meta.env.VITE_API_URL}/chat/send`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          message: userMessage,
-          sessionId: sessionId
-        }),
+        body: JSON.stringify(requestBody),
       });
 
-      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-      if (data.success) {
-        const aiMessage = {
-          id: Date.now() + 1,
-          role: 'assistant',
-          content: data.data.message,
-          timestamp: new Date()
-        };
+      // Handle streaming response
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
 
-        setMessages(prev => [...prev, aiMessage]);
-      } else {
-        throw new Error(data.message || 'Failed to send message');
+      while (true) {
+        const { done, value } = await reader.read();
+        
+        if (done) break;
+        
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || ''; // Keep incomplete line in buffer
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              
+              if (data.type === 'chunk') {
+                // Update the AI message with the new chunk
+                setMessages(prev => prev.map(msg => 
+                  msg.id === aiMessageId 
+                    ? { ...msg, content: msg.content + data.content }
+                    : msg
+                ));
+              } else if (data.type === 'complete') {
+                // Finalize the AI message
+                setMessages(prev => prev.map(msg => 
+                  msg.id === aiMessageId 
+                    ? { ...msg, content: data.message }
+                    : msg
+                ));
+              } else if (data.type === 'error') {
+                // Handle error
+                setMessages(prev => prev.map(msg => 
+                  msg.id === aiMessageId 
+                    ? { ...msg, content: data.message }
+                    : msg
+                ));
+              }
+            } catch (error) {
+              console.error('Error parsing SSE data:', error);
+            }
+          }
+        }
       }
     } catch (error) {
       console.error('Error sending message:', error);
       const errorMessage = {
-        id: Date.now() + 1,
+        id: aiMessageId,
         role: 'assistant',
         content: 'Sorry, I encountered an error. Please try again.',
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages(prev => prev.map(msg => 
+        msg.id === aiMessageId ? errorMessage : msg
+      ));
     } finally {
       setIsLoading(false);
     }
@@ -258,9 +312,9 @@ const ChatBot = () => {
                   placeholder="Type your message..."
                   className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   style={{
-                    background: currentTheme.inputBackground,
-                    borderColor: currentTheme.border,
-                    color: currentTheme.text
+                    background: '#000000',
+                    borderColor: currentTheme.primary + '30',
+                    color: '#ffffff'
                   }}
                   disabled={isLoading}
                 />
