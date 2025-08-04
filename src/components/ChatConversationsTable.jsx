@@ -580,6 +580,44 @@ const ChatConversationsTable = () => {
                             <p className="text-xs opacity-70 mt-1">
                               {formatDate(message.timestamp)}
                             </p>
+                            
+                            {/* RAG Results for Assistant Messages */}
+                            {message.role === 'assistant' && message.ragResults && message.ragResults.length > 0 && (
+                              <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+                                <details className="group">
+                                  <summary className="cursor-pointer text-xs font-medium opacity-80 hover:opacity-100 transition-opacity">
+                                    📚 View RAG Sources ({message.ragResults.length} documents)
+                                  </summary>
+                                  <div className="mt-2 space-y-2">
+                                    {message.ragResults.map((doc, docIndex) => (
+                                      <div 
+                                        key={docIndex}
+                                        className="p-2 rounded text-xs"
+                                        style={{ 
+                                          background: currentTheme.surface + '60',
+                                          border: `1px solid ${currentTheme.border}`
+                                        }}
+                                      >
+                                        <div className="flex justify-between items-start mb-1">
+                                          <span className="font-medium">{doc.documentTitle || `Document ${docIndex + 1}`}</span>
+                                          <span className="text-xs opacity-70">
+                                            Similarity: {(doc.similarity * 100).toFixed(1)}%
+                                          </span>
+                                        </div>
+                                        <p className="text-xs opacity-90 line-clamp-3">
+                                          {doc.content}
+                                        </p>
+                                        {doc.pageNumber && (
+                                          <p className="text-xs opacity-60 mt-1">
+                                            Page: {doc.pageNumber}
+                                          </p>
+                                        )}
+                                      </div>
+                                    ))}
+                                  </div>
+                                </details>
+                              </div>
+                            )}
                           </div>
                           {message.role === 'user' && (
                             <User size={16} className="mt-1 flex-shrink-0" />
