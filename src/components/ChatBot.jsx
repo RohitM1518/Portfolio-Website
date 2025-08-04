@@ -62,6 +62,9 @@ const ChatBot = () => {
 
     setMessages(prev => [...prev, newUserMessage]);
 
+    // Small delay to show thinking indicator before creating AI message
+    await new Promise(resolve => setTimeout(resolve, 100));
+
     // Add a placeholder for the AI response
     const aiMessageId = Date.now() + 1;
     const newAiMessage = {
@@ -186,6 +189,9 @@ const ChatBot = () => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+
+    // Small delay to show thinking indicator before creating AI message
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     // Add a placeholder for the AI response
     const aiMessageId = Date.now() + 1;
@@ -402,12 +408,14 @@ const ChatBot = () => {
           
           {/* Chat Container */}
           <div 
-            className="fixed bottom-4 right-4 w-80 h-[600px] md:h-[700px] rounded-lg shadow-xl border flex flex-col md:absolute md:bottom-16 md:right-0 md:w-96 lg:w-[450px] md:h-[600px]"
+            className="fixed bottom-4 right-4 w-[350px] h-[500px] sm:w-[400px] sm:h-[550px] md:w-[450px] md:h-[600px] lg:w-[500px] lg:h-[650px] xl:w-[550px] xl:h-[700px] rounded-lg shadow-xl border flex flex-col"
             style={{ 
               background: currentTheme.cardBackground,
               borderColor: currentTheme.border,
               backdropFilter: 'blur(10px)',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+              maxHeight: 'calc(100vh - 2rem)',
+              maxWidth: 'calc(100vw - 2rem)'
             }}
           >
             {/* Header */}
@@ -422,7 +430,7 @@ const ChatBot = () => {
               <div className="flex items-center space-x-2">
                 <button
                   onClick={clearChat}
-                  className="text-xs px-2 py-1 rounded transition-colors"
+                  className="text-xs px-2 py-1 rounded transition-colors hover:bg-white hover:bg-opacity-20"
                   style={{ 
                     background: 'rgba(255, 255, 255, 0.2)',
                     color: 'white'
@@ -444,7 +452,7 @@ const ChatBot = () => {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-0">
               {messages.length === 0 && (
                 <div className="text-center text-sm" style={{ color: currentTheme.textSecondary }}>
                   <Bot size={32} className="mx-auto mb-2" style={{ color: currentTheme.textSecondary }} />
@@ -515,9 +523,9 @@ const ChatBot = () => {
                   className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className="max-w-[80%] p-3 rounded-lg"
+                    className="max-w-[85%] p-3 rounded-lg"
                     style={{
-                      background: currentTheme.primary,
+                      background: message.role === 'user' ? currentTheme.primary : currentTheme.primary + '80',
                       color: 'white'
                     }}
                   >
@@ -526,12 +534,40 @@ const ChatBot = () => {
                         <Bot size={16} className="mt-1 flex-shrink-0" />
                       )}
                       <div className="flex-1">
-                        <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                        {/* Only show timestamp if message has content */}
-                        {message.content && (
-                          <p className="text-xs opacity-70 mt-1">
-                            {new Date(message.timestamp).toLocaleTimeString()}
-                          </p>
+                        {message.role === 'assistant' && !message.content ? (
+                          // Show thinking indicator for empty AI messages
+                          <div className="flex items-center space-x-1">
+                            <div className="flex space-x-1">
+                              <div 
+                                className="w-2 h-2 rounded-full animate-bounce"
+                                style={{ background: 'white' }}
+                              ></div>
+                              <div 
+                                className="w-2 h-2 rounded-full animate-bounce" 
+                                style={{ 
+                                  background: 'white',
+                                  animationDelay: '0.1s' 
+                                }}
+                              ></div>
+                              <div 
+                                className="w-2 h-2 rounded-full animate-bounce" 
+                                style={{ 
+                                  background: 'white',
+                                  animationDelay: '0.2s' 
+                                }}
+                              ></div>
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                            <p className="text-sm whitespace-pre-wrap break-words">{message.content}</p>
+                            {/* Only show timestamp if message has content */}
+                            {message.content && (
+                              <p className="text-xs opacity-70 mt-1">
+                                {new Date(message.timestamp).toLocaleTimeString()}
+                              </p>
+                            )}
+                          </>
                         )}
                       </div>
                       {message.role === 'user' && (
@@ -542,42 +578,7 @@ const ChatBot = () => {
                 </div>
               ))}
               
-              {/* Only show loading indicator if no AI message is being processed */}
-              {isLoading && !messages.some(msg => msg.role === 'assistant' && !msg.content) && (
-                <div className="flex justify-start">
-                  <div 
-                    className="max-w-[80%] p-3 rounded-lg"
-                    style={{ 
-                      background: currentTheme.primary,
-                      color: 'white'
-                    }}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <Bot size={16} className="mt-1" />
-                      <div className="flex space-x-1">
-                        <div 
-                          className="w-2 h-2 rounded-full animate-bounce"
-                          style={{ background: currentTheme.textSecondary }}
-                        ></div>
-                        <div 
-                          className="w-2 h-2 rounded-full animate-bounce" 
-                          style={{ 
-                            background: currentTheme.textSecondary,
-                            animationDelay: '0.1s' 
-                          }}
-                        ></div>
-                        <div 
-                          className="w-2 h-2 rounded-full animate-bounce" 
-                          style={{ 
-                            background: currentTheme.textSecondary,
-                            animationDelay: '0.2s' 
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+
               
               <div ref={messagesEndRef} />
             </div>
@@ -592,18 +593,18 @@ const ChatBot = () => {
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Type your message..."
-                  className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                   style={{
-                    background: '#000000',
+                    background: currentTheme.inputBackground || '#ffffff',
                     borderColor: currentTheme.primary + '30',
-                    color: '#ffffff'
+                    color: currentTheme.text
                   }}
                   disabled={isLoading}
                 />
                 <button
                   onClick={sendMessage}
                   disabled={!inputMessage.trim() || isLoading}
-                  className="p-2 rounded-lg transition-colors"
+                  className="p-2 rounded-lg transition-colors disabled:opacity-50"
                   style={{
                     background: !inputMessage.trim() || isLoading 
                       ? currentTheme.disabled 
