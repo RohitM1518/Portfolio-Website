@@ -36,6 +36,7 @@ import {
   Area
 } from 'recharts';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 import { RecentActivityTable } from '../components';
 
 const AdminDashboard = () => {
@@ -47,6 +48,7 @@ const AdminDashboard = () => {
   const [alertsLoading, setAlertsLoading] = useState(false);
   const navigate = useNavigate();
   const { currentTheme } = useTheme();
+  const { token } = useAuth();
 
   // Chart colors that work well with the theme
   const chartColors = [
@@ -70,14 +72,15 @@ const AdminDashboard = () => {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/admin/dashboard/stats?days=${dateRange}`,
         {
-          credentials: 'include',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         }
       );
 
       if (!response.ok) {
         if (response.status === 401) {
-          localStorage.removeItem('admin');
-          localStorage.removeItem('isAuthenticated');
+          localStorage.removeItem('adminToken');
           navigate('/admin/login');
           return;
         }
@@ -101,7 +104,9 @@ const AdminDashboard = () => {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/notifications/dashboard-alerts`,
         {
-          credentials: 'include',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         }
       );
 
@@ -120,13 +125,14 @@ const AdminDashboard = () => {
     try {
       await fetch(`${import.meta.env.VITE_API_URL}/admin/logout`, {
         method: 'POST',
-        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
     } catch (err) {
       console.error('Logout error:', err);
     } finally {
-      localStorage.removeItem('admin');
-      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('adminToken');
       navigate('/admin/login');
     }
   };

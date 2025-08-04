@@ -16,10 +16,12 @@ import {
   LogOut
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 
 const ChatConversationsTable = () => {
   const { currentTheme } = useTheme();
   const navigate = useNavigate();
+  const { token } = useAuth();
   const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState({
@@ -63,14 +65,15 @@ const ChatConversationsTable = () => {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/admin/chat-conversations?${queryParams}`,
         {
-          credentials: 'include',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         }
       );
 
       if (!response.ok) {
         if (response.status === 401) {
-          localStorage.removeItem('admin');
-          localStorage.removeItem('isAuthenticated');
+          localStorage.removeItem('adminToken');
           navigate('/admin/login');
           return;
         }
@@ -112,18 +115,18 @@ const ChatConversationsTable = () => {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/logout`, {
         method: 'POST',
-        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
 
       if (response.ok) {
-        localStorage.removeItem('admin');
-        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('adminToken');
         navigate('/admin/login');
       }
     } catch (error) {
       console.error('Logout error:', error);
-      localStorage.removeItem('admin');
-      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('adminToken');
       navigate('/admin/login');
     }
   };

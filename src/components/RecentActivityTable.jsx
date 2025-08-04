@@ -17,9 +17,11 @@ import {
   Clock
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 
 const RecentActivityTable = () => {
   const { currentTheme } = useTheme();
+  const { token } = useAuth();
   const [interactions, setInteractions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState({
@@ -69,7 +71,9 @@ const RecentActivityTable = () => {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/interactions/all?${queryParams}`,
         {
-          credentials: 'include',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         }
       );
 

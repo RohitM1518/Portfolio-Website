@@ -11,6 +11,7 @@ import {
   LogOut
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 
 const AdminSettings = () => {
   const [adminInfo, setAdminInfo] = useState(null);
@@ -24,6 +25,7 @@ const AdminSettings = () => {
   });
   const navigate = useNavigate();
   const { currentTheme } = useTheme();
+  const { token } = useAuth();
 
   useEffect(() => {
     fetchAdminInfo();
@@ -35,14 +37,15 @@ const AdminSettings = () => {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/admin/me`,
         {
-          credentials: 'include',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         }
       );
 
       if (!response.ok) {
         if (response.status === 401) {
-          localStorage.removeItem('admin');
-          localStorage.removeItem('isAuthenticated');
+          localStorage.removeItem('adminToken');
           navigate('/admin/login');
           return;
         }
@@ -63,7 +66,9 @@ const AdminSettings = () => {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/notifications/preferences`,
         {
-          credentials: 'include',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         }
       );
 
@@ -85,8 +90,8 @@ const AdminSettings = () => {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
           },
-          credentials: 'include',
           body: JSON.stringify({
             type,
             enabled,
@@ -113,13 +118,14 @@ const AdminSettings = () => {
     try {
       await fetch(`${import.meta.env.VITE_API_URL}/admin/logout`, {
         method: 'POST',
-        credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
     } catch (err) {
       console.error('Logout error:', err);
     } finally {
-      localStorage.removeItem('admin');
-      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('adminToken');
       navigate('/admin/login');
     }
   };
