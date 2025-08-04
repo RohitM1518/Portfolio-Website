@@ -16,7 +16,12 @@ import {
   Filter,
   AlertTriangle,
   Settings,
-  Bot
+  Bot,
+  ArrowRight,
+  Download,
+  MessageSquare,
+  Target,
+  Zap
 } from 'lucide-react';
 import { 
   LineChart, 
@@ -41,6 +46,7 @@ import { RecentActivityTable } from '../components';
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
+  const [enhancedStats, setEnhancedStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [dateRange, setDateRange] = useState(30);
@@ -64,6 +70,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchDashboardStats();
+    fetchEnhancedStats();
     fetchDashboardAlerts();
   }, [dateRange]);
 
@@ -95,6 +102,27 @@ const AdminDashboard = () => {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchEnhancedStats = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/admin/dashboard/enhanced-stats?days=${dateRange}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Enhanced stats received:', data.data);
+        setEnhancedStats(data.data);
+      }
+    } catch (err) {
+      console.error('Error fetching enhanced stats:', err);
     }
   };
 
@@ -400,6 +428,158 @@ const AdminDashboard = () => {
             </div>
           </div>
         </motion.div>
+
+        {/* Enhanced KPIs Section */}
+        {enhancedStats && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="mb-8"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold" style={{ color: currentTheme.text }}>
+                Enhanced Analytics
+              </h2>
+              <button
+                onClick={() => navigate('/admin/changes-since-login')}
+                className="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors hover:scale-105"
+                style={{
+                  background: currentTheme.primary + '20',
+                  color: currentTheme.primary,
+                  border: `1px solid ${currentTheme.primary}50`
+                }}
+              >
+                <Clock size={16} />
+                <span>View Changes Since Login</span>
+                <ArrowRight size={16} />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Since Last Login Card */}
+              <div
+                className="p-6 rounded-xl transition-all duration-300 hover:scale-105 cursor-pointer"
+                onClick={() => navigate('/admin/changes-since-login')}
+                style={{
+                  background: `linear-gradient(135deg, #3b82f620, #06b6d420)`,
+                  border: `1px solid #3b82f630`,
+                  backdropFilter: 'blur(10px)'
+                }}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium" style={{ color: currentTheme.textSecondary }}>
+                      Since Last Login
+                    </p>
+                    <p className="text-2xl font-bold mt-1" style={{ color: currentTheme.text }}>
+                      {enhancedStats.interactionsSinceLastLogin || 0}
+                    </p>
+                    <p className="text-xs mt-1" style={{ color: currentTheme.textSecondary }}>
+                      Interactions
+                    </p>
+                  </div>
+                  <div
+                    className="p-3 rounded-lg"
+                    style={{ background: '#3b82f620' }}
+                  >
+                    <Zap size={24} style={{ color: '#3b82f6' }} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Growth Rate Card */}
+              <div
+                className="p-6 rounded-xl transition-all duration-300 hover:scale-105"
+                style={{
+                  background: `linear-gradient(135deg, #10b98120, #05966920)`,
+                  border: `1px solid #10b98130`,
+                  backdropFilter: 'blur(10px)'
+                }}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium" style={{ color: currentTheme.textSecondary }}>
+                      Growth Rate
+                    </p>
+                    <p className="text-2xl font-bold mt-1" style={{ color: currentTheme.text }}>
+                      {enhancedStats.growth?.interactions || 0}%
+                    </p>
+                    <p className="text-xs mt-1" style={{ color: currentTheme.textSecondary }}>
+                      vs previous period
+                    </p>
+                  </div>
+                  <div
+                    className="p-3 rounded-lg"
+                    style={{ background: '#10b98120' }}
+                  >
+                    <TrendingUp size={24} style={{ color: '#10b981' }} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Chat Sessions Since Login */}
+              <div
+                className="p-6 rounded-xl transition-all duration-300 hover:scale-105"
+                style={{
+                  background: `linear-gradient(135deg, #8b5cf620, #7c3aed20)`,
+                  border: `1px solid #8b5cf630`,
+                  backdropFilter: 'blur(10px)'
+                }}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium" style={{ color: currentTheme.textSecondary }}>
+                      Chat Sessions
+                    </p>
+                    <p className="text-2xl font-bold mt-1" style={{ color: currentTheme.text }}>
+                      {enhancedStats.chatbot?.chatSessionsSinceLastLogin || 0}
+                    </p>
+                    <p className="text-xs mt-1" style={{ color: currentTheme.textSecondary }}>
+                      Since last login
+                    </p>
+                  </div>
+                  <div
+                    className="p-3 rounded-lg"
+                    style={{ background: '#8b5cf620' }}
+                  >
+                    <MessageSquare size={24} style={{ color: '#8b5cf6' }} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Resume Downloads Since Login */}
+              <div
+                className="p-6 rounded-xl transition-all duration-300 hover:scale-105"
+                style={{
+                  background: `linear-gradient(135deg, #f59e0b20, #d9770620)`,
+                  border: `1px solid #f59e0b30`,
+                  backdropFilter: 'blur(10px)'
+                }}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium" style={{ color: currentTheme.textSecondary }}>
+                      Resume Downloads
+                    </p>
+                    <p className="text-2xl font-bold mt-1" style={{ color: currentTheme.text }}>
+                      {enhancedStats.resumeDownloadsSinceLastLogin || 0}
+                    </p>
+                    <p className="text-xs mt-1" style={{ color: currentTheme.textSecondary }}>
+                      Since last login
+                    </p>
+                  </div>
+                  <div
+                    className="p-3 rounded-lg"
+                    style={{ background: '#f59e0b20' }}
+                  >
+                    <Download size={24} style={{ color: '#f59e0b' }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Charts Section */}
         <motion.div
