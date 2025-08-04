@@ -408,14 +408,14 @@ const ChatBot = () => {
           
           {/* Chat Container */}
           <div 
-            className="fixed bottom-4 right-4 w-[350px] h-[500px] sm:w-[400px] sm:h-[550px] md:w-[450px] md:h-[600px] lg:w-[500px] lg:h-[650px] xl:w-[550px] xl:h-[700px] rounded-lg shadow-xl border flex flex-col"
+            className="fixed inset-0 sm:bottom-4 sm:right-4 sm:inset-auto w-full h-full sm:w-[400px] sm:h-[550px] md:w-[450px] md:h-[600px] lg:w-[500px] lg:h-[650px] xl:w-[550px] xl:h-[700px] rounded-none sm:rounded-lg shadow-xl border flex flex-col"
             style={{ 
               background: currentTheme.cardBackground,
               borderColor: currentTheme.border,
               backdropFilter: 'blur(10px)',
               boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-              maxHeight: 'calc(100vh - 2rem)',
-              maxWidth: 'calc(100vw - 2rem)'
+              maxHeight: '100vh',
+              maxWidth: '100vw'
             }}
           >
             {/* Header */}
@@ -595,9 +595,9 @@ const ChatBot = () => {
                   placeholder="Type your message..."
                   className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                   style={{
-                    background: currentTheme.inputBackground || '#ffffff',
+                    background: '#1f2937',
                     borderColor: currentTheme.primary + '30',
-                    color: currentTheme.text
+                    color: '#ffffff'
                   }}
                   disabled={isLoading}
                 />
