@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Trash2, Edit, Plus, X } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { FileText, Trash2, Edit, Plus, X, CheckCircle, AlertCircle, Info } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 
@@ -8,9 +8,12 @@ const DocumentManager = () => {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [updating, setUpdating] = useState(false);
+  const [deleting, setDeleting] = useState({});
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
+  const [notifications, setNotifications] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -23,6 +26,17 @@ const DocumentManager = () => {
     fetchDocuments();
   }, []);
 
+  const showNotification = (message, type = 'success') => {
+    const id = Date.now();
+    const notification = { id, message, type };
+    setNotifications(prev => [...prev, notification]);
+    
+    // Auto remove after 4 seconds
+    setTimeout(() => {
+      setNotifications(prev => prev.filter(n => n.id !== id));
+    }, 4000);
+  };
+
   const fetchDocuments = async () => {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/documents`, {
@@ -33,9 +47,13 @@ const DocumentManager = () => {
       const data = await response.json();
       if (data.success) {
         setDocuments(data.data);
+        if (data.data.length > 0) {
+          showNotification(`📚 Loaded ${data.data.length} document${data.data.length === 1 ? '' : 's'} successfully!`, 'success');
+        }
       }
     } catch (error) {
       console.error('Error fetching documents:', error);
+      showNotification('❌ Failed to load documents. Please try again.', 'error');
     } finally {
       setLoading(false);
     }
@@ -44,7 +62,7 @@ const DocumentManager = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.title || !formData.content) {
-      alert('Please fill in all required fields');
+      showNotification('⚠️ Please fill in all required fields (Title and Content)', 'error');
       return;
     }
 
@@ -69,13 +87,13 @@ const DocumentManager = () => {
         setDocuments(prev => [data.data, ...prev]);
         setShowUploadModal(false);
         setFormData({ title: '', description: '', content: '' });
-        alert('Document uploaded successfully!');
+        showNotification('🎉 Document uploaded successfully! Your content is now ready for AI processing.', 'success');
       } else {
         throw new Error(data.message);
       }
     } catch (error) {
       console.error('Error uploading document:', error);
-      alert('Error uploading document: ' + error.message);
+      showNotification(`❌ Failed to upload document: ${error.message}`, 'error');
     } finally {
       setUploading(false);
     }
@@ -84,9 +102,11 @@ const DocumentManager = () => {
   const handleEdit = async (e) => {
     e.preventDefault();
     if (!selectedDocument || !formData.title) {
-      alert('Please fill in all required fields');
+      showNotification('⚠️ Please fill in all required fields (Title and Content)', 'error');
       return;
     }
+
+    setUpdating(true);
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/documents/${selectedDocument._id}`, {
@@ -110,18 +130,23 @@ const DocumentManager = () => {
         setShowEditModal(false);
         setSelectedDocument(null);
         setFormData({ title: '', description: '', content: '' });
-        alert('Document updated successfully!');
+        showNotification('✨ Document updated successfully! Your changes have been saved.', 'success');
       } else {
         throw new Error(data.message);
       }
     } catch (error) {
       console.error('Error updating document:', error);
-      alert('Error updating document: ' + error.message);
+      showNotification(`❌ Failed to update document: ${error.message}`, 'error');
+    } finally {
+      setUpdating(false);
     }
   };
 
   const handleDelete = async (documentId) => {
-    if (!confirm('Are you sure you want to delete this document?')) return;
+    const documentToDelete = documents.find(doc => doc._id === documentId);
+    if (!confirm(`Are you sure you want to delete "${documentToDelete?.title}"? This action cannot be undone.`)) return;
+
+    setDeleting(prev => ({ ...prev, [documentId]: true }));
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/documents/${documentId}`, {
@@ -134,13 +159,15 @@ const DocumentManager = () => {
       const data = await response.json();
       if (data.success) {
         setDocuments(prev => prev.filter(doc => doc._id !== documentId));
-        alert('Document deleted successfully!');
+        showNotification('🗑️ Document deleted successfully! The content has been removed from your library.', 'success');
       } else {
         throw new Error(data.message);
       }
     } catch (error) {
       console.error('Error deleting document:', error);
-      alert('Error deleting document: ' + error.message);
+      showNotification(`❌ Failed to delete document: ${error.message}`, 'error');
+    } finally {
+      setDeleting(prev => ({ ...prev, [documentId]: false }));
     }
   };
 
@@ -178,6 +205,66 @@ const DocumentManager = () => {
       className="min-h-screen p-6"
       style={{ background: 'var(--color-backgroundGradient)' }}
     >
+      {/* Notifications */}
+      <AnimatePresence>
+        {notifications.map((notification) => (
+          <motion.div
+            key={notification.id}
+            initial={{ opacity: 0, y: -50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -50, scale: 0.9 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="fixed top-4 right-4 z-50 max-w-sm"
+          >
+            <div
+              className={`p-4 rounded-lg shadow-lg border-l-4 flex items-start space-x-3 ${
+                notification.type === 'success' 
+                  ? 'bg-green-50 border-green-500 text-green-800' 
+                  : notification.type === 'error'
+                  ? 'bg-red-50 border-red-500 text-red-800'
+                  : 'bg-blue-50 border-blue-500 text-blue-800'
+              }`}
+              style={{
+                background: notification.type === 'success' 
+                  ? 'rgba(34, 197, 94, 0.1)' 
+                  : notification.type === 'error'
+                  ? 'rgba(239, 68, 68, 0.1)'
+                  : 'rgba(59, 130, 246, 0.1)',
+                borderColor: notification.type === 'success' 
+                  ? '#10b981' 
+                  : notification.type === 'error'
+                  ? '#ef4444'
+                  : '#3b82f6',
+                color: notification.type === 'success' 
+                  ? '#065f46' 
+                  : notification.type === 'error'
+                  ? '#991b1b'
+                  : '#1e40af'
+              }}
+            >
+              <div className="flex-shrink-0 mt-0.5">
+                {notification.type === 'success' ? (
+                  <CheckCircle size={20} className="text-green-600" />
+                ) : notification.type === 'error' ? (
+                  <AlertCircle size={20} className="text-red-600" />
+                ) : (
+                  <Info size={20} className="text-blue-600" />
+                )}
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-medium">{notification.message}</p>
+              </div>
+              <button
+                onClick={() => setNotifications(prev => prev.filter(n => n.id !== notification.id))}
+                className="flex-shrink-0 ml-2 text-gray-400 hover:text-gray-600"
+              >
+                <X size={16} />
+              </button>
+            </div>
+          </motion.div>
+        ))}
+      </AnimatePresence>
+
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -212,13 +299,37 @@ const DocumentManager = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="rounded-xl shadow-md p-6 transition-all duration-300 hover:scale-[1.02]"
+              className="rounded-xl shadow-md p-6 transition-all duration-300 hover:scale-[1.02] relative"
               style={{ 
                 background: `linear-gradient(135deg, ${currentTheme.primary}10, ${currentTheme.primary}20)`,
                 border: `1px solid ${currentTheme.primary}20`,
                 backdropFilter: 'blur(10px)'
               }}
             >
+              {deleting[document._id] && (
+                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-xl flex items-center justify-center z-10">
+                  <div className="text-center">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      className="w-8 h-8 border-4 border-white border-t-transparent rounded-full mx-auto mb-2"
+                    />
+                    <p className="text-white text-sm">Deleting...</p>
+                  </div>
+                </div>
+              )}
+              {updating && selectedDocument?._id === document._id && (
+                <div className="absolute inset-0 bg-black bg-opacity-30 rounded-xl flex items-center justify-center z-10">
+                  <div className="text-center">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      className="w-6 h-6 border-3 border-white border-t-transparent rounded-full mx-auto mb-2"
+                    />
+                    <p className="text-white text-xs">Updating...</p>
+                  </div>
+                </div>
+              )}
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
                   <FileText size={24} style={{ color: currentTheme.primary }} />
@@ -239,6 +350,7 @@ const DocumentManager = () => {
                     onClick={() => openEditModal(document)}
                     className="transition-colors"
                     style={{ color: currentTheme.textSecondary }}
+                    disabled={deleting[document._id]}
                   >
                     <Edit size={16} />
                   </button>
@@ -246,8 +358,17 @@ const DocumentManager = () => {
                     onClick={() => handleDelete(document._id)}
                     className="transition-colors"
                     style={{ color: currentTheme.textSecondary }}
+                    disabled={deleting[document._id]}
                   >
-                    <Trash2 size={16} />
+                    {deleting[document._id] ? (
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        className="w-4 h-4 border-2 border-current border-t-transparent rounded-full"
+                      />
+                    ) : (
+                      <Trash2 size={16} />
+                    )}
                   </button>
                 </div>
               </div>
@@ -414,12 +535,24 @@ const DocumentManager = () => {
                 <button
                   type="submit"
                   disabled={uploading}
-                  className="flex-1 px-4 py-2 rounded-lg text-white"
+                  className="flex-1 px-4 py-2 rounded-lg text-white flex items-center justify-center space-x-2"
                   style={{
-                    background: uploading ? currentTheme.disabled : currentTheme.primary
+                    background: uploading ? currentTheme.primary + '80' : currentTheme.primary,
+                    cursor: uploading ? 'not-allowed' : 'pointer'
                   }}
                 >
-                  {uploading ? 'Processing...' : 'Add Document'}
+                  {uploading ? (
+                    <>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+                      />
+                      <span>Processing...</span>
+                    </>
+                  ) : (
+                    'Add Document'
+                  )}
                 </button>
               </div>
             </form>
@@ -533,10 +666,25 @@ const DocumentManager = () => {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 rounded-lg text-white"
-                  style={{ background: currentTheme.primary }}
+                  disabled={updating}
+                  className="flex-1 px-4 py-2 rounded-lg text-white flex items-center justify-center space-x-2"
+                  style={{ 
+                    background: updating ? currentTheme.primary + '80' : currentTheme.primary,
+                    cursor: updating ? 'not-allowed' : 'pointer'
+                  }}
                 >
-                  Update Document
+                  {updating ? (
+                    <>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+                      />
+                      <span>Updating...</span>
+                    </>
+                  ) : (
+                    'Update Document'
+                  )}
                 </button>
               </div>
             </form>
