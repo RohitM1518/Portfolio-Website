@@ -14,6 +14,9 @@ const DocumentManager = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [notifications, setNotifications] = useState([]);
+  const [logs, setLogs] = useState([]);
+  const [showLogs, setShowLogs] = useState(false);
+  const [sseConnection, setSseConnection] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -35,6 +38,106 @@ const DocumentManager = () => {
     setTimeout(() => {
       setNotifications(prev => prev.filter(n => n.id !== id));
     }, 4000);
+  };
+
+  const addLog = (message, type = 'info') => {
+    const timestamp = new Date().toLocaleTimeString();
+    const log = {
+      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      timestamp,
+      message,
+      type
+    };
+    setLogs(prev => [...prev, log]);
+  };
+
+  const clearLogs = () => {
+    setLogs([]);
+  };
+
+  const connectToLogStream = (documentId) => {
+    // Close existing connection if any
+    if (sseConnection) {
+      sseConnection.close();
+    }
+
+    // Create new SSE connection with authentication
+    const url = `${import.meta.env.VITE_API_URL}/documents/logs/${documentId}`;
+    
+    // Use EventSource for SSE (simpler approach)
+    const eventSource = new EventSource(url);
+    
+    eventSource.onopen = () => {
+      addLog('🔌 Connected to real-time processing logs', 'success');
+    };
+    
+    eventSource.onmessage = (event) => {
+      try {
+        const logData = JSON.parse(event.data);
+        const timestamp = new Date(logData.timestamp).toLocaleTimeString();
+        
+        const log = {
+          id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          timestamp,
+          message: logData.message,
+          type: logData.type
+        };
+        
+        setLogs(prev => [...prev, log]);
+      } catch (error) {
+        console.error('Error parsing SSE data:', error);
+      }
+    };
+    
+    eventSource.onerror = (error) => {
+      console.error('SSE connection error:', error);
+      addLog('❌ Lost connection to server logs', 'error');
+      
+      // Try to reconnect after a short delay
+      setTimeout(() => {
+        if (eventSource.readyState === EventSource.CLOSED) {
+          addLog('🔄 Attempting to reconnect...', 'info');
+          connectToLogStream(documentId);
+        }
+      }, 2000);
+    };
+    
+    setSseConnection(eventSource);
+    return eventSource;
+  };
+
+  const testSSEConnection = async (documentId) => {
+    try {
+      const url = `${import.meta.env.VITE_API_URL}/documents/logs/${documentId}`;
+      
+      // Test with EventSource
+      return new Promise((resolve) => {
+        const eventSource = new EventSource(url);
+        
+        eventSource.onopen = () => {
+          eventSource.close();
+          addLog('✅ SSE endpoint is accessible', 'success');
+          resolve(true);
+        };
+        
+        eventSource.onerror = () => {
+          eventSource.close();
+          addLog('❌ SSE endpoint is not accessible', 'error');
+          resolve(false);
+        };
+        
+        // Timeout after 3 seconds
+        setTimeout(() => {
+          eventSource.close();
+          addLog('⏰ SSE connection timeout', 'error');
+          resolve(false);
+        }, 3000);
+      });
+    } catch (error) {
+      console.error('SSE test error:', error);
+      addLog(`❌ SSE test failed: ${error.message}`, 'error');
+      return false;
+    }
   };
 
   const fetchDocuments = async () => {
@@ -67,32 +170,95 @@ const DocumentManager = () => {
     }
 
     setUploading(true);
+    setShowLogs(true);
+    clearLogs();
+
+    addLog('🚀 Starting document upload process...', 'info');
+    addLog(`📝 Document title: "${formData.title}"`, 'info');
+    addLog(`📊 Content length: ${formData.content.length} characters`, 'info');
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/documents/upload`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          title: formData.title,
-          description: formData.description,
-          content: formData.content
-        })
-      });
+      // Connect to SSE stream BEFORE processing starts
+      addLog('🔌 Connecting to real-time processing logs...', 'info');
+      
+      // First, create a temporary document ID for SSE connection
+      const tempId = `temp-${Date.now()}`;
+      
+      // Test SSE connection first
+      const sseTest = await testSSEConnection(tempId);
+      if (sseTest) {
+        // Connect to SSE stream BEFORE processing starts
+        const eventSource = connectToLogStream(tempId);
+        
+        // Wait a moment for connection to establish
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Increased from 500ms to 1000ms
+        
+        // Check if connection is established
+        if (eventSource.readyState === EventSource.OPEN) {
+          addLog('✅ SSE connection established successfully', 'success');
+        } else {
+          addLog('⚠️ SSE connection not ready, proceeding anyway', 'info');
+        }
+        
+        // Now send the upload request
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/documents/upload`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(formData)
+        });
 
-      const data = await response.json();
-      if (data.success) {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        addLog('📡 Sending upload request to server...', 'info');
+        addLog('✅ Server response received', 'success');
+        addLog('📄 Document saved to database', 'success');
+        
+        // Wait for processing to complete
+        setTimeout(() => {
+          if (eventSource) {
+            eventSource.close();
+            setSseConnection(null);
+          }
+        }, 10000); // Close after 10 seconds
+        
         setDocuments(prev => [data.data, ...prev]);
         setShowUploadModal(false);
         setFormData({ title: '', description: '', content: '' });
         showNotification('🎉 Document uploaded successfully! Your content is now ready for AI processing.', 'success');
       } else {
-        throw new Error(data.message);
+        // If SSE fails, still send the upload request
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/documents/upload`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(formData)
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        addLog('📡 Sending upload request to server...', 'info');
+        addLog('✅ Server response received', 'success');
+        addLog('📄 Document saved to database', 'success');
+        
+        setDocuments(prev => [data.data, ...prev]);
+        setShowUploadModal(false);
+        setFormData({ title: '', description: '', content: '' });
+        showNotification('🎉 Document uploaded successfully! Your content is now ready for AI processing.', 'success');
       }
     } catch (error) {
       console.error('Error uploading document:', error);
+      addLog(`❌ Error: ${error.message}`, 'error');
       showNotification(`❌ Failed to upload document: ${error.message}`, 'error');
     } finally {
       setUploading(false);
@@ -107,35 +273,100 @@ const DocumentManager = () => {
     }
 
     setUpdating(true);
+    setShowLogs(true);
+    clearLogs();
+
+    addLog('🔄 Starting document update process...', 'info');
+    addLog(`📝 Updating document: "${selectedDocument.title}"`, 'info');
+    addLog(`📊 New content length: ${formData.content.length} characters`, 'info');
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/documents/${selectedDocument._id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          title: formData.title,
-          description: formData.description,
-          content: formData.content
-        })
-      });
+      // Connect to SSE stream for real-time logs BEFORE sending the request
+      addLog('🔌 Connecting to real-time processing logs...', 'info');
+      
+      // Test SSE connection first
+      const sseTest = await testSSEConnection(selectedDocument._id);
+      let data; // Declare data variable outside the blocks
+      
+      if (sseTest) {
+        // Connect to SSE stream BEFORE processing starts
+        const eventSource = connectToLogStream(selectedDocument._id);
+        
+        // Wait a moment for connection to establish
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Increased from 500ms to 1000ms
+        
+        // Check if connection is established
+        if (eventSource.readyState === EventSource.OPEN) {
+          addLog('✅ SSE connection established successfully', 'success');
+        } else {
+          addLog('⚠️ SSE connection not ready, proceeding anyway', 'info');
+        }
+        
+        // Now send the update request
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/documents/${selectedDocument._id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            title: formData.title,
+            description: formData.description,
+            content: formData.content
+          })
+        });
 
-      const data = await response.json();
-      if (data.success) {
-        setDocuments(prev => prev.map(doc => 
-          doc._id === selectedDocument._id ? data.data : doc
-        ));
-        setShowEditModal(false);
-        setSelectedDocument(null);
-        setFormData({ title: '', description: '', content: '' });
-        showNotification('✨ Document updated successfully! Your changes have been saved.', 'success');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        data = await response.json();
+        addLog('📡 Sending update request to server...', 'info');
+        addLog('✅ Server response received', 'success');
+        addLog('📄 Document updated in database', 'success');
+        
+        // Wait for processing to complete
+        setTimeout(() => {
+          if (eventSource) {
+            eventSource.close();
+            setSseConnection(null);
+          }
+        }, 10000); // Close after 10 seconds
       } else {
-        throw new Error(data.message);
+        // If SSE fails, still send the update request
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/documents/${selectedDocument._id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            title: formData.title,
+            description: formData.description,
+            content: formData.content
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        data = await response.json();
+        addLog('📡 Sending update request to server...', 'info');
+        addLog('✅ Server response received', 'success');
+        addLog('📄 Document updated in database', 'success');
       }
+
+      setDocuments(prev => prev.map(doc => 
+        doc._id === selectedDocument._id ? data.data : doc
+      ));
+      setShowEditModal(false);
+      setSelectedDocument(null);
+      setFormData({ title: '', description: '', content: '' });
+      showNotification('✨ Document updated successfully! Your changes have been saved.', 'success');
     } catch (error) {
       console.error('Error updating document:', error);
+      addLog(`❌ Error: ${error.message}`, 'error');
       showNotification(`❌ Failed to update document: ${error.message}`, 'error');
     } finally {
       setUpdating(false);
@@ -264,6 +495,86 @@ const DocumentManager = () => {
           </motion.div>
         ))}
       </AnimatePresence>
+
+      {/* Processing Logs */}
+      {showLogs && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="fixed top-4 left-4 z-50 w-96 max-h-96 overflow-hidden"
+        >
+          <div
+            className="rounded-lg shadow-lg border"
+            style={{
+              background: `linear-gradient(135deg, ${currentTheme.primary}10, ${currentTheme.secondary}10)`,
+              borderColor: currentTheme.primary + '30',
+              backdropFilter: 'blur(10px)'
+            }}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-3 border-b" style={{ borderColor: currentTheme.primary + '20' }}>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <span className="text-sm font-medium" style={{ color: currentTheme.text }}>
+                  Processing Logs
+                </span>
+              </div>
+              <button
+                onClick={() => setShowLogs(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Logs Container */}
+            <div className="p-3 max-h-80 overflow-y-auto">
+              <div className="space-y-2">
+                {logs.map((log) => (
+                  <motion.div
+                    key={log.id}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="flex items-start space-x-2 text-xs"
+                  >
+                    <span className="text-gray-500 font-mono" style={{ color: currentTheme.textSecondary }}>
+                      {log.timestamp}
+                    </span>
+                    <span
+                      className={`flex-1 ${
+                        log.type === 'success' ? 'text-green-600' :
+                        log.type === 'error' ? 'text-red-600' :
+                        'text-blue-600'
+                      }`}
+                      style={{
+                        color: log.type === 'success' ? '#10b981' :
+                               log.type === 'error' ? '#ef4444' :
+                               currentTheme.primary
+                      }}
+                    >
+                      {log.message}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="p-2 border-t text-center" style={{ borderColor: currentTheme.primary + '20' }}>
+              <button
+                onClick={clearLogs}
+                className="text-xs px-2 py-1 rounded transition-colors"
+                style={{
+                  background: currentTheme.primary + '20',
+                  color: currentTheme.primary
+                }}
+              >
+                Clear Logs
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      )}
 
       <div className="max-w-7xl mx-auto">
         {/* Header */}
