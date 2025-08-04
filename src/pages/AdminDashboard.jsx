@@ -564,11 +564,25 @@ const AdminDashboard = () => {
             <h3 className="text-lg font-semibold" style={{ color: currentTheme.text }}>
               Recent Chat Conversations
             </h3>
-            <div className="flex items-center space-x-2">
-              <Bot size={20} style={{ color: currentTheme.primary }} />
-              <span className="text-sm" style={{ color: currentTheme.textSecondary }}>
-                {stats?.chatbot?.recentConversations?.length || 0} conversations
-              </span>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <Bot size={20} style={{ color: currentTheme.primary }} />
+                <span className="text-sm" style={{ color: currentTheme.textSecondary }}>
+                  {stats?.chatbot?.recentConversations?.length || 0} conversations
+                </span>
+              </div>
+              <button
+                onClick={() => navigate('/admin/chat-conversations')}
+                className="flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors hover:scale-105"
+                style={{
+                  background: currentTheme.primary + '20',
+                  color: currentTheme.primary,
+                  border: `1px solid ${currentTheme.primary}30`
+                }}
+              >
+                <span className="text-sm">View All</span>
+                <span className="text-xs">→</span>
+              </button>
             </div>
           </div>
 
@@ -580,11 +594,12 @@ const AdminDashboard = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="p-4 rounded-lg border transition-all duration-200 hover:scale-[1.02]"
+                  className="p-4 rounded-lg border transition-all duration-200 hover:scale-[1.02] cursor-pointer hover:border-opacity-60"
                   style={{
                     background: currentTheme.surface + '80',
                     borderColor: currentTheme.primary + '20'
                   }}
+                  onClick={() => navigate('/admin/chat-conversations')}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -622,6 +637,7 @@ const AdminDashboard = () => {
                     <div className="text-right text-xs" style={{ color: currentTheme.textSecondary }}>
                       <p>{new Date(chat.createdAt).toLocaleDateString()}</p>
                       <p>{new Date(chat.createdAt).toLocaleTimeString()}</p>
+                      <p className="mt-1 text-xs opacity-60">Click to view details</p>
                     </div>
                   </div>
                 </motion.div>

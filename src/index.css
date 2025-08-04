@@ -86,6 +86,20 @@ body {
   overflow: hidden;
 }
 
+/* Chat input placeholder styling */
+.chat-input::placeholder {
+  color: #9CA3AF !important;
+  opacity: 1;
+}
+
+.chat-input:-ms-input-placeholder {
+  color: #9CA3AF !important;
+}
+
+.chat-input::-ms-input-placeholder {
+  color: #9CA3AF !important;
+}
+
 /* Selection styles */
 ::selection {
   background: var(--color-primary);

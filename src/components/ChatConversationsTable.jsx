@@ -82,7 +82,18 @@ const ChatConversationsTable = () => {
 
       const data = await response.json();
       setConversations(data.data.conversations);
-      setPagination(data.data.pagination);
+      
+      // Ensure pagination object has all required properties with fallbacks
+      const paginationData = data.data.pagination || {};
+      setPagination({
+        currentPage: paginationData.currentPage || 1,
+        totalPages: paginationData.totalPages || 1,
+        totalConversations: paginationData.totalConversations || 0,
+        hasNextPage: paginationData.hasNextPage || false,
+        hasPrevPage: paginationData.hasPrevPage || false,
+        limit: paginationData.limit || 10
+      });
+      
       setAvailableFilters(data.data.filters);
     } catch (err) {
       console.error('Error fetching conversations:', err);
@@ -169,7 +180,6 @@ const ChatConversationsTable = () => {
               }}
             >
               <ArrowLeft size={16} />
-              <span>Back to Dashboard</span>
             </button>
             <div>
               <h1 className="text-2xl font-bold" style={{ color: currentTheme.text }}>
@@ -408,7 +418,7 @@ const ChatConversationsTable = () => {
                         <div className="flex items-center space-x-2">
                           <div className="w-2 h-2 rounded-full" style={{ background: currentTheme.primary }}></div>
                           <span className="text-sm font-medium" style={{ color: currentTheme.text }}>
-                            Session {conversation.sessionId.substring(0, 8)}...
+                            {conversation.sessionId.substring(0, 15)}...
                           </span>
                         </div>
                         <span className="text-xs px-2 py-1 rounded-full" style={{ 
@@ -453,14 +463,14 @@ const ChatConversationsTable = () => {
           {pagination.totalPages > 1 && (
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="text-sm text-center sm:text-left" style={{ color: currentTheme.textSecondary }}>
-                Showing {((pagination.currentPage - 1) * pagination.limit) + 1} to{' '}
-                {Math.min(pagination.currentPage * pagination.limit, pagination.totalConversations)} of{' '}
-                {pagination.totalConversations} conversations
+                Showing {Math.max(1, ((pagination.currentPage || 1) - 1) * (pagination.limit || 10) + 1)} to{' '}
+                {Math.min((pagination.currentPage || 1) * (pagination.limit || 10), pagination.totalConversations || 0)} of{' '}
+                {pagination.totalConversations || 0} conversations
               </div>
               
               <div className="flex items-center space-x-2">
                 <button
-                  onClick={() => handlePageChange(pagination.currentPage - 1)}
+                  onClick={() => handlePageChange((pagination.currentPage || 1) - 1)}
                   disabled={!pagination.hasPrevPage}
                   className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors disabled:opacity-50"
                   style={{
@@ -473,20 +483,20 @@ const ChatConversationsTable = () => {
                 </button>
                 
                 <div className="flex items-center space-x-1">
-                  {Array.from({ length: Math.min(3, pagination.totalPages) }, (_, i) => {
+                  {Array.from({ length: Math.min(3, pagination.totalPages || 1) }, (_, i) => {
                     const pageNum = i + 1;
                     return (
                       <button
                         key={pageNum}
                         onClick={() => handlePageChange(pageNum)}
                         className={`px-3 py-2 rounded-lg transition-colors ${
-                          pageNum === pagination.currentPage ? 'font-medium' : ''
+                          pageNum === (pagination.currentPage || 1) ? 'font-medium' : ''
                         }`}
                         style={{
-                          background: pageNum === pagination.currentPage 
+                          background: pageNum === (pagination.currentPage || 1) 
                             ? currentTheme.primary 
                             : currentTheme.primary + '20',
-                          color: pageNum === pagination.currentPage 
+                          color: pageNum === (pagination.currentPage || 1) 
                             ? currentTheme.text 
                             : currentTheme.primary
                         }}
@@ -498,7 +508,7 @@ const ChatConversationsTable = () => {
                 </div>
                 
                 <button
-                  onClick={() => handlePageChange(pagination.currentPage + 1)}
+                  onClick={() => handlePageChange((pagination.currentPage || 1) + 1)}
                   disabled={!pagination.hasNextPage}
                   className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors disabled:opacity-50"
                   style={{
@@ -577,6 +587,28 @@ const ChatConversationsTable = () => {
                           )}
                           <div className="flex-1">
                             <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                            
+                            {/* Show original and rephrased questions for user messages */}
+                            {message.role === 'user' && message.originalQuestion && message.rephrasedQuestion && (
+                              <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                                <details className="group">
+                                  <summary className="cursor-pointer text-xs font-medium opacity-80 hover:opacity-100 transition-opacity">
+                                    🔍 View Question Rephrasing
+                                  </summary>
+                                  <div className="mt-2 space-y-2">
+                                    <div className="p-2 rounded text-xs" style={{ background: currentTheme.surface + '60' }}>
+                                      <div className="font-medium mb-1">Original Question:</div>
+                                      <p className="opacity-90">{message.originalQuestion}</p>
+                                    </div>
+                                    <div className="p-2 rounded text-xs" style={{ background: currentTheme.surface + '60' }}>
+                                      <div className="font-medium mb-1">Rephrased for Search:</div>
+                                      <p className="opacity-90">{message.rephrasedQuestion}</p>
+                                    </div>
+                                  </div>
+                                </details>
+                              </div>
+                            )}
+                            
                             <p className="text-xs opacity-70 mt-1">
                               {formatDate(message.timestamp)}
                             </p>
